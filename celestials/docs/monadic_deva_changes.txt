@@ -1,0 +1,44 @@
+1. Increased hitpoints from 96 to 138 which is correct value for a level 25 fighter Monadic Deva.
+2. Changed Race to Planatar, which is closer to being accurate than Solar.
+3. Changed General to Humanoid from monster.
+4. Changed Str to 20, to match PnP stats
+5. Changed Int to 18 from 16 for monster manual value
+6. Gave Helmet HELMNOAN to protect against critical hits.  Devas do wear armor...
+7. Replaced weapon DEVA with CA#MONRD which is the correct astral deva weapon. 
+8. Changed Magic Resist to 60% for correct PnP stat
+9. Removed existing wizard spells
+10. Changed AC to -3 for correct PnP stat
+11. Changed Dex to 15, less dexterous according to Monstrous Manual
+12. Changed Con to 18, more durable according to Monstrous Manual
+13. Changed Cha to 19 for correct PnP stat
+
+14-32  Are the appropriate innates for Aasimon + Devas + Monadic Devas in that order.  Missed abilities from the Monster Manual will be listed at the bottom of this section.
+
+14. Gave innate: CA#AID, aid, useable at will 1/round
+15. Gave innate: CA#CURSW, Cure Serious Wound, useable 3/day.
+16. Gave innate: CA#DEVIL, Detect Evil, useable at will 1/round.
+17. Gave innate: CA#KNAL, Know Alignment, useable at will 1/round.
+18. Gave inntate: CA#TWOE, Teleport Without Error, useable at will 1/round
+19. Gave innate: CA#CUDIS, Cure Disease, useable 3/day.
+20. Gave innate: CA#CULW, Cure Light Wounds, useable 7/day.
+21. Gave innate: CA#DSP, Detect Snares and Pits, useable 7/day.
+22. Gave innate: CA#DISM, Dispel Magic, useable 7/day.
+23. Gave innate: CA#HEAL1, Heal, useable 1/day.
+24. Gave innate: CA#INFRA, Infravision, useable at will 1/round.
+25. Gave innate: CA#INV10, Invisibility 10' Radius, useable at will 1/round.
+26. Gave innate: CA#POLS, Polymorph Self, useable at will 1/round.
+27. Gave innate: CA#PEVIL, Protection From Evil, useable at will 1/round.
+28. Gave innate: CA#RCUR, Remove Curse, useable at will 1/round.
+29. Gave innate: CA#RFEAR, Remove Fear, useable at will 1/round.
+30. Gave innate: CA#HMON, Hold Monster, useable at will 1/round.
+31. Gave innate: CA#MIMG, Mirror Image, useable at will 1/round.
+32. Gave innate: CA#DMCH, Charm Elemental, useable at will 1/round.
+
+Abilities from the monster manual that have been skipped: augury, change self, comprehend languages, detect magic, read magic, celestial reverence, aasimon distress call, detect lie, light, tongues.
+
+33. Removed immunity to feeblemindness
+34. Removed immunity to charm
+35. Removed immunity to confusion/rigid thinking/chaos
+36. Added immunity to level drain messages.
+37. Added 100% poison immunity
+38. Added immunity to Magic Missle (spell immunity to: SPWI003, SPWI112, BALTH06, SPIN962, SPIN685)

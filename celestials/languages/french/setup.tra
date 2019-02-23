@@ -1,0 +1,45 @@
+@1	= ~Version "jdr sur table" des Célestes~
+@2	 = ~Nécessite Throne of Bhaal~
+
+// Creature Names
+@100         = ~Déva Astrale~
+@101 	= ~Déva Movanique~
+@102	 = ~Déva Monadique~
+
+// Deva Spells and abilities
+@200	= ~Détection des Pièges et des Embuscades~
+@201	= ~Coquille Anti-Magie~
+@202	= ~Annulation de la Coquille Anti-Magie~
+@203	= ~Sort de Sixième Niveau
+Coquille Anti-Magie (Abjuration)
+Niveau: 6
+Portée: 0
+Durée: 1 tour/niveau
+Durée d'Incantation: 1
+Aire d'effet: Lanceur
+Jet de Sauvegarde: Aucun
+
+Grâce à ce sort, le magicien s'entoure d'une barrière invisible qui bouge avec lui. L'espace compris à l'intérieur de cette barrière est totalement imperméable à la magie et à tous les effets des sorts, empêchant ainsi le passage des sorts eux-même ou de leurs effets. De même, ce sort empêche le fonctionnement de tout object magique ou de tout sort au sein de la coquille. La zone est également imperméable aux armes de type souffle, gaz ou attaques vocales, ainsi qu'à toute forme d'attaque similaire.
+
+La coquille anti-magie repousse également les créatures invoquées ou charmées. Elle ne peut cependant pas être utilisée pour forcer ces créatures à s'enfuir. Une tentative de ce type créera une pression sur la barrière, et une pression continue trop importante brisera le sort. Les créatures normales (un troll rencontré normalement plutôt qu'invoqué par exemple) peuvent entrer dans la zone, ainsi que les projectiles normaux. Notez bien que les créatures sur leur plan natal sont considérées comme normales dans ce sens (par exemple un élémentaire de feu sur le plan élémentaire du feu). Les artefacts, les reliques et les créatures tels que les demi-dieux ou êtres d'un statut supérieur ne sont pas affectés par ce type de magie. Un sort de dissipation de la magie ne supprimera pas ce sort. Le lanceur peut par contre décider de l'arrêter quand il le désire.~
+@204	 = ~Lance sort d'Invocation/Evocation~
+@205	= ~Appel de Planétaire~
+@206 	= ~Convocation de Déva Astrale~
+@207 	= ~Convocation de Déva Movanique~
+@208	= ~Téléportation sans faille~
+@209 	= ~Convocation de Déva Monadique~
+@210 	= ~Charme élémental~
+
+
+//Equipment 
+@300	= ~Epée Vorpale de Planétaire~
+@301 	= ~Masse de Disruption +2 de Déva Astrale~
+@302	= ~Langue de Feu +1 de Déva Movanique~
+@303 	= ~Sceptre de châtiment +3 de Déva Monadique~
+
+//Planetar spells and abilities
+@400	= ~Invisibilité Améliorée sur 3 mètres~
+@401	= ~Métamorphose d'Objet~
+@402	= ~Protection contre le Mal sur 12 mètres~
+@403	= ~Résistance au Froid~
+@404	= ~Symbole~

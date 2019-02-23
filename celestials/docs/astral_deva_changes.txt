@@ -1,0 +1,41 @@
+1. Increased hitpoints from 96 to 138 which is correct value for a level 25 fighter Astral Deva.
+2. Changed Race to Planatar, which is closer to being accurate than Solar.
+3. Changed General to Humanoid from monster.
+4. Changed Str to 17 from 19, because no str bonus given in monster manual
+5. Changed Int to 18 from 16 for monster manual value
+6. Gave Helmet HELMNOAN to protect against critical hits.  Devas do wear armor...
+7. Replaced weapon DEVA with CA#ASDM which is the correct astral deva weapon. 
+8. Gave boots CA#SBOOT which gives the astral deva it's correct ground movement speed (2x normal rate of movement).
+9. Removed existing wizard spells
+
+10-27  Are the appropriate innates for Aasimon + Devas + Astral Devas in that order.  Missed abilities from the Monster Manual will be listed at the bottom of this section.
+
+10. Gave innate: CA#AID, aid, useable at will 1/round
+11. Gave innate: CA#CURSW, Cure Serious Wound, useable 3/day.
+12. Gave innate: CA#DEVIL, Detect Evil, useable at will 1/round.
+13. Gave innate: CA#KNAL, Know Alignment, useable at will 1/round.
+14. Gave inntate: CA#TWOE, Teleport Without Error, useable at will 1/round
+15. Gave innate: CA#CUDIS, Cure Disease, useable 3/day.
+16. Gave innate: CA#CULW, Cure Light Wounds, useable 7/day.
+17. Gave innate: CA#DSP, Detect Snares and Pits (NEEDS ABILITY NAME CHANGED TO THIS), useable 7/day.
+18. Gave innate: CA#DISM, Dispel Magic, useable 7/day.
+19. Gave innate: CA#HEAL1, Heal, useable 1/day.
+20. Gave innate: CA#INFRA, Infravision, useable at will 1/round.
+21. Gave innate: CA#INV10, Invisibility 10' Radius, useable at will 1/round.
+22. Gave innate: CA#POLS, Polymorph Self, useable at will 1/round.
+23. Gave innate: CA#PEVIL, Protection From Evil, useable at will 1/round.
+24. Gave innate: CA#RCUR, Remove Curse, useable at will 1/round.
+25. Gave innate: CA#RFEAR, Remove Fear, useable at will 1/round.
+26. Gave innate: CA#BLBAR, Blade Barrier, useable 1/day.
+27. Gave innate: CA#DINVS, Detect Invisible, useable at will 1/round.
+
+Abilities from the monster manual that have been skipped: augury, change self, comprehend languages, detect magic, read magic, celestial reverence, aasimon distress call, detect lie, light, tongues.
+
+28. Removed immunity to feeblemindness
+29. Removed immunity to charm
+30. Removed immunity to confusion/rigid thinking/chaos
+31. Added immunity to level drain messages.
+32. Added 100% poison immunity
+33. Added immunity to imprisonment
+34. Added immunity to maze
+35. Added immunity to Magic Missle (spell immunity to: SPWI003, SPWI112, BALTH06, SPIN962, SPIN685)

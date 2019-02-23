@@ -1,0 +1,2 @@
+needs name changed to "Cast Invocation/Evocation Spell"
+needs new icon

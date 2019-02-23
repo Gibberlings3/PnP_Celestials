@@ -1,0 +1,51 @@
+//Am I in a special area?
+IF
+ Global("Cast_CA_SUMMON_DEVA","LOCALS",0) //So it only casts once.
+ OR(13)
+      AreaCheck("AR4500") //PocketPlane
+      AreaCheck("AR2900") //Hell
+      AreaCheck("AR6200") //Throne of Bhaal
+      AreaCheck("AR0414") //Planar Sphere other plane
+      AreaCheck("AR1008") //Twisted Rune plane
+      AreaCheck("AR2208") //Drow Mercenary Pocket Plane
+      AreaCheck("AR0516") //Planar Prison Main Area
+      AreaCheck("AR0517") //Planar Prison dungeon room 1
+      AreaCheck("AR0518") //Planar Prison dungeon room 2
+      AreaCheck("AR0519") //Planar Prison dungeon room 3
+      AreaCheck("AR0520") //Planar Prison dungeon room prison captain with minotaurs
+      AreaCheck("AR0521") //Planar Prison dungeon room prison captains with stone golems
+      AreaCheck("DD8002") // Tartarus
+//Any other areas. Add to the OR() if you need more.
+THEN
+RESPONSE #100
+  SetGlobal("Cast_CA_SUMMON_DEVA","LOCALS",1)
+  ReallyForceSpellRes("CA#SDAST",Myself)
+END
+
+//Check for Monadic Deva Summon
+IF
+ Global("Cast_CA_SUMMON_DEVA","LOCALS",0) //So it only casts once.
+ OR(1)
+      AreaCheck("LR6603") //Elysium
+THEN
+RESPONSE #100
+  SetGlobal("Cast_CA_SUMMON_DEVA","LOCALS",1)
+  ReallyForceSpellRes("CA#SDMON",Myself)
+END
+
+//It didn't cast before, so it will now.
+IF
+ Global("Cast_CA_SUMMON_DEVA","LOCALS",0) 
+THEN
+RESPONSE #100
+ SetGlobal("Cast_CA_SUMMON_DEVA","LOCALS",1)
+ ReallyForceSpellRes("CA#SDMOV",Myself)
+END
+
+//I came, I saw, I cast, I go bye-bye.
+IF
+ Global("Cast_CA_SUMMON_DEVA","LOCALS",1)
+THEN
+RESPONSE #100
+ DestroySelf()
+END

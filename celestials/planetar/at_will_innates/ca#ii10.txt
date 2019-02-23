@@ -1,0 +1,3 @@
+Name should be changed to "Improved Invisibility 10' Radius".
+
+Spell Icon should be changed to combine Improved Invis icon, and invis 10' radius icon.

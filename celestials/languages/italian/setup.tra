@@ -1,0 +1,49 @@
+@1=~PnP Celestials~
+@2=~Richiede Throne of Bhaal~
+
+//Deva Component
+
+@100=~Deva Astrale~
+@101=~Deva Movanico~
+@102=~Deva Monadico~
+
+//Deva Spells
+
+@200=~Scoprire Trappole~
+@201=~Scudo Anti-incantesimi~
+@202=~Cancella Scudo Anti-incantesimi~
+@203=~Incantesimi di 6° livello
+Scudo Anti-incantesimi
+(Scongiurazione)
+Livello: 6
+Raggio d'azione: 0
+Durata: 1 turno per livello
+Tempo di lancio: 1
+Area d'effetto: Il lanciatore
+Tiro-salvezza: Nessuno
+
+Mediante questo incantesimo, il personaggio si circonda con una barriera invisibile che si sposta con lui. Lo spazio all'interno di questa barriera è completamente impermeabile a tutte le magie, cosa che previene il passaggio degli incantesimi e dei loro effetti. Allo stesso modo, impedisce il funzionamento di qualsiasi oggetto magico o di incantesimo nel suo perimetro. L'area è impermeabile anche alle armi a soffio, agli attacchi con lo sguardo, agli attacchi con la voce e ad altre simili forme di attacco.
+Lo scudo anti-incantesimi è anche in grado di tenere lontane le creature charmate o evocate. Non può tuttavia essere usato contro qualsiasi creatura: un tentativo di questo tipo crea una pressione distinguibile contro la barriera e una pressione continuata spezzerà l'incantesimo. Creature normali (ad esempio, un troll incontrato per caso) possono entrare nell'area, così come i proiettili normali. Si noti che le creature incontrate sui loro piani natali sono da considerare creature normali. Di conseguenza, sul Piano Elementale del Fuoco, un elementale del fuoco incontrato per caso non può essere tenuto a debita distanza da questo incantesimo.
+Artefatti, reliquie e creature semidivine o di rango superiore non sono soggette a magie mortali come questa. Dissolvi Magie non pone fine a questo incantesimo; il personaggio può cancellarne gli effetti solo a comando.~
+@204=~Lancia Incantesimo di Invocazione/Apparizione~
+@205=~Evocare Planetar~
+@206=~Evocare Deva Astrale~
+@207=~Evocare Deva Movanico~
+@208=~Teletrasporto Senza Errore~
+@209=~Evocare Deva Monadico~
+@210=~Charmare Elementale~
+
+//Equipment
+
+@300=~Spada Vorpal del Planetar~
+@301=~Mazza della Distruzione del Deva Astrale~
+@302=~Lingua di Fuoco del Deva Movanico~
+@303=~Verga del Colpire del Deva Monadico~
+
+//Planetar Spells
+
+@400=~Invisibilità nel Raggio di 3 Metri~
+@401=~Metamorfosi in Qualsiasi Oggetto~
+@402=~Protezione dal Male nel Raggio di 12 Metri~
+@403=~Resistenza al Freddo~
+@404=~Simbolo~

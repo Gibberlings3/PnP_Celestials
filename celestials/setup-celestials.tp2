@@ -1,0 +1,300 @@
+BACKUP ~celestials/backup~ /* location to store files for uninstall purposes */
+SUPPORT "http://gibberlings3.net/forums/index.php?showforum=28" /* display email address if install fails */
+
+ALWAYS
+
+  ACTION_IF NOT VARIABLE_IS_SET cd_always THEN BEGIN
+
+    OUTER_SET cd_always = 1 // just do this once per install
+
+    // convert strings to UTF-8 for BGEE/BG2EE
+    ACTION_DEFINE_ARRAY cdreload BEGIN setup END
+    LAF HANDLE_CHARSETS INT_VAR infer_charsets = 1 STR_VAR tra_path = ~celestials/languages~ reload_array = cdreload END
+
+  END
+
+END
+
+VERSION ~v7~
+
+README ~celestials/readme-celestials.html~
+
+AUTO_TRA ~celestials/languages/%s~
+
+LANGUAGE
+  ~English~
+  ~english~
+  ~celestials/languages/english/setup.tra~
+LANGUAGE
+  ~Francais (Translation by Mathrim Cauthon, Isaya)~
+  ~french~
+  ~celestials/languages/english/setup.tra~
+  ~celestials/languages/french/setup.tra~
+LANGUAGE
+  ~Deutsch(Translation by Telperion)~
+  ~german~
+  ~celestials/languages/english/setup.tra~
+  ~celestials/languages/german/setup.tra~
+LANGUAGE
+  ~Polski (Translation by yarpen)~
+  ~polish~
+  ~celestials/languages/english/setup.tra~
+  ~celestials/languages/polish/setup.tra~
+LANGUAGE
+  ~Russian (Translation by Prowler, Tierno, and A.E.R.I.E. team)~
+  ~russian~
+  ~celestials/languages/english/setup.tra~
+  ~celestials/languages/russian/setup.tra~
+LANGUAGE
+  ~Italian (Translation by Aedan)~
+  ~italian~
+  ~celestials/languages/english/setup.tra~
+  ~celestials/languages/russian/italian.tra~
+
+/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
+/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
+/////                                                  \\\\\
+///// PnP Celestials                                   \\\\\
+/////                                                  \\\\\
+/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
+/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
+
+BEGIN @1 /* Start with displaying mod component PnP Celestials */
+REQUIRE_PREDICATE GAME_IS ~tob bg2ee bgt eet~ @2 /* TOB Check prior to compiling.*/
+	
+INCLUDE ~celestials/lib/functions.tph~
+
+COPY ~Celestials/copy~ ~override~ // bams, vvcs, wavs, effs, etc.
+
+/////////////////////////////////////////////
+//Aasimon Shared Material
+
+//At will Innates
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr201 destination = ~ca#aid~ END // aid
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr104 destination = ~ca#devil~ END // detect evil
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr209 destination = ~ca#knal~ END // know alignment
+
+//Limited Use per day abilities
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr401 destination = ~ca#cursw~ END // cure serious wounds
+
+///////////////////////////////////////////////
+//Deva Shared Material
+
+//At will innates
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi111 destination = ~ca#infra~ END // infravision
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi307 destination = ~ca#inv10~ END // invisiblity 10 foot radius
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi113 destination = ~ca#pevil~ END // protection from evil
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi416 destination = ~ca#pols~ END // polymorph self
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi410 destination = ~ca#rcur~ END // remove curse
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr108 destination = ~ca#rfear~ END // remove fear
+
+//Limited Use Innates
+
+COPY ~Celestials/Devas/Shared_Spells/Limited_Use_Innates/CA#DSP.SPL~     ~override/CA#DSP.SPL~     /* Detect Snares and Pits */
+  SAY NAME1 @200
+  SAY NAME2 @200
+
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr317 destination = ~ca#cudis~ END // cure disease
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr103 destination = ~ca#culw~ END // cure light wounds
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr303 destination = ~ca#dism~ END // dispel magic
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr607 destination = ~ca#heal1~ END // heal
+
+//////////////////////////////
+//Astral Deva
+
+//At will innates
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi203 destination = ~ca#dinvs~ END // detect invisibilty
+
+//Limited Use innates
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr603 destination = ~ca#blbar~ END // blade barrier
+
+/* Astral Deva version of the Mace of Disruption plus 2 */
+COPY_EXISTING ~blun25.itm~ ~override/ca#asdm.itm~
+  SAY NAME1 @301
+  SAY NAME2 @301
+  WRITE_BYTE 0x18 (THIS BAND `BIT2) // removes droppable flag
+  LPF ALTER_ITEM_HEADER INT_VAR header_type = 1 dicenumber = 3 dicesize = 6 identify = 0 END
+  LPF ADD_ITEM_EFFECT INT_VAR type = 1 opcode = 39 target = 2 resist_dispel = 1 duration = 36 savingthrow = 1 END
+  LPF ADD_ITEM_EFFECT INT_VAR type = 1 opcode = 146 target = 1 parameter1 = 1 parameter2 = 1 timing = 1 STR_VAR resource = noattack END
+
+/* Astral Deva boots that increase movement speed to double the movement speed of normal creatures */
+COPY_EXISTING ~boot01.itm~ ~override/CA#SBOOT.ITM~
+  WRITE_BYTE 0x18 (THIS BAND `BIT2) // removes droppable flag
+
+//Creatures
+
+COPY ~Celestials/Devas/Astral_Deva/Creatures/CA#DASTR.CRE~ ~override~ /* Astral Deva */
+  SAY NAME1 @100
+  SAY NAME2 @100
+
+
+/////////////////////////////////
+//Monadic Deva
+
+//At will innates
+
+COPY ~Celestials/Devas/Monadic_Deva/At_Will_Innates/CA#DMCH.SPL~     ~override/CA#DMCH.SPL~     /* Charm Elemental Spell file */
+  SAY NAME1 @210
+  SAY NAME2 @210
+  
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi507 destination = ~ca#HMON~ END // Hold Monster
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi212 destination = ~ca#MIMG~ END // Mirror Image
+
+//Items
+
+/* Astral Deva version of the rod of smiting */
+COPY_EXISTING ~rods04.itm~ ~override/ca#monrd.itm~
+  SAY NAME1 @303
+  SAY NAME2 @303
+  WRITE_BYTE 0x18 (THIS BAND `BIT2) // removes droppable flag
+  LPF ALTER_ITEM_HEADER INT_VAR identify = 0 END
+  LPF CLONE_EFFECT INT_VAR match_opcode = 177 parameter1 = 188 parameter2 = 5 STR_VAR match_resource = smitgol1 END // vs elemental - earth
+  LPF CLONE_EFFECT INT_VAR match_opcode = 55  parameter1 = 188 parameter2 = 5 END // vs elemental - earth
+  LPF ADD_ITEM_EFFECT INT_VAR type = 1 opcode = 146 target = 1 parameter1 = 1 parameter2 = 1 timing = 1 STR_VAR resource = noattack END
+
+//Creatures
+
+COPY ~Celestials/Devas/Monadic_Deva/Creatures/CA#DMOND.CRE~ ~override~ /* Monadic Deva */
+  SAY NAME1 @102
+  SAY NAME2 @102
+
+
+///////////////////////////////
+//Movanic Deva
+
+//At will innates
+
+COPY ~Celestials/Devas/Movanic_Deva/At_Will_Innates/CA#AMS.SPL~ ~override~     /* Anti-Magic Shell */
+  SAY NAME1 @201
+  SAY NAME2 @201
+  SAY UNIDENTIFIED_DESC @203
+  SAY DESC @203
+
+COPY ~Celestials/Devas/Movanic_Deva/At_Will_Innates/CA#AMSC.SPL~ ~override~   /* Cancel Anti-Magic Shell */
+  SAY NAME1 @202
+  SAY NAME2 @202
+
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi311 destination = ~ca#pfnm~ END // protection from normal missles
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi701 destination = ~ca#sturn~ END // spell turning 
+
+//Limited Use Innates
+
+COPY ~Celestials/Devas/Movanic_Deva/Limited_Use_Innates/CA#EVOC.SPL~     ~override/CA#EVOC.SPL~ /* Cast Invocation/Evocation Spell */
+  SAY NAME1 @204
+  SAY NAME2 @204
+
+COPY ~Celestials/Devas/Movanic_Deva/Limited_Use_Innates/CA#SPLAN.SPL~   ~override/CA#SPLAN.SPL~ /* Call Planetar with 30 percent chance of success */
+  SAY NAME1 @205
+  SAY NAME2 @205
+
+//Items
+
+
+/*Movanic Deva version of the Flametongue plus 1*/
+COPY_EXISTING ~sw1h24.itm~ ~override/ca#movsw.itm~
+  SAY NAME1 @302
+  SAY NAME2 @302
+  WRITE_BYTE 0x18 ((THIS BAND `BIT2) BOR BIT1) // removes droppable flag, adds 2h flag
+  WRITE_ASCII 0x22 ~s1~ #2
+  WRITE_BYTE  0x31 93 // 2H prof
+  LPF ALTER_ITEM_HEADER INT_VAR header_type = 1 dicenumber = 1 dicesize = 10 identify = 0 END
+  LPF ADD_ITEM_EFFECT INT_VAR type = 1 opcode = 146 target = 1 parameter1 = 1 parameter2 = 1 timing = 1 STR_VAR resource = noattack END
+
+//Creatures
+
+COPY ~Celestials/Devas/Movanic_Deva/Creatures/CA#DMOVA.CRE~ ~override~ /* Movanic Deva */
+  SAY NAME1 @101
+  SAY NAME2 @101
+
+/////////////////////////////////
+//Planetar
+
+//At will innates
+COPY ~Celestials/Planetar/At_Will_Innates/CA#II10.SPL~ ~override~   /* Improved Invisibility 10 foot radius */
+  SAY NAME1 @400
+  SAY NAME2 @400
+
+COPY ~Celestials/Planetar/At_Will_Innates/CA#PAO.SPL~ ~override~     /* Polymorph any Object */
+  SAY NAME1 @401
+  SAY NAME2 @401
+
+COPY ~Celestials/Planetar/At_Will_Innates/CA#DSNP.SPL~ ~override~   /* Detect Snares and Pits */
+  SAY NAME1 @200
+  SAY NAME2 @200
+
+COPY ~Celestials/Planetar/At_Will_Innates/CA#PEV40.SPL~ ~override~ /* Protection from Evil 40 foot radius */
+  SAY NAME1 @402
+  SAY NAME2 @402
+
+COPY ~Celestials/Planetar/At_Will_Innates/CA#RCOLD.SPL~ ~override~ /* Resist Cold */
+  SAY NAME1 @403
+  SAY NAME2 @403
+  
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr317 destination = ~ca#cdise~ END // cure disease
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr303 destination = ~ca#dispm~ END // dispel magic
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr607 destination = ~ca#heal~ END // heal
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi609 destination = ~ca#tsigh~ END // true sight
+
+/* Limited Use Innates */
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr720 destination = ~ca#eq~ END // earthquake
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = spwi509 destination = ~ca#fmind~ END // feeblemind
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr705 destination = ~ca#fstom~ END // fire storm
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr503 destination = ~ca#fstri~ END // flame strike
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr710 destination = ~ca#hword~ END // holy word
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr517 destination = ~ca#iplag~ END // insect plague
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = spwi722 destination = ~ca#lwish~ END // limited wish
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr504 destination = ~ca#rdead~ END // raise dead
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr713 destination = ~ca#resto~ END // greater restoration
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = spwi916 destination = ~ca#schag~ END // shapechange
+
+COPY ~Celestials/Planetar/Limited_Use_Innates/CA#SDEAT.SPL~     ~override/CA#SDEAT.SPL~ /* Symbol Death */
+COPY ~Celestials/Planetar/Limited_Use_Innates/CA#SFEAR.SPL~     ~override/CA#SFEAR.SPL~ /* Symbol Fear */
+COPY ~Celestials/Planetar/Limited_Use_Innates/CA#SSTUN.SPL~     ~override/CA#SSTUN.SPL~ /* Symbol Stun */
+COPY ~Celestials/Planetar/Limited_Use_Innates/CA#SYMB.SPL~     ~override/CA#SYMB.SPL~   /* Symbol main spell */
+  SAY NAME1 @404
+  SAY NAME2 @404
+
+/*Items*/
+
+/* Planetar Boots for movement speed increase */
+COPY_EXISTING ~boot01.itm~ ~override/CA#SBOOT.ITM~
+  WRITE_BYTE 0x18 (THIS BAND `BIT2) // removes droppable flag
+
+COPY ~Celestials/Planetar/Items/CA#PLANW.ITM~     ~override/CA#PLANW.ITM~ /* Planetar Vorpal Sword */
+  SAY NAME1 @300
+  SAY NAME2 @300
+
+// workaround for floating planetar string
+COPY_EXISTING ~planet01.cre~ ~override~
+  READ_ASCII 0x08 planetar_name (8)
+COPY ~Celestials/Planetar/CA#PLAN.cre~     ~override~
+  WRITE_ASCIIE 0x08 ~%planetar_name%~ #8 // using ascii for 8 bytes of non-ascii data... lazy
+
+/* Spells that summon the celestials */
+
+COPY ~Celestials/Summon_Spells/_Spl/CA#SDAST.spl~ ~override/CA#SDAST.spl~ //Summon spell for astral deva cast by invis and invulnerable creature
+  SAY NAME1 @206
+  SAY NAME2 @206
+
+COPY ~Celestials/Summon_Spells/_Spl/CA#SDMOV.spl~ ~override/CA#SDMOV.spl~ //Summon spell for movanic deva cast by invis and invulnerable creature
+  SAY NAME1 @207
+  SAY NAME2 @207
+
+COPY ~Celestials/Summon_Spells/_Spl/CA#SDMON.spl~ ~override/CA#SDMON.spl~ //Summon spell for Monadic Deva cast by invis and invulnerable creature
+  SAY NAME1 @209
+  SAY NAME2 @209
+
+COMPILE ~Celestials/Summon_Spells/_Baf/CA#SDEVA.baf~                       /* Compiles the script for the invis and invulen creature that will determine which deva to summon depending on the area */
+
+COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva through invis and invulen creature */
+              ~sppr726.spl~ ~override~  /* Cleric spell to summon deva through invis and invulen creature */
+              ~spwi923.spl~ ~override~  /* Wizard spell to summon planetar */
+  PATCH_IF (~%SOURCE_RES%~ STRING_COMPARE_CASE "spwi923" = 0) BEGIN
+    SPRINT res ~ca#plan~
+  END ELSE BEGIN
+    SPRINT res ~ca#inv1~
+    PATCH_IF (~%SOURCE_RES%~ STRING_COMPARE_CASE "spcl923" = 0) BEGIN
+      WRITE_LONG 0x34 1
+    END
+  END
+  LPF ALTER_EFFECT INT_VAR match_opcode = 177 STR_VAR resource = EVAL ~%res%~ END

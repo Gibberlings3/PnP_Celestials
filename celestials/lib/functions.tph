@@ -1,0 +1,106 @@
+DEFINE_ACTION_FUNCTION cd_clone_spell
+  INT_VAR
+    make_innate = 0
+    make_atwill = 0
+  STR_VAR
+    source = ""
+    destination = ""
+BEGIN
+
+COPY_EXISTING ~%source%.spl~ ~override/%destination%.spl~
+              ~%source%.spl~ ~override/%source%.spl~
+  READ_LONG  0x64 abil_off
+  READ_SHORT 0x68 abil_num
+  READ_LONG  0x6a fx_off  
+  SET delta = 0
+  FOR (index = "-1" ; index < abil_num ; ++index) BEGIN
+    PATCH_IF index < 0 BEGIN
+      SET offset = 0x6e
+      SET abil_fx_idx = 0
+    END ELSE BEGIN
+      SET offset = (abil_off + 0x1e + (index * 0x28))     
+      WRITE_SHORT  (abil_off + 0x20 + (index * 0x28)) (THIS + delta)
+      READ_SHORT   (abil_off + 0x20 + (index * 0x28)) abil_fx_idx
+    END
+    READ_SHORT  offset abil_fx_num    
+    FOR (index2 = 0 ; index2 < abil_fx_num ; ++index2) BEGIN     
+      READ_SHORT (fx_off +        (0x30 * (index2 + abil_fx_idx))) opcode
+      PATCH_IF ((opcode = 206) OR (opcode = 318) OR (opcode = 321) OR (opcode = 324)) BEGIN
+        READ_ASCII (fx_off + 0x14 + (0x30 * (index2 + abil_fx_idx))) resref
+        PATCH_IF ("%SOURCE_RES%" STRING_COMPARE_CASE "%resref%" = 0) BEGIN
+          READ_BYTE (fx_off + 0x0c + (0x30 * (index2 + abil_fx_idx))) timing
+          READ_LONG (fx_off + 0x0e + (0x30 * (index2 + abil_fx_idx))) duration
+          PATCH_IF ((opcode != 321) AND (timing = 0) AND ((duration = 0) OR (duration = 1))) BEGIN
+            PATCH_IF ("%SOURCE_FILE%" STRING_COMPARE_CASE "%DEST_FILE%") BEGIN
+              WRITE_ASCIIE (fx_off + 0x14 + (0x30 * (index2 + abil_fx_idx))) ~%DEST_RES%~ #8
+            END    
+          END ELSE BEGIN // non-zero durations need cloning
+            READ_ASCII   (fx_off +        (0x30 * (index2 + abil_fx_idx))) clone (48)
+            INSERT_BYTES (fx_off +        (0x30 * (index2 + abil_fx_idx))) 48
+              WRITE_ASCIIE (fx_off +        (0x30 * (index2 + abil_fx_idx))) ~%clone%~ #48
+              WRITE_ASCIIE (fx_off + 0x14 + (0x30 * (index2 + abil_fx_idx))) ~%destination%~ #8
+            SET delta += 1    
+            SET abil_fx_num += 1    
+            SET index2 += 1
+          END    
+        END
+      END
+    END      
+    WRITE_SHORT  offset abil_fx_num    
+    PATCH_IF make_innate AND (index >= 0) AND ("%SOURCE_FILE%" STRING_COMPARE_CASE "%DEST_FILE%") BEGIN
+      WRITE_SHORT  (abil_off + 0x02 + (index * 0x28)) 4
+      READ_ASCII  (abil_off + 0x04 + (index * 0x28)) bam
+    END  
+  END
+  PATCH_IF make_innate AND ("%SOURCE_FILE%" STRING_COMPARE_CASE "%DEST_FILE%") BEGIN
+    WRITE_SHORT  0x1c 4                        // sets spell type to innate (4)
+    WRITE_LONG   0x34 1                        // sets spell level to 1 to avoid scripting issues
+    WRITE_ASCIIE 0x3a ~%bam%~ #8               // writes the bam filename from abilities to spell icon
+  END  
+  PATCH_IF make_atwill AND ("%SOURCE_FILE%" STRING_COMPARE_CASE "%DEST_FILE%") BEGIN
+    LPF ADD_SPELL_EFFECT INT_VAR opcode = 172 target = 1 timing = 9 STR_VAR resource = EVAL ~%DEST_RES%~ END
+    LPF ADD_SPELL_EFFECT INT_VAR opcode = 171 target = 1 timing = 9 STR_VAR resource = EVAL ~%DEST_RES%~ END
+  END
+  BUT_ONLY  
+
+ 
+  ACTION_IF ((FILE_EXISTS_IN_GAME ~7eyes.2da~) AND (FILE_CONTAINS_EVALUATED (~7eyes.2da~ ~[ %TAB%]%source%[ %TAB%%LNL%%MNL%%WNL%]~))) THEN BEGIN
+ 
+    COPY_EXISTING ~7eyes.2da~ ~override~
+      SPRINT mind ~*~
+      SPRINT sword ~*~
+      SPRINT mage ~*~
+      SPRINT venom ~*~
+      SPRINT spirit ~*~
+      SPRINT fortitude ~*~
+      SPRINT stone ~*~
+        COUNT_2DA_COLS cols
+      SET cols = cols - 2    
+      REPLACE_EVALUATE     CASE_INSENSITIVE ~\(^EYEMIND[ %TAB%].+[ %TAB%]%source%[ %TAB%%LNL%%MNL%%WNL%]\)~ BEGIN
+        SPRINT mind ~%destination%~
+      END ~\1~  
+      REPLACE_EVALUATE ~\(^EYESWORD[ %TAB%].+[ %TAB%]%source%[ %TAB%%LNL%%MNL%%WNL%]\)~ BEGIN
+        SPRINT sword ~%destination%~
+      END ~\1~  
+      REPLACE_EVALUATE ~\(^EYEMAGE[ %TAB%].+[ %TAB%]%source%[ %TAB%%LNL%%MNL%%WNL%]\)~ BEGIN
+        SPRINT mage ~%destination%~
+      END ~\1~  
+      REPLACE_EVALUATE ~\(^EYEVENOM[ %TAB%].+[ %TAB%]%source%[ %TAB%%LNL%%MNL%%WNL%]\)~ BEGIN
+        SPRINT venom ~%destination%~
+      END ~\1~  
+      REPLACE_EVALUATE ~\(^EYESPIRIT[ %TAB%].+[ %TAB%]%source%[ %TAB%%LNL%%MNL%%WNL%]\)~ BEGIN
+        SPRINT spirit ~%destination%~
+      END ~\1~  
+      REPLACE_EVALUATE ~\(^EYEFORTITUDE[ %TAB%].+[ %TAB%]%source%[ %TAB%%LNL%%MNL%%WNL%]\)~ BEGIN
+        SPRINT fortitude ~%destination%~
+      END ~\1~  
+      REPLACE_EVALUATE ~\(^EYESTONE[ %TAB%].+[ %TAB%]%source%[ %TAB%%LNL%%MNL%%WNL%]\)~ BEGIN
+        SPRINT stone ~%destination%~
+      END ~\1~  
+      BUT_ONLY
+ 
+    APPEND_COL ~7eyes.2da~ ~$ $ %cols% %mind%    %sword% %mage% %venom% %spirit% %fortitude% %stone%~
+ 
+  END    
+
+END
