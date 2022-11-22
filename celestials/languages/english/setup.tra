@@ -1,5 +1,6 @@
 @1=~PnP Celestials~
-@2=~Throne of Bhaal Required~
+@2=~Deva and Planetar Animations~
+@3=~Throne of Bhaal Required~
 
 //Deva Component
 
@@ -12,8 +13,7 @@
 @200=~Detect Snares and Pits~
 @201=~Anti-Magic Shell~
 @202=~Cancel Anti-Magic Shell~
-@203=~Sixth-Level Spells
-Anti-Magic Shell (Abjuration)
+@203=~Anti-Magic Shell (Abjuration)
 Level: 6
 Range: 0
 Duration: 1 turn/level
@@ -48,14 +48,16 @@ magic spell does not remove the spell; the caster can end it upon command.~
 //Equipment
 
 @300=~Planetar Vorpal Sword~
-@301=~Astral Deva Mace of Disruption + 2~
+@301=~Astral Deva Mace of Disruption + 3~
 @302=~Movanic Deva Flame Tongue + 1~
 @303=~Monadic Deva Rod of Smiting + 3~
+@304=~Fallen Deva Mace of Disruption + 3~
 
 //Planetar Spells
 
 @400=~Improved Invisibility 10' Radius~
 @401=~Polymorph Any Object~
 @402=~Protection from Evil 40' Radius~
+@4021=~Protection from Good 40' Radius~
 @403=~Resist Cold~
 @404=~Symbol~

@@ -1,0 +1,5 @@
+1. Copy over Astral deva to match level and abilities of devas, change strength (19), constitution (16) and dexterity (16) to compensate the lake of diversity in invocation spell. Become chaotic evil align.
+
+As they are already handle by the generic script, replace spells to match alignment:
+2. Replace CA#HEAL1, Heal, with CA#HARM1, Harm
+3. Replace CA#CURSW, Cure Serious Wound, with CA#CAUSW, Cause Serious Wound

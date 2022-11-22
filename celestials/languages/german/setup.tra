@@ -1,5 +1,6 @@
 @1=~PnP Celestials~
-@2=~Thron des Bhaal wird benötigt~
+@2=~Animationen der finden und Planetars~
+@3=~Thron des Bhaal wird benötigt~
 
 //Deva Komponenten
 
@@ -12,8 +13,7 @@
 @200=~Fallen finden~
 @201=~Antimagische Sphäre~
 @202=~Antimagische Sphäre streichen~
-@203=~Zauber des 6. Grades
-Antimagische Sphäre (Beschwörung)
+@203=~Antimagische Sphäre (Beschwörung)
 Level: 6
 Reichweite: 0
 Dauer: 1 Runde/Level
@@ -40,14 +40,16 @@ Der Anwender muß sie selbst, auf Kommando, aufheben.~
 //Ausrüstung
 
 @300=~Vorpalschwert eines Planetars~
-@301=~Astraldeva Streitkolben der Spaltung +2~
+@301=~Astraldeva Streitkolben der Spaltung +3~
 @302=~Movanische Deva Flammenschwert +1~
 @303=~Monadische Deva Stab der Peinigung +3~
+@304=~gefallendeva Streitkolben der Spaltung +3~
 
 //Planetar Zauber
 
 @400=~Erweiterte Unsichtbarkeit 10' Radius~
 @401=~Objekte verwandeln~
 @402=~Schutz vor Bösem 40' Radius~
+@4021=~Schutz vor Gutem 40' Radius~
 @403=~Resistenz gegen Kälte~
 @404=~Symbol~

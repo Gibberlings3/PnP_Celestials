@@ -1,9 +1,9 @@
-1. Increased hitpoints from 96 to 138 which is correct value for a level 25/25 fighter/mage Movanic Deva.
+1. Keep hitpoints at 96 which is correct value for a level 10/10 fighter/mage Movanic Deva with 16 in constitution.
 2. Changed Race to Planatar, which is closer to being accurate than Solar.
 3. Changed General to Humanoid from monster.
 4. Changed Str to 17 from 19, because no str bonus given in monster manual
 5. Changed Int to 19 from 16 for monster manual value
-6. Gave Helmet HELMNOAN to protect against critical hits.  Devas do wear armor...
+6. Changed cons to 16 from 14 to compensate low hp
 7. Replaced weapon DEVA with CA#MOVSW, a flame tongue +1, which is the correct movanic deva weapon. 
 9. Replaced ring IMMUNE2 with IMMUNE1 to correctly reflect level of weapon immunities for movanic deva.
 10. Removed existing wizard spells
@@ -14,15 +14,15 @@
 12. Gave innate: CA#CURSW, Cure Serious Wound, useable 3/day.
 13. Gave innate: CA#DEVIL, Detect Evil, useable at will 1/round.
 14. Gave innate: CA#KNAL, Know Alignment, useable at will 1/round.
-15. Gave inntate: CA#TWOE, Teleport Without Error, useable at will 1/round
+15. Gave innate: CA#TWOE, Teleport Without Error, useable at will 1/round - used by scipt only
 16. Gave innate: CA#CUDIS, Cure Disease, useable 3/day.
 17. Gave innate: CA#CULW, Cure Light Wounds, useable 7/day.
 18. Gave innate: CA#DSP, Detect Snares and Pits (NEEDS ABILITY NAME CHANGED TO THIS), useable 7/day.
 19. Gave innate: CA#DISM, Dispel Magic, useable 7/day.
 20. Gave innate: CA#HEAL1, Heal, useable 1/day.
-21. Gave innate: CA#INFRA, Infravision, useable at will 1/round.
+21. 
 22. Gave innate: CA#INV10, Invisibility 10' Radius, useable at will 1/round.
-23. Gave innate: CA#POLS, Polymorph Self, useable at will 1/round.
+23. 
 24. Gave innate: CA#PEVIL, Protection From Evil, useable at will 1/round.
 25. Gave innate: CA#RCUR, Remove Curse, useable at will 1/round.
 26. Gave innate: CA#RFEAR, Remove Fear, useable at will 1/round.
@@ -30,7 +30,7 @@
 28. Gave innate: CA#AMS, Anti-Magic Shell, useable at will 1/round.
 29. Gave innate: CA#PFNM, Protection from Normal Missles, useable at will 1/round.
 30. Gave innate: CA#STURN, Spell Turning, useable at will 1/round.
-31. Gave innate: CA#SPLAN, Call Planetar, useable 1/day with 30% chance of sucess.
+31. 
 
 Abilities from the monster manual that have been skipped: augury, change self, comprehend languages, detect magic, read magic, celestial reverence, aasimon distress call, detect lie, light, tongues.
 
@@ -41,3 +41,4 @@ Abilities from the monster manual that have been skipped: augury, change self, c
 36. Added 100% poison immunity
 37. Removed immunity to instant death spells
 38. Added double strength protection from evil effect permanantly on movanic deva.
+39. Remove innate regeneration and add it through weapon

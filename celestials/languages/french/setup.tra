@@ -1,5 +1,6 @@
 @1	= ~Version "jdr sur table" des Célestes~
-@2	 = ~Nécessite Throne of Bhaal~
+@2	= ~Animations des Devas et Planetaires~
+@3	= ~Nécessite Throne of Bhaal~
 
 // Creature Names
 @100         = ~Déva Astrale~
@@ -10,8 +11,7 @@
 @200	= ~Détection des Pièges et des Embuscades~
 @201	= ~Coquille Anti-Magie~
 @202	= ~Annulation de la Coquille Anti-Magie~
-@203	= ~Sort de Sixième Niveau
-Coquille Anti-Magie (Abjuration)
+@203	= ~Coquille Anti-Magie (Abjuration)
 Niveau: 6
 Portée: 0
 Durée: 1 tour/niveau
@@ -33,13 +33,15 @@ La coquille anti-magie repousse également les créatures invoquées ou charmées. E
 
 //Equipment 
 @300	= ~Epée Vorpale de Planétaire~
-@301 	= ~Masse de Disruption +2 de Déva Astrale~
+@301 	= ~Masse de Disruption +3 de Déva Astrale~
 @302	= ~Langue de Feu +1 de Déva Movanique~
 @303 	= ~Sceptre de châtiment +3 de Déva Monadique~
+@304 	= ~Masse de Disruption +3 de Déva Déchue~
 
 //Planetar spells and abilities
 @400	= ~Invisibilité Améliorée sur 3 mètres~
 @401	= ~Métamorphose d'Objet~
 @402	= ~Protection contre le Mal sur 12 mètres~
+@4021	= ~Protection contre le Bien sur 12 mètres~
 @403	= ~Résistance au Froid~
 @404	= ~Symbole~

@@ -1,5 +1,6 @@
 @1=~PnP Celestials~
-@2=~Richiede Throne of Bhaal~
+@2=~Animazioni dei Deva e Planetar~
+@3=~Richiede Throne of Bhaal~
 
 //Deva Component
 
@@ -12,8 +13,7 @@
 @200=~Scoprire Trappole~
 @201=~Scudo Anti-incantesimi~
 @202=~Cancella Scudo Anti-incantesimi~
-@203=~Incantesimi di 6° livello
-Scudo Anti-incantesimi
+@203=~Scudo Anti-incantesimi
 (Scongiurazione)
 Livello: 6
 Raggio d'azione: 0
@@ -36,14 +36,15 @@ Artefatti, reliquie e creature semidivine o di rango superiore non sono soggette
 //Equipment
 
 @300=~Spada Vorpal del Planetar~
-@301=~Mazza della Distruzione del Deva Astrale~
-@302=~Lingua di Fuoco del Deva Movanico~
-@303=~Verga del Colpire del Deva Monadico~
-
+@301=~Mazza della Distruzione +3 del Deva Astrale~
+@302=~Lingua di Fuoco +1 del Deva Movanico~
+@303=~Verga del Colpire +3 del Deva Monadico~
+@304=~Mazza della Distruzione +3 del Deva caduto~
 //Planetar Spells
 
 @400=~Invisibilità nel Raggio di 3 Metri~
 @401=~Metamorfosi in Qualsiasi Oggetto~
 @402=~Protezione dal Male nel Raggio di 12 Metri~
+@4021=~Protezione contro il bene nel Raggio di 12 Metri~
 @403=~Resistenza al Freddo~
 @404=~Simbolo~
