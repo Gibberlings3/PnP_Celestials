@@ -1,5 +1,6 @@
 @1=~Podrecznikowi Niebianie~
-@2=~Wymagany Tron Bhalla~
+@2=~Aktualizacja animacji Devy i Planetara o skrzydla~
+@3=~Wymagany Tron Bhalla~
 
 //Rodzaje Devy
 
@@ -34,14 +35,16 @@ Sfera Anty-magii rozprasza i niszczy wszelkie zauroczenia, przywo³ania lub przem
 //Ekwipunek
 
 @300=~Miecz Planetara~
-@301=~Wiekiera Zniszczenia +2 Astralnego Devy~
+@301=~Wiekiera Zniszczenia +3 Astralnego Devy~
 @302=~Jêzor ognia +1 Devy ¯ywio³ów~
 @303=~Ber³o uderzenia +3 Œwiêtego Devy~
+@304=~Wiekiera Zniszczenia +3 Devy~
 
 //Zaklêcia Planetara
 
 @400=~Ulepszona niewidzialnoœæ, promieñ 3 metry~
 @401=~Polimorfia innego~
 @402=~Ochrona przez z³em, promieñ 12 metrów~
+@4021=~Ochrona przed dobrem, promieñ 12 metry~
 @403=~Odpornoœæ na ch³ód~
 @404=~Symbol~

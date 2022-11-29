@@ -2,29 +2,23 @@
 *
                         ResRef     Type       
 MAGIC_MISSLES           SPWI112    3          
-SHIELD                  SPWI114    3          
 CHROMATIC_ORB           SPWI118    3          
 STINKING_CLOUD          SPWI213    3          
 WEB                     SPWI215    3          
 AGANNAZARS_SCORCHER     SPWI217    3          
 FIREBALL                SPWI304    3          
 LIGHTNING_BOLT          SPWI308    3          
-MELFS_MINATURE_METEORS  SPWI325    3          
-FIRE_SHIELD_BLUE        SPWI403    3          
 ICE_STORM               SPWI404    3          
+FIRE_SHIELD_BLUE        SPWI403    3          
 FIRE_SHIELD_RED         SPWI418    3          
 CLOUDKILL               SPWI502    3          
 CONE_OF_COLD            SPWI503    3          
-PHANTOM_BLADE           SPWI518    3          
 SUNFIRE                 SPWI523    3          
 DEATH_FOG               SPWI614    3          
 CHAIN_LIGHTNING         SPWI615    3          
-DELAYED_BLAST_FIREBALL  SPWI712    3          
-MORDENKAINENS_SWORD     SPWI716    3          
-LIMITED_WISH            SPWI722    3          
+DELAYED_BLAST_FIREBALL  SPWI712    3
+MORDENKAINENS_SWORD     SPWI716    3           
 INCENDIARY_CLOUD        SPWI810    3          
 BIGBYS_CLENCHED_FIST    SPWI818    3          
 METEOR_SWARM            SPWI911    3          
-BLACK_BLADE_OF_DISASTER SPWI915    3          
-BIGBYS_CRUSHING_HAND    SPWI918    3          
-WISH                    SPWI919    3          
+BIGBYS_CRUSHING_HAND    SPWI918    3         

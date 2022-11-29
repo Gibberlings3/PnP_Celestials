@@ -1,0 +1,8 @@
+1. Copy over planetar to match level and abilities of plantars, change 16 fighter/9 priest for 16 fighter/9 mage and become chaotic evil align
+2. As fallen, losts all priest spells
+3. Added 9th level mage spell casting abilities
+	
+As they are already handle by the generic script, replace spells to match alignment:
+4. Replace CA#HWORD, Holy Word, with CA#UWORD, Unholy Word
+5. Replace CA#HEAL, Heal, with CA#HARM, Harm
+6. Replace CA#CURSW, Cure Serious Wound, with CA#CAUSW, Cause Serious Wound

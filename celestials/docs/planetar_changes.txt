@@ -1,9 +1,9 @@
-1. Increased hitpoints from 120 to 156 which is correct value for a level 25 fighter/13 priest Planetar.
+1. Increased hitpoints from 120 to 146 which is correct value for a level 16 fighter/ 9 priest Planetar with 16 in constitution.
 2. Changed Class to fighter/priest dual class
 3. Changed Int to 18 from 16 for monster manual value
 4. Changed Wis to 21 for monster manual value
 5. Changed Constitution to 16 to show higher power of Planetar over Devas, correct according to monster manual
-6. Gave Helmet HELMNOAN to protect against critical hits.  Planetars do wear armor...
+6. 
 7. Replaced weapon PLANE with CA#PLANW which is the correct Planetar Vorpal Sword. 
 8. Gave boots CA#PBOOT which gives the planetar it's correct ground movement speed 
 9. Removed existing wizard spells
@@ -14,10 +14,10 @@
 11. Gave innate: CA#CURSW, Cure Serious Wound, useable 3/day.
 12. Gave innate: CA#DEVIL, Detect Evil, useable at will 1/round.
 13. Gave innate: CA#KNAL, Know Alignment, useable at will 1/round.
-14. Gave inntate: CA#TWOE, Teleport Without Error, useable at will 1/round
+14. Gave inntate: CA#TWOE, Teleport Without Error, useable at will 1/round - used by scipt only
 15. Gave innate: CA#BLBAR, Blade Barrier, useable 3/day.
 16. Gave innate: CA#CDISE, Cure Disease, useable at will 1/round.
-17. Gave innate: CA#DINVS, Detect Invisible), useable at will 1/round.
+17. Gave innate: CA#DINVS, Detect Invisible, useable at will 1/round. - REMOVED, useless with true sight
 18. Gave innate: CA#DSNP, Detect Snares and Pits, useable at will 1/round.
 19. Gave innate: CA#DISPM, Dispel Magic, useable at will 1/round.
 20. Gave innate: CA#EQ, Earthquake, useable 1/day.
@@ -35,9 +35,9 @@
 32. Gave innate: CA#RFEAR, Remove Fear, useable at will 1/round.
 33. Gave innate: CA#RCOLD, Resist Cold, useable at will 1/round.
 34. Gave innate: CA#RESTO, Greater Restoration, useable 1/day.
-35. Gave innate: CA#SCHAG, Shapechange, useable 1/day.
+35. 
 36. Gave innate: CA#SYMB, Symbol, useable 1/day
-37. Gave innate: CA#TSIGH, True Sight, useable at will 1/round.
+37. 
 38. Gave innate: CA#II10, Improved Invisibility 10' radius, useable at will 1/round.
 
 Abilities from the monster manual that have been skipped: augury, change self, comprehend languages, detect magic, read magic, celestial reverence, aasimon distress call, detect lie, animate object, commune, control weather, speak with dead, weather summoning, wind walk.  Also did not make detect invisibility, detect lie, detect snares and pits, protection from evil 40' radius, true seeing always active.
@@ -47,5 +47,10 @@ Abilities from the monster manual that have been skipped: augury, change self, c
 41. Added immunity to imprisonment
 42. Added immunity to maze
 43. Added immunity to Magic Missle (spell immunity to: SPWI003, SPWI112, BALTH06, SPIN962, SPIN685)
-44. Added permanent protection from evil.
-45. Added 13th level cleric spell casting abilities with major access to all spheres.
+44. Added permanent protection from evil
+45. Added 9th level cleric spell casting abilities with major access to all spheres
+
+New modifications :
+46. Restore immunity to Gas attack spells
+47. Remove true sight and infravision (it is now always active in combat) and detect invisibility (useless with true sight)
+48. Remove innate regeneration and add it through boots

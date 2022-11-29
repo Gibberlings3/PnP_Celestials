@@ -1,0 +1,3935 @@
+IF
+	Die()
+	Alignment(Myself,MASK_GOOD)
+THEN
+	RESPONSE #100
+		CreateVisualEffectObject("SPHOLY",Myself)
+		DestroySelf()
+END
+
+IF
+	Die()
+	!Alignment(Myself,MASK_GOOD)
+THEN
+	RESPONSE #100
+		CreateVisualEffectObject("SPUNHOLY",Myself)
+		DestroySelf()
+END
+
+IF
+	ActionListEmpty()
+THEN
+	RESPONSE #100
+		Continue()
+END
+
+IF
+	ActionListEmpty()
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	Detect([GOODCUTOFF])
+	AttackedBy(LastSeenBy(Myself),DEFAULT)
+	!Range(LastSeenBy(Myself),20)
+	!Allegiance(Myself,ENEMY)
+	!Allegiance(LastAttackerOf(Myself),GOODBUTRED)
+THEN
+	RESPONSE #100
+		Enemy()
+		ForceSpellRES("CA#TWOE",LastSeenBy(Myself))  // Teleport Without Error
+END
+
+IF
+	ActionListEmpty()
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	HitBy([GOODCUTOFF],CRUSHING)
+	!HitBy(Myself,CRUSHING)
+	!Allegiance(Myself,ENEMY)
+	OR(2)
+		!Range(LastHitter,20)
+		!Detect(LastHitter)
+	!Allegiance(LastHitter,GOODBUTRED)
+THEN
+	RESPONSE #100
+		Enemy()
+		ForceSpellRES("CA#TWOE",LastHitter)  // Teleport Without Error
+END
+/*
+IF
+	ActionListEmpty()
+	Detect([GOODCUTOFF])
+	AttackedBy(LastSeenBy(Myself),DEFAULT)
+	!Allegiance(LastAttackerOf(Myself),GOODBUTRED)
+	!Allegiance(Myself,ENEMY)
+THEN
+	RESPONSE #100
+		Enemy()
+END
+
+IF
+	ActionListEmpty()
+	HitBy([GOODCUTOFF],CRUSHING)
+	!HitBy(Myself,CRUSHING)
+	!Allegiance(Myself,ENEMY)
+	!Allegiance(LastHitter,GOODBUTRED)
+THEN
+	RESPONSE #100
+		Enemy()
+END
+IF
+	ActionListEmpty()
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatGT(Myself,0,POLYMORPHED)
+	OR(6)
+		HasItem("MINDFLAY",Myself)  // Attack
+		HasItem("GOLIRO",Myself)  // Attack
+		HasItem("TROLLALL",Myself)  // Attack
+		HasItem("WOLFGR",Myself)  // Attack
+		HasItem("FIRERN",Myself)  // Attack
+		HasItem("EARTHRN",Myself)  // Attack
+	HaveSpell(3151)  // SPIN151.SPL (Shapeshifts Natural Form)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRES(Myself,3151)  // SPIN151.SPL (Shapeshifts Natural Form)
+END
+
+IF
+	ActionListEmpty()
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatGT(Myself,0,POLYMORPHED)
+	OR(6)
+		HasItem("MINDFLAY",Myself)  // Attack
+		HasItem("GOLIRO",Myself)  // Attack
+		HasItem("TROLLALL",Myself)  // Attack
+		HasItem("WOLFGR",Myself)  // Attack
+		HasItem("FIRERN",Myself)  // Attack
+		HasItem("EARTHRN",Myself)  // Attack
+	HaveSpell(3150)  // SPIN150.SPL (Shapeshifts Natural Form)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRES(Myself,3150)  // SPIN150.SPL (Shapeshifts Natural Form)
+END
+
+IF
+	ActionListEmpty()
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatGT(Myself,0,POLYMORPHED)
+	OR(2)
+		HasItem("PLYJELLY",Myself)  // Attack
+		HasItem("PLYWOLF1",Myself)  // Attack
+	HaveSpellRES("SPWI490")  // SPWI490.SPL (Shapeshifts Natural Form)
+THEN
+	RESPONSE #100
+		ReallyForceSpellRES("SPWI490",Myself)  // SPWI490.SPL (Shapeshifts Natural Form)
+END
+*/
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpellRES("CA#STURN")  // Spell Turning
+	!HasBounceEffects(Myself)
+	OR(15)
+		SpellCastOnMe(NearestEnemyOf(Myself),0)
+		SpellCastOnMe(SecondNearestEnemyOf(Myself),0)
+		SpellCastOnMe(ThirdNearestEnemyOf(Myself),0)
+		SpellCastOnMe(FourthNearestEnemyOf(Myself),0)
+		SpellCastOnMe(FifthNearestEnemyOf(Myself),0)
+		SpellCastOnMe(SixthNearestEnemyOf(Myself),0)
+		Detect(NearestEnemyOfType([0.0.ANTISOLAR]))
+		Detect(NearestEnemyOfType([0.0.SOLAR]))
+		Detect(NearestEnemyOfType([0.0.PLANATAR]))
+		Detect(NearestEnemyOfType([0.0.DARKPLANATAR]))
+		Detect(NearestEnemyOfType([0.0.0.RAKSHASA]))
+		Detect(NearestEnemyOfType([0.0.LICH]))
+		Detect(NearestEnemyOfType([0.0.DEMONIC]))
+		Detect(NearestEnemyOfType([0.0.0.RANGER_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.PALADIN_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.BARD_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.DRUID_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.CLERIC_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.MAGE_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.SORCERER]))
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#STURN",Myself)  // Spell Turning
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpellRES("CA#STURN")  // Spell Turning
+	!HasBounceEffects(Myself)
+	!Detect(NearestEnemyOf(Myself))
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		ReallyForceSpellRES("CA#STURN",Myself)  // Spell Turning
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	!Range([GOODCUTOFF],10)
+	Range(NearestEnemyOf(Myself),10)
+	HaveSpellRES("CA#BLBAR")  // Blade Barrier
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#BLBAR",Myself)  // Blade Barrier
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	!Range([GOODCUTOFF],10)
+	Range(NearestEnemyOf(Myself),10)
+	HaveSpellRES("CA#BLBAR")  // Blade Barrier
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#BLBAR",Myself)  // Blade Barrier
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Detect(NearestMyGroupOfType)
+	OR(9)
+		!Race(LastSeenBy(Myself),LICH)
+		!Race(LastSeenBy(Myself),DEMILICH)
+		!Race(LastSeenBy(Myself),DRAGON)
+		!Race(LastSeenBy(Myself),DEMONIC)
+		!Race(LastSeenBy(Myself),SOLAR)
+		!Race(LastSeenBy(Myself),ANTISOLAR)
+		!Race(LastSeenBy(Myself),PLANATAR)
+		!Race(LastSeenBy(Myself),DARKPLANATAR)
+		!CheckStat(LastSeenBy(Myself),1,TRUE_SIGHT)
+	Detect(NearestEnemyOf(Myself))
+	OR(4)
+		StateCheck(LastSeenBy(Myself),STATE_INVISIBLE)
+		StateCheck(LastSeenBy(Myself),STATE_IMPROVEDINVISIBILITY)
+		StateCheck(LastSeenBy(Myself),STATE_NOT_TARGETABLE)
+		!CheckStat(LastSeenBy(Myself),0,SANCTUARY)
+	!SpellCast(NearestMyGroupOfType,WIZARD_TRUE_SIGHT)  // SPWI609.SPL (True Sight)
+	!SpellCast(NearestMyGroupOfType,CLERIC_TRUE_SIGHT)  // SPPR505.SPL (True Seeing)
+	!SpellCast(NearestMyGroupOfType,WIZARD_DETECT_INVISIBILITY)  // SPWI203.SPL (Detect Invisibility)
+	!SpellCast(NearestMyGroupOfType,CLERIC_INVISIBILITY_PURGE)  // SPPR309.SPL (Invisibility Purge)
+	HaveSpellRES("CA#DINVS")  // Detect Invisibility
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#DINVS",Myself)  // Detect Invisibility
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_ZONE_OF_SWEET_AIR)  // SPPR318.SPL (Zone of Sweet Air)
+	!Allegiance(Myself,EVILCUTOFF)
+	OR(4)
+		//SpellCastOnMe([EVILCUTOFF],GOLEM_GASCLOUD)  // SPIN979.SPL (Gas Cloud)
+		//SpellCastOnMe([EVILCUTOFF],MEPHIT_STINKING_CLOUD)  // SPIN940.SPL (Stinking Cloud)
+		//SpellCastOnMe([EVILCUTOFF],POISONOUS_CLOUD)  // SPIN642.SPL (No such index)
+		//SpellCastOnMe([ANYONE],TRAP_CLOUDKILL)  // SPWI016.SPL (Cloud Kill)
+		//SpellCastOnMe([EVILCUTOFF],WIZARD_STINKING_CLOUD)  // SPWI213.SPL (Stinking Cloud)
+		SpellCastOnMe([EVILCUTOFF],WIZARD_INCENDIARY_CLOUD)  // SPWI810.SPL (Incendiary Cloud)
+		SpellCastOnMe([EVILCUTOFF],WIZARD_DEATH_FOG)  // SPWI614.SPL (Death Fog)
+		//SpellCastOnMe([EVILCUTOFF],WIZARD_CLOUDKILL)  // SPWI502.SPL (Cloud Kill)
+		//SpellCastInnate([EVILCUTOFF],GOLEM_GASCLOUD)  // SPIN979.SPL (Gas Cloud)
+		//SpellCastInnate([EVILCUTOFF],MEPHIT_STINKING_CLOUD)  // SPIN940.SPL (Stinking Cloud)
+		//SpellCastInnate([EVILCUTOFF],POISONOUS_CLOUD)  // SPIN642.SPL (No such index)
+		//SpellCast([ANYONE],TRAP_CLOUDKILL)  // SPWI016.SPL (Cloud Kill)
+		//SpellCast([EVILCUTOFF],WIZARD_STINKING_CLOUD)  // SPWI213.SPL (Stinking Cloud)
+		SpellCast([EVILCUTOFF],WIZARD_INCENDIARY_CLOUD)  // SPWI810.SPL (Incendiary Cloud)
+		SpellCast([EVILCUTOFF],WIZARD_DEATH_FOG)  // SPWI614.SPL (Death Fog)
+		//SpellCast([EVILCUTOFF],WIZARD_CLOUDKILL)  // SPWI502.SPL (Cloud Kill)
+THEN
+	RESPONSE #100
+		MoveToObject(LastSeenBy(Myself))
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(Myself,CLERIC_ZONE_OF_SWEET_AIR)  // SPPR318.SPL (Zone of Sweet Air)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_ZONE_OF_SWEET_AIR)  // SPPR318.SPL (Zone of Sweet Air)
+	Allegiance(Myself,EVILCUTOFF)
+	OR(4)
+		// SpellCastOnMe([GOODCUTOFF],GOLEM_GASCLOUD)  // SPIN979.SPL (Gas Cloud)
+		// SpellCastOnMe([GOODCUTOFF],MEPHIT_STINKING_CLOUD)  // SPIN940.SPL (Stinking Cloud)
+		// SpellCastOnMe([GOODCUTOFF],POISONOUS_CLOUD)  // SPIN642.SPL (No such index)
+		// SpellCastOnMe([ANYONE],TRAP_CLOUDKILL)  // SPWI016.SPL (Cloud Kill)
+		// SpellCastOnMe([GOODCUTOFF],WIZARD_STINKING_CLOUD)  // SPWI213.SPL (Stinking Cloud)
+		SpellCastOnMe([GOODCUTOFF],WIZARD_INCENDIARY_CLOUD)  // SPWI810.SPL (Incendiary Cloud)
+		SpellCastOnMe([GOODCUTOFF],WIZARD_DEATH_FOG)  // SPWI614.SPL (Death Fog)
+		// SpellCastOnMe([GOODCUTOFF],WIZARD_CLOUDKILL)  // SPWI502.SPL (Cloud Kill)
+		// SpellCastInnate([GOODCUTOFF],GOLEM_GASCLOUD)  // SPIN979.SPL (Gas Cloud)
+		// SpellCastInnate([GOODCUTOFF],MEPHIT_STINKING_CLOUD)  // SPIN940.SPL (Stinking Cloud)
+		// SpellCastInnate([GOODCUTOFF],POISONOUS_CLOUD)  // SPIN642.SPL (No such index)
+		// SpellCast([ANYONE],TRAP_CLOUDKILL)  // SPWI016.SPL (Cloud Kill)
+		// SpellCast([GOODCUTOFF],WIZARD_STINKING_CLOUD)  // SPWI213.SPL (Stinking Cloud)
+		SpellCast([GOODCUTOFF],WIZARD_INCENDIARY_CLOUD)  // SPWI810.SPL (Incendiary Cloud)
+		SpellCast([GOODCUTOFF],WIZARD_DEATH_FOG)  // SPWI614.SPL (Death Fog)
+		// SpellCast([GOODCUTOFF],WIZARD_CLOUDKILL)  // SPWI502.SPL (Cloud Kill)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(Myself,CLERIC_ZONE_OF_SWEET_AIR)  // SPPR318.SPL (Zone of Sweet Air)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_REMOVE_PARALYSIS)  // SPPR308.SPL (Remove Paralysis)
+	!Allegiance(Myself,EVILCUTOFF)
+	OR(2)
+		Detect([GOODCUTOFF])
+		Detect([PC])
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	OR(10)
+		StateCheck(LastSeenBy(Myself),STATE_OUT_OF_ACTION)
+		StateCheck(LastSeenBy(Myself),STATE_HARMLESS)
+		StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+		CheckStatGT(LastSeenBy(Myself),0,ENTANGLE)
+		CheckStatGT(LastSeenBy(Myself),0,GREASE)
+		CheckStatGT(LastSeenBy(Myself),0,WEB)
+		CheckStatGT(LastSeenBy(Myself),0,HELD)
+		SpellCast([ANYONE],WIZARD_WEB)  // SPWI215.SPL (Web)
+		SpellCast([ANYONE],CLERIC_ENTANGLE)  // SPPR105.SPL (Entangle)
+		SpellCast([ANYONE],WIZARD_GREASE)  // SPWI101.SPL (Grease)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_REMOVE_PARALYSIS)  // SPPR403.SPL (Free Action)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_FREE_ACTION)  // SPPR403.SPL (Free Action)
+	OR(10)
+		StateCheck(Myself,STATE_OUT_OF_ACTION)
+		StateCheck(Myself,STATE_HARMLESS)
+		StateCheck(Myself,STATE_HELPLESS)
+		CheckStatGT(Myself,0,ENTANGLE)
+		CheckStatGT(Myself,0,GREASE)
+		CheckStatGT(Myself,0,WEB)
+		CheckStatGT(Myself,0,HELD)
+		SpellCast([ANYONE],WIZARD_WEB)  // SPWI215.SPL (Web)
+		SpellCast([ANYONE],CLERIC_ENTANGLE)  // SPPR105.SPL (Entangle)
+		SpellCast([ANYONE],WIZARD_GREASE)  // SPWI101.SPL (Grease)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(Myself,CLERIC_FREE_ACTION)  // SPPR403.SPL (Free Action)
+END
+
+IF
+	!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+	HaveSpellRES("ca#MIMG") // Mirror Image
+	Detect(NearestEnemyOf(Myself))
+	!StateCheck(Myself,STATE_MIRRORIMAGE)
+	!SpellCast(NearestEnemyOf(Myself),CLERIC_TRUE_SIGHT)  // SPPR505.SPL (True Seeing)
+	!SpellCast(NearestEnemyOf(Myself),WIZARD_TRUE_SIGHT)  // SPWI609.SPL (True Sight)
+	!SpellCast(NearestEnemyOf(Myself),INQUIS_TRUE_SIGHT)  // SPCL232.SPL (True Sight)
+	!CheckStatGT([EVILCUTOFF.0.PLANATAR],0,TRUE_SIGHT)
+	!CheckStatGT([EVILCUTOFF.0.DARKPLANATAR],0,TRUE_SIGHT)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("ca#MIMG",Myself) // Mirror Image
+END
+
+IF
+	!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+	HaveSpell(WIZARD_MIRROR_IMAGE) // Mirror Image
+	Detect(NearestEnemyOf(Myself))
+	!StateCheck(Myself,STATE_MIRRORIMAGE)
+	!SpellCast(NearestEnemyOf(Myself),CLERIC_TRUE_SIGHT)  // SPPR505.SPL (True Seeing)
+	!SpellCast(NearestEnemyOf(Myself),WIZARD_TRUE_SIGHT)  // SPWI609.SPL (True Sight)
+	!SpellCast(NearestEnemyOf(Myself),INQUIS_TRUE_SIGHT)  // SPCL232.SPL (True Sight)
+	!CheckStatGT([EVILCUTOFF.0.PLANATAR],0,TRUE_SIGHT)
+	!CheckStatGT([EVILCUTOFF.0.DARKPLANATAR],0,TRUE_SIGHT)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(Myself,WIZARD_MIRROR_IMAGE) // Mirror Image
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_ARMOR_OF_FAITH)  // SPPR111.SPL (Armor of Faith)
+	Detect(NearestEnemyOf(Myself))
+	!GlobalTimerNotExpired("Armor_of_Faith","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Armor_of_Faith","LOCALS",138)
+		Spell(Myself,CLERIC_ARMOR_OF_FAITH)  // SPPR111.SPL (Armor of Faith)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	RandomNum(4,1)
+	HaveSpell(CLERIC_DEFENSIVE_HARMONY)  // SPPR406.SPL (Defensive Harmony)
+	!GlobalTimerNotExpired("Defensive_Harmony","LOCALS")
+	OR(11)
+		Detect(NearestMyGroupOfType)
+		Detect(NearestMyGroupOfType([0.0.0.SORCERER]))
+		Detect(NearestMyGroupOfType([0.0.0.MAGE_ALL]))
+		Detect(NearestMyGroupOfType([0.0.0.THIEF_ALL]))
+		Detect(NearestMyGroupOfType([0.0.0.BARD_ALL]))
+		Detect(NearestMyGroupOfType([0.0.0.DRUID_ALL]))
+		Detect(NearestMyGroupOfType([0.0.0.CLERIC_ALL]))
+		Detect(NearestMyGroupOfType([0.0.0.PALADIN_ALL]))
+		Detect(NearestMyGroupOfType([0.0.0.RANGER_ALL]))
+		Detect(NearestMyGroupOfType([0.0.0.MONK]))
+		Detect(NearestMyGroupOfType([0.0.0.FIGHTER_ALL]))
+THEN
+	RESPONSE #100
+		MoveToObject(LastSeenBy(Myself))
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Defensive_Harmony","LOCALS",30)
+		Spell(LastSeenBy(Myself),CLERIC_DEFENSIVE_HARMONY)  // SPPR406.SPL (Defensive Harmony)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpellRES("CA#PFNM")  // Protection From Normal Missiles
+	CombatCounterGT(0)
+	!GlobalTimerNotExpired("Protection_from_Normal_Missiles","LOCALS")
+THEN
+	RESPONSE #100
+		RunAwayFromNoInterrupt(LastAttackerOf(Myself),20)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#PFNM",Myself)  // Protection From Normal Missiles
+		SetGlobalTimer("Protection_from_Normal_Missiles","LOCALS",300)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	Detect([EVILCUTOFF])
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	StateCheck(LastSeenBy(Myself),STATE_PANIC)
+	HaveSpellRES("CA#RFEAR")  // Remove Fear
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#RFEAR",LastSeenBy(Myself))  // Remove Fear
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	OR(3)
+		HitBy([GOODBUTRED.0.0.0.0.SUMMONED_DEMON],CRUSHING)
+		AttackedBy([GOODBUTRED.0.0.0.0.SUMMONED_DEMON],DEFAULT)
+		Detect([GOODBUTRED.0.0.0.0.SUMMONED_DEMON])
+	HaveSpellRES("CA#PEV40")  // Protection from Evil 40' Radius
+	Range(NearestMyGroupOfType,10)
+	Range(SecondNearestMyGroupOfType,10)
+	!GlobalTimerNotExpired("Protection_from_Evil","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Protection_from_Evil","LOCALS",120)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#PEV40",Myself)  // Protection from Evil 40' Radius
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	OR(3)
+		HitBy([GOODBUTRED.0.0.0.0.SUMMONED_DEMON],CRUSHING)
+		AttackedBy([GOODBUTRED.0.0.0.0.SUMMONED_DEMON],DEFAULT)
+		Detect([GOODBUTRED.0.0.0.0.SUMMONED_DEMON])
+	HaveSpellRES("CA#PEVIL")  // Protection From Evil
+	!GlobalTimerNotExpired("Protection_from_Evil","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Protection_from_Evil","LOCALS",120)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#PEVIL",Myself)  // Protection From Evil
+END
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	StateCheck(Myself,STATE_POISONED)
+	HaveSpell(CLERIC_SLOW_POISON)  // SPPR212.SPL (Slow Poison)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(Myself,CLERIC_SLOW_POISON)  // SPPR212.SPL (Slow Poison)
+END
+*/
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	RandomNum(3,3)
+	NumCreatureGT([EVILCUTOFF],3)
+	Detect(NearestEnemyOf(Myself))
+	!Class(LastSeenBy(Myself),ELEMENTAL_FIRE)
+	CheckStatLT(LastSeenBy(Myself),70,RESISTFIRE)
+	Detect(NearestEnemyOf(Myself))
+	CheckStatLT(NearestEnemyOf(Myself),60,RESISTFIRE)
+	CheckStatLT(NearestEnemyOf(Myself),60,RESISTMAGIC)
+	CheckStatLT(SecondNearestEnemyOf(Myself),60,RESISTFIRE)
+	CheckStatLT(SecondNearestEnemyOf(Myself),60,RESISTMAGIC)
+	CheckStatLT(ThirdNearestEnemyOf(Myself),60,RESISTFIRE)
+	CheckStatLT(ThirdNearestEnemyOf(Myself),60,RESISTMAGIC)
+	CheckStatLT(FourthNearestEnemyOf(Myself),60,RESISTFIRE)
+	CheckStatLT(FourthNearestEnemyOf(Myself),60,RESISTMAGIC)
+	HPPercentGT(Myself,40)
+	HaveSpellRES("CA#EVOC")  // Cast Invocation/Evocation Spell
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		ApplySpellRES("LC1CLEAN",Myself)  // No such index
+		SpellRES("CA#EVOC",Myself)  // Cast Invocation/Evocation Spell
+		SpellNoDec(LastSeenBy(Myself),WIZARD_INCENDIARY_CLOUD)  // SPWI810.SPL (Incendiary Cloud)
+		// RunAwayFromNoInterrupt(LastSeenBy(Myself),20)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	RandomNum(3,2)
+	NumCreatureLT([EVILCUTOFF],3)
+	HPPercentGT(Myself,80)
+	HaveSpellRES("CA#EVOC")  // Cast Invocation/Evocation Spell
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		ApplySpellRES("LC1CLEAN",Myself)  // No such index
+		SpellRES("CA#EVOC",Myself)  // Cast Invocation/Evocation Spell
+		SpellNoDec(FourthNearestEnemyOf(Myself),WIZARD_BIGBYS_CLENCHED_FIST)  // SPWI818.SPL (Bigby's Clenched Fist)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	RandomNum(3,1)
+	NumCreatureGT([EVILCUTOFF],1)
+	Detect(NearestEnemyOf(Myself))
+	HPPercentGT(Myself,80)
+	HaveSpellRES("CA#EVOC")  // Cast Invocation/Evocation Spell
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		ApplySpellRES("LC1CLEAN",Myself)  // No such index
+		SpellRES("CA#EVOC",Myself)  // Cast Invocation/Evocation Spell
+		SpellNoDec(Myself,WIZARD_CHAIN_LIGHTNING)  // SPWI615.SPL (Chain Lighning)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpellRES("CA#IPLAG")  // Insect Plague
+	OR(8)
+		Detect(NearestEnemyOfType([0.0.0.RANGER_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.PALADIN_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.BARD_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.DRUID_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.CLERIC_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.MAGE_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.SORCERER]))
+		Detect(NearestEnemyOfType([0.0.LICH]))
+	OR(4)
+		True()
+		CheckStat(LastSeenBy(Myself),0,STONESKINS)
+		HasImmunityEffects(LastSeenBy(Myself))
+		!HasBounceEffects(LastSeenBy(Myself))
+	OR(2)
+		CheckStatLT(LastSeenBy(Myself),75,SPELLFAILUREPRIEST)
+		CheckStatLT(LastSeenBy(Myself),75,SPELLFAILUREMAGE)
+	!StateCheck(LastSeenBy(Myself),STATE_PANIC)
+	!StateCheck(LastSeenBy(Myself),STATE_SLEEPING)
+	!StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+	!StateCheck(LastSeenBy(Myself),STATE_CONFUSED)
+	!StateCheck(LastSeenBy(Myself),STATE_BLIND)
+	!StateCheck(LastSeenBy(Myself),STATE_OUT_OF_ACTION)
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#IPLAG",LastSeenBy(Myself))  // Insect Plague
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	OR(7)
+		Detect(NearestEnemyOfType([0.0.0.RANGER_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.PALADIN_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.BARD_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.DRUID_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.CLERIC_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.MAGE_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.SORCERER]))
+	OR(2)
+		CheckStatLT(LastSeenBy(Myself),75,SPELLFAILUREPRIEST)
+		CheckStatLT(LastSeenBy(Myself),75,SPELLFAILUREMAGE)
+	!SpellCast(LastSeenBy(Myself),WIZARD_VOCALIZE)  // SPWI219.SPL (Vocalize)
+	!Race(LastSeenBy(Myself),LICH)
+	!Race(LastSeenBy(Myself),DEMILICH)
+	!StateCheck(LastSeenBy(Myself),STATE_SILENCED)
+	HaveSpell(CLERIC_SILENCE_15_FOOT)  // SPPR211.SPL (Silence 15' Radius)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_SILENCE_15_FOOT)  // SPPR211.SPL (Silence 15' Radius)
+END
+
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpellRES("CA#SPLAN")  // Call Planetar
+	Detect(NearestEnemyOf(Myself))
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#SPLAN",Myself)  // Call Planetar
+END
+*/
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	RandomNum(3,3)
+	Allegiance(Myself,GOODCUTOFF)
+	Detect(NearestEnemyOf(Myself))
+	OR(48)
+		HPPercentLT(Player1,70)
+		Class(Player1,RANGER_ALL)
+		Class(Player1,PALADIN_ALL)
+		Class(Player1,BARD_ALL)
+		Class(Player1,DRUID_ALL)
+		Class(Player1,CLERIC_ALL)
+		Class(Player1,MAGE_ALL)
+		Class(Player1,SORCERER)
+		HPPercentLT(Player2,70)
+		Class(Player2,RANGER_ALL)
+		Class(Player2,PALADIN_ALL)
+		Class(Player2,BARD_ALL)
+		Class(Player2,DRUID_ALL)
+		Class(Player2,CLERIC_ALL)
+		Class(Player2,MAGE_ALL)
+		Class(Player2,SORCERER)
+		HPPercentLT(Player3,70)
+		Class(Player3,RANGER_ALL)
+		Class(Player3,PALADIN_ALL)
+		Class(Player3,BARD_ALL)
+		Class(Player3,DRUID_ALL)
+		Class(Player3,CLERIC_ALL)
+		Class(Player3,MAGE_ALL)
+		Class(Player3,SORCERER)
+		HPPercentLT(Player4,70)
+		Class(Player4,RANGER_ALL)
+		Class(Player4,PALADIN_ALL)
+		Class(Player4,BARD_ALL)
+		Class(Player4,DRUID_ALL)
+		Class(Player4,CLERIC_ALL)
+		Class(Player4,MAGE_ALL)
+		Class(Player4,SORCERER)
+		HPPercentLT(Player5,70)
+		Class(Player5,RANGER_ALL)
+		Class(Player5,PALADIN_ALL)
+		Class(Player5,BARD_ALL)
+		Class(Player5,DRUID_ALL)
+		Class(Player5,CLERIC_ALL)
+		Class(Player5,MAGE_ALL)
+		Class(Player5,SORCERER)
+		HPPercentLT(Player6,70)
+		Class(Player6,RANGER_ALL)
+		Class(Player6,PALADIN_ALL)
+		Class(Player6,BARD_ALL)
+		Class(Player6,DRUID_ALL)
+		Class(Player6,CLERIC_ALL)
+		Class(Player6,MAGE_ALL)
+		Class(Player6,SORCERER)
+	HPPercentGT(Myself,50)
+	OR(21)
+		SpellCastInnate(Myself,0)
+		SpellCastPriest(Myself,0)
+		SpellCast(Myself,0)
+		SpellCastInnate(Player1,0)
+		SpellCastPriest(Player1,0)
+		SpellCast(Player1,0)
+		SpellCastInnate(Player2,0)
+		SpellCastPriest(Player2,0)
+		SpellCast(Player2,0)
+		SpellCastInnate(Player3,0)
+		SpellCastPriest(Player3,0)
+		SpellCast(Player3,0)
+		SpellCastInnate(Player4,0)
+		SpellCastPriest(Player4,0)
+		SpellCast(Player4,0)
+		SpellCastInnate(Player5,0)
+		SpellCastPriest(Player5,0)
+		SpellCast(Player5,0)
+		SpellCastInnate(Player6,0)
+		SpellCastPriest(Player6,0)
+		SpellCast(Player6,0)
+	HaveSpellRES("CA#EVOC")  // Cast Invocation/Evocation Spell
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		ApplySpellRES("LC1CLEAN",Myself)  // No such index
+		SpellRES("CA#EVOC",Myself)  // Cast Invocation/Evocation Spell
+		SpellNoDec(Myself,WIZARD_WISH)  // SPWI919.SPL (Wish)
+END
+*/
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpellRES("CA#EQ")  // Earthquake
+	OR(8)
+		Detect(NearestEnemyOfType([0.0.0.RANGER_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.PALADIN_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.BARD_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.DRUID_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.CLERIC_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.MAGE_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.SORCERER]))
+		Detect(NearestEnemyOfType([0.0.LICH]))
+	!Range(LastSeenBy(Myself),10)
+	OR(2)
+		True()
+		CheckStat(LastSeenBy(Myself),0,STONESKINS)
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#EQ",LastSeenBy(Myself))  // Earthquake
+		// RunAwayFromNoInterrupt(LastSeenBy(Myself),20)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	RandomNum(4,2)
+	HaveSpellRES("CA#HWORD")  // Holy Word
+	OR(3)
+		Detect(NearestEnemyOfType([0.0.0.0.0.0.MASK_EVIL]))
+		Detect(NearestEnemyOfType([0.0.0.0.0.SUMMONED.MASK_EVIL]))
+		Detect(NearestEnemyOfType([0.0.0.0.0.SUMMONED_DEMON.MASK_EVIL]))
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#HWORD",LastSeenBy(Myself))  // Holy Word
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	RandomNum(4,2)
+	HaveSpellRES("CA#UWORD")  // Unholy Word
+	OR(3)
+		Detect(NearestEnemyOfType([0.0.0.0.0.0.MASK_GOOD]))
+		Detect(NearestEnemyOfType([0.0.0.0.0.SUMMONED.MASK_GOOD]))
+		Detect(NearestEnemyOfType([0.0.0.0.0.SUMMONED_DEMON.MASK_GOOD]))
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#UWORD",LastSeenBy(Myself))  // Unholy Word
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	RandomNum(4,2)
+	HaveSpell(CLERIC_HOLY_SMITE)  // SPPR313.SPL (Holy Smite)
+	Detect(NearestEnemyOfType([0.0.0.0.0.0.MASK_EVIL]))
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_HOLY_SMITE)  // SPPR313.SPL (Holy Smite)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	RandomNum(4,2)
+	HaveSpell(CLERIC_UNHOLY_BLIGHT)  // SPPR314.SPL (Unholy Blight)
+	Detect(NearestEnemyOfType([0.0.0.0.0.0.MASK_GOOD]))
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_UNHOLY_BLIGHT)  // SPPR314.SPL (Unholy Blight)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_POISON)  // SPPR411.SPL (Poison)
+	Detect(NearestEnemyOf(Myself))
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+	!StateCheck(LastSeenBy(Myself),STATE_POISONED)
+	!General(LastSeenBy(Myself),UNDEAD)
+	OR(5)
+		HPGT(LastSeenBy(Myself),20)
+		HPGT(LastSeenBy(Myself),40)
+		HPGT(LastSeenBy(Myself),60)
+		HPGT(LastSeenBy(Myself),80)
+		HPGT(LastSeenBy(Myself),100)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_POISON)  // SPPR411.SPL (Poison)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpellRES("CA#CAUSW")  // (Cause Serious Wounds)
+	Detect(NearestEnemyOf(Myself))
+	!General(LastSeenBy(Myself),UNDEAD)
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+	OR(5)
+		HPGT(LastSeenBy(Myself),20)
+		HPGT(LastSeenBy(Myself),40)
+		HPGT(LastSeenBy(Myself),60)
+		HPGT(LastSeenBy(Myself),80)
+		HPGT(LastSeenBy(Myself),100)
+THEN
+	RESPONSE #100
+		SetInterrupt(FALSE)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#CAUSW",LastSeenBy(Myself))  // (Cause Serious Wounds)
+		AttackReevaluate(LastSeenBy(Myself),25)
+		SetInterrupt(TRUE)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	RandomNum(4,4)
+	HaveSpellRES("CA#FSTRI")  // Flame Strike
+	Detect(NearestEnemyOf(Myself))
+	CheckStatLT(LastSeenBy(Myself),70,RESISTFIRE)
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+	!StateCheck(LastSeenBy(Myself),STATE_MIRRORIMAGE)
+	!AttackedBy(LastSeenBy(Myself),MELEE)
+	OR(5)
+		HPGT(LastSeenBy(Myself),20)
+		HPGT(LastSeenBy(Myself),40)
+		HPGT(LastSeenBy(Myself),60)
+		HPGT(LastSeenBy(Myself),80)
+		HPGT(LastSeenBy(Myself),100)
+THEN
+	RESPONSE #100
+		RunAwayFromNoInterrupt(LastSeenBy(Myself),10)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#FSTRI",LastSeenBy(Myself))  // Flame Strike
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpellRES("CA#FMIND")  // Feeblemind
+	OR(8)
+		Detect(NearestEnemyOfType([0.0.0.FIGHTER_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.RANGER_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.PALADIN_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.BARD_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.DRUID_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.CLERIC_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.MAGE_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.SORCERER]))
+	!HasBounceEffects(LastSeenBy(Myself))
+	OR(10)
+		!StateCheck(LastSeenBy(Myself),STATE_CONFUSED)
+		!StateCheck(LastSeenBy(Myself),STATE_PANIC)
+		!StateCheck(LastSeenBy(Myself),STATE_BLIND)
+		!StateCheck(LastSeenBy(Myself),STATE_FEEBLEMINDED)
+		!StateCheck(LastSeenBy(Myself),STATE_BERSERK)
+		!StateCheck(LastSeenBy(Myself),STATE_OUT_OF_ACTION)
+		!StateCheck(LastSeenBy(Myself),STATE_HARMLESS)
+		!StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+		!StateCheck(LastSeenBy(Myself),STATE_SLEEPING)
+		!StateCheck(LastSeenBy(Myself),STATE_CHARMED)
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+	OR(5)
+		HPGT(LastSeenBy(Myself),20)
+		HPGT(LastSeenBy(Myself),40)
+		HPGT(LastSeenBy(Myself),60)
+		HPGT(LastSeenBy(Myself),80)
+		HPGT(LastSeenBy(Myself),100)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#FMIND",LastSeenBy(Myself))  // Feeblemind
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_MENTAL_DOMINATION)  // SPPR405.SPL (Mental Domination)
+	Detect(NearestEnemyOf(Myself))
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+	!StateCheck(LastSeenBy(Myself),STATE_CHARMED)
+	!General(LastSeenBy(Myself),UNDEAD)
+	OR(5)
+		LevelLT(LastSeenBy(Myself),6)
+		LevelGT(LastSeenBy(Myself),5)
+		LevelGT(LastSeenBy(Myself),10)
+		LevelGT(LastSeenBy(Myself),15)
+		LevelGT(LastSeenBy(Myself),20)
+	!StateCheck(LastSeenBy(Myself),STATE_CONFUSED)
+	!StateCheck(LastSeenBy(Myself),STATE_PANIC)
+	!StateCheck(LastSeenBy(Myself),STATE_BLIND)
+	!StateCheck(LastSeenBy(Myself),STATE_FEEBLEMINDED)
+	!StateCheck(LastSeenBy(Myself),STATE_BERSERK)
+	!StateCheck(LastSeenBy(Myself),STATE_OUT_OF_ACTION)
+	!StateCheck(LastSeenBy(Myself),STATE_HARMLESS)
+	!StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+	!StateCheck(LastSeenBy(Myself),STATE_SLEEPING)
+	!StateCheck(LastSeenBy(Myself),STATE_CHARMED)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_MENTAL_DOMINATION)  // SPPR405.SPL (Mental Domination)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpellRES("ca#HMON")  // Hold Monster
+	Detect(NearestEnemyOf(Myself))
+	!StateCheck(LastSeenBy(Myself),STATE_CONFUSED)
+	!StateCheck(LastSeenBy(Myself),STATE_PANIC)
+	!StateCheck(LastSeenBy(Myself),STATE_BLIND)
+	!StateCheck(LastSeenBy(Myself),STATE_FEEBLEMINDED)
+	!StateCheck(LastSeenBy(Myself),STATE_OUT_OF_ACTION)
+	!StateCheck(LastSeenBy(Myself),STATE_HARMLESS)
+	!StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+	!StateCheck(LastSeenBy(Myself),STATE_SLEEPING)
+	!StateCheck(LastSeenBy(Myself),STATE_CHARMED)
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+	General(LastSeenBy(Myself),MONSTER)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("ca#HMON",LastSeenBy(Myself)) // Hold Monster
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_HOLD_PERSON)  // SPPR208.SPL (Hold Person)
+	Detect(NearestEnemyOf(Myself))
+	!StateCheck(LastSeenBy(Myself),STATE_CONFUSED)
+	!StateCheck(LastSeenBy(Myself),STATE_PANIC)
+	!StateCheck(LastSeenBy(Myself),STATE_BLIND)
+	!StateCheck(LastSeenBy(Myself),STATE_FEEBLEMINDED)
+	!StateCheck(LastSeenBy(Myself),STATE_OUT_OF_ACTION)
+	!StateCheck(LastSeenBy(Myself),STATE_HARMLESS)
+	!StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+	!StateCheck(LastSeenBy(Myself),STATE_SLEEPING)
+	!StateCheck(LastSeenBy(Myself),STATE_CHARMED)
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+	General(LastSeenBy(Myself),HUMANOID)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_HOLD_PERSON)  // SPPR208.SPL (Hold Person)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,GOODCUTOFF)
+	Detect(NearestEnemyOf(Myself))
+	HaveSpellRES("CA#LWISH")  // Limited Wish
+	CombatCounterGT(0)
+THEN
+	RESPONSE #100
+		SetInterrupt(FALSE)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#LWISH",Myself)  // Limited Wish
+		RunAwayFromNoInterrupt(NearestEnemyOf(Myself),50)
+		SetInterrupt(TRUE)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,GOODCUTOFF)
+	HaveSpellRES("CA#LWISH")  // Limited Wish
+	CombatCounterGT(0)
+THEN
+	RESPONSE #100
+		SetInterrupt(FALSE)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#LWISH",Myself)  // Limited Wish
+		Wait(4)
+		SetInterrupt(TRUE)
+END
+
+IF
+	HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	OR(4)
+		HPPercentGT(Myself,50)
+		!Detect(NearestEnemyOf(Myself))
+		CombatCounterLT(3)
+		!GlobalTimerNotExpired("Cancel_Antimagic_Shell","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#AMSC",Myself)  // Cancel Anti-Magic Shell
+END
+
+IF
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HPPercentLT(Myself,30)
+	Detect(NearestEnemyOf(Myself))
+	HaveSpellRES("CA#AMS")  // Anti-Magic Shell
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!HaveSpellRES("CA#HEAL1")  // Heal
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Cancel_Antimagic_Shell","LOCALS",120)
+		SetGlobalTimer("Cancel_Antimagic_Shell_Serious","LOCALS",300)
+		SpellRES("CA#AMS",Myself)  // Anti-Magic Shell
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	Detect([GOODCUTOFF])
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	StateCheck(LastSeenBy(Myself),STATE_PANIC)
+	HaveSpellRES("CA#RFEAR")  // Remove Fear
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#RFEAR",LastSeenBy(Myself))  // Remove Fear
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!StateCheck(Myself,STATE_AID)
+	Detect(NearestEnemyOf(Myself))
+	HaveSpellRES("CA#AID")  // Aid
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#AID",Myself)  // Aid
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	!Detect(NearestEnemyOf(Myself))
+	OR(3)
+		Detect([EVILCUTOFF.0.0.FIGHTER_ALL])
+		Detect([EVILCUTOFF.0.0.PALADIN_ALL])
+		Detect([EVILCUTOFF.0.0.RANGER_ALL])
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	!StateCheck(LastSeenBy(Myself),STATE_AID)
+	HaveSpellRES("CA#AID")  // Aid
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#AID",LastSeenBy(Myself))  // Aid
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	!Detect(NearestEnemyOf(Myself))
+	OR(3)
+		Detect([GOODCUTOFF.0.0.FIGHTER_ALL])
+		Detect([GOODCUTOFF.0.0.PALADIN_ALL])
+		Detect([GOODCUTOFF.0.0.RANGER_ALL])
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	!StateCheck(LastSeenBy(Myself),STATE_AID)
+	HaveSpellRES("CA#AID")  // Aid
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#AID",LastSeenBy(Myself))  // Aid
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Detect(NearestMyGroupOfType)
+	StateCheck(LastSeenBy(Myself),STATE_DISEASED)
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	HaveSpellRES("CA#CUDIS")  // Cure Disease
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#CUDIS",LastSeenBy(Myself))  // Cure Disease
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_CHANT)  // SPPR203.SPL (Chant)
+	NumCreatureGT([EVILCUTOFF],2)
+	OR(2)
+		Range(NearestEnemyOf(Myself),15)
+		Range(NearestMyGroupOfType,15)
+	OR(2)
+		Range(SecondNearestEnemyOf(Myself),15)
+		Range(SecondNearestMyGroupOfType,15)
+	CheckStatLT(SecondNearestEnemyOf(Myself),70,RESISTMAGIC)
+	CheckStatLT(NearestEnemyOf(Myself),70,RESISTMAGIC)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(Myself,CLERIC_CHANT)  // SPPR203.SPL (Chant)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	!Detect(NearestEnemyOf(Myself))
+	Detect([GOODCUTOFF])
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	!StateCheck(LastSeenBy(Myself),STATE_BLESS)
+	HaveSpell(CLERIC_BLESS)  // SPPR101.SPL (Bless)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_BLESS)  // SPPR101.SPL (Bless)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	!Detect(NearestEnemyOf(Myself))
+	Detect([EVILCUTOFF])
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	!StateCheck(LastSeenBy(Myself),STATE_BLESS)
+	!StateCheck(Myself,STATE_BLESS)
+	HaveSpell(CLERIC_BLESS)  // SPPR101.SPL (Bless)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_BLESS)  // SPPR101.SPL (Bless)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!AttackedBy([ANYONE],DEFAULT)
+	OR(2)
+		StateCheck(Myself,STATE_DISEASED)
+		StateCheck(Myself,STATE_BLIND)
+	// !Global("NOATTACK","LOCALS",1)
+	HaveSpellRES("CA#CUDIS")  // Cure Disease
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#CUDIS",Myself)  // Cure Disease
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	!CheckStatGT(Myself,0,STONESKINS)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!StateCheck(Myself,STATE_INVISIBLE)
+	!StateCheck(Myself,STATE_IMPROVEDINVISIBILITY)
+	!AttackedBy([ANYONE],DEFAULT)
+	OR(2)
+		HPPercentLT(Myself,70)
+		!Detect(NearestEnemyOf(Myself))
+	HaveSpell(2408)  // Stone Skins
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(Myself,2408)  // Stone Skins
+		SetGlobalTimer("Invisibility_Self","LOCALS",30)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!StateCheck(Myself,STATE_INVISIBLE)
+	!StateCheck(Myself,STATE_IMPROVEDINVISIBILITY)
+	!AttackedBy([ANYONE],DEFAULT)
+	OR(2)
+		HPPercentLT(Myself,70)
+		!Detect(NearestEnemyOf(Myself))
+	HaveSpellRES("CA#II10")  // Improved Invisibility 10' Radius
+	!GlobalTimerNotExpired("Invisibility_Self","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#II10",Myself)  // Improved Invisibility 10' Radius
+		SetGlobalTimer("Invisibility_Self","LOCALS",30)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!StateCheck(Myself,STATE_INVISIBLE)
+	!StateCheck(Myself,STATE_IMPROVEDINVISIBILITY)
+	OR(2)
+		HPPercentLT(Myself,70)
+		!Detect(NearestEnemyOf(Myself))
+	HaveSpellRES("CA#II10")  // Improved Invisibility 10' Radius
+	!GlobalTimerNotExpired("Invisibility_Self","LOCALS")
+THEN
+	RESPONSE #100
+		//RunAwayFromNoInterrupt(NearestEnemyOf(Myself),50)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#II10",Myself)  // Improved Invisibility 10' Radius
+		SetGlobalTimer("Invisibility_Self","LOCALS",30)
+END
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!StateCheck(Myself,STATE_INVISIBLE)
+	!StateCheck(Myself,STATE_IMPROVEDINVISIBILITY)
+	!AttackedBy([ANYONE],DEFAULT)
+	// OR(2)
+		HPPercentLT(Myself,70)
+		// Detect(NearestEnemyOf(Myself))
+	HaveSpellRES("CA#INV10")  // Invisibility 10-foot radius
+	!GlobalTimerNotExpired("Invisibility_Self","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#INV10",Myself)  // Invisibility 10-foot radius
+		SetGlobalTimer("Invisibility_Self","LOCALS",30)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!StateCheck(Myself,STATE_INVISIBLE)
+	!StateCheck(Myself,STATE_IMPROVEDINVISIBILITY)
+	OR(2)
+		HPPercentLT(Myself,70)
+		Detect(NearestEnemyOf(Myself))
+	HaveSpellRES("CA#INV10")  // Invisibility 10-foot radius
+	!GlobalTimerNotExpired("Invisibility_Self","LOCALS")
+THEN
+	RESPONSE #100
+		//RunAwayFromNoInterrupt(NearestEnemyOf(Myself),50)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#INV10",Myself)  // Invisibility 10-foot radius
+		SetGlobalTimer("Invisibility_Self","LOCALS",30)
+END
+*/
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Detect(NearestEnemyOf(Myself))
+	OR(14)
+		StateCheck(LastSeenBy(Myself),STATE_BLUR)
+		StateCheck(LastSeenBy(Myself),STATE_MIRRORIMAGE)
+		StateCheck(LastSeenBy(Myself),STATE_NONDETECTION)
+		CheckStatGT(LastSeenBy(Myself),0,SANCTUARY)
+		StateCheck(LastSeenBy(Myself),STATE_INVISIBLE)
+		StateCheck(LastSeenBy(Myself),STATE_IMPROVEDINVISIBILITY)
+		CheckStatGT(LastSeenBy(Myself),0,HIDEINSHADOWS)
+		StateCheck(LastSeenBy(Myself),STATE_NOT_TARGETABLE)
+		CheckStat(LastSeenBy(Myself),1,WIZARD_MISLEAD)
+		Gender(LastSeenBy(Myself),ILLUSIONARY)
+		CheckStatGT(LastSeenBy(Myself),0,PUPPETMASTERTYPE)
+		SpellCast(NearestEnemyOf(Myself),WIZARD_MISLEAD)  // SPWI607.SPL (Mislead)
+		SpellCast(NearestEnemyOf(Myself),WIZARD_SIMULACRUM)  // SPWI804.SPL (Simulacrum)
+		SpellCast(NearestEnemyOf(Myself),WIZARD_PROJECT_IMAGE)  // SPWI703.SPL (Project Image)
+	HaveSpellRES("CA#TSIGH")  // True Sight
+	!SpellCast(NearestMyGroupOfType,WIZARD_TRUE_SIGHT)  // SPWI609.SPL (True Sight)
+	!SpellCast(NearestMyGroupOfType,CLERIC_TRUE_SIGHT)  // SPPR505.SPL (True Seeing)
+	!SpellCast(NearestMyGroupOfType,INQUIS_TRUE_SIGHT)  // SPCL232.SPL (True Sight)
+	!GlobalTimerNotExpired("True_Sight","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("True_Sight","LOCALS",60)
+		SpellRES("CA#TSIGH",Myself)  // True Sight
+END
+*/
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!AttackedBy([ANYONE],DEFAULT)
+	OR(2)
+		StateCheck(Myself,STATE_DISEASED)
+		StateCheck(Myself,STATE_BLIND)
+	// !Global("NOATTACK","LOCALS",1)
+	CombatCounter(0)
+	!Detect(NearestEnemyOf(Myself))
+	!HaveSpellRES("CA#CUDIS")  // Cure Disease
+	HaveSpellRES("CA#HEAL")  // Heal
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#HEAL",Myself)  // Heal
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,GOODCUTOFF)
+	OR(5)
+		Detect([GOODCUTOFF])
+		Detect([PC])
+		Detect(Protagonist)
+		Detect(LastSummonerOf(Myself))
+		Detect(LastSummonerOf(LastSummonerOf(Myself)))
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	HPLT(LastSeenBy(Myself),30)
+	HPPercentLT(LastSeenBy(Myself),70)
+	!General(LastSeenBy(Myself),UNDEAD)
+	HaveSpellRES("CA#HEAL")  // Heal
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#HEAL",LastSeenBy(Myself))  // Heal
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	OR(3)
+		Detect([EVILCUTOFF])
+		Detect(LastSummonerOf(Myself))
+		Detect(LastSummonerOf(LastSummonerOf(Myself)))
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	!Allegiance(LastSeenBy(Myself),GOODCUTOFF)
+	HPLT(LastSeenBy(Myself),30)
+	HPPercentLT(LastSeenBy(Myself),70)
+	!General(LastSeenBy(Myself),UNDEAD)
+	HaveSpellRES("CA#HEAL")  // Heal
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#HEAL",LastSeenBy(Myself))  // Heal
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	CombatCounter(0)
+	Detect([GOODCUTOFF])
+	OR(5)
+		HPPercentLT(LastSeenBy(Myself),40)
+		HPPercentLT(LastSeenBy(Myself),35)
+		HPPercentLT(LastSeenBy(Myself),30)
+		HPPercentLT(LastSeenBy(Myself),25)
+		HPPercentLT(LastSeenBy(Myself),20)
+	HaveSpellRES("CA#HEAL")  // Heal
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		ReallyForceSpellRES("CA#HEAL",LastSeenBy(Myself))  // Heal
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	CombatCounter(0)
+	Detect([EVILCUTOFF])
+	OR(5)
+		HPPercentLT(LastSeenBy(Myself),40)
+		HPPercentLT(LastSeenBy(Myself),35)
+		HPPercentLT(LastSeenBy(Myself),30)
+		HPPercentLT(LastSeenBy(Myself),25)
+		HPPercentLT(LastSeenBy(Myself),20)
+	HaveSpellRES("CA#HEAL")  // Heal
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		ReallyForceSpellRES("CA#HEAL",LastSeenBy(Myself))  // Heal
+END
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!Allegiance(Myself,EVILCUTOFF)
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HPPercentLT(Myself,40)
+	CombatCounter(0)
+	Detect(TenthNearest([GOODCUTOFF]))
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	!Range(LastSeenBy(Myself),15)
+	OR(2)
+		Detect([EVILCUTOFF])
+		Detect([GOODBUTRED])
+	// HaveSpellRES("CA#TWOE")  // Teleport Without Error
+	HaveSpellRES("CA#HEAL")  // Heal
+THEN
+	RESPONSE #100
+		ForceSpellRES("CA#TWOE",TenthNearest([GOODCUTOFF]))  // Teleport Without Error
+		// RunAwayFromNoInterrupt(LastSeenBy(Myself),50)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#HEAL",Myself)  // Heal
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	Allegiance(Myself,EVILCUTOFF)
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HPPercentLT(Myself,40)
+	Detect(TenthNearest([EVILCUTOFF]))
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	!Range(LastSeenBy(Myself),15)
+	Detect([GOODCUTOFF])
+	// HaveSpellRES("CA#TWOE")  // Teleport Without Error
+	HaveSpellRES("CA#HEAL")  // Heal
+THEN
+	RESPONSE #100
+		ForceSpellRES("CA#TWOE",TenthNearest([EVILCUTOFF]))  // Teleport Without Error
+		// RunAwayFromNoInterrupt(LastSeenBy(Myself),50)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#HEAL",Myself)  // Heal
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!Allegiance(Myself,EVILCUTOFF)
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HPPercentLT(Myself,40)
+	CombatCounter(0)
+	Detect(TenthNearest([GOODCUTOFF]))
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	!Range(LastSeenBy(Myself),15)
+	OR(2)
+		Detect([EVILCUTOFF])
+		Detect([GOODBUTRED])
+	// HaveSpellRES("CA#TWOE")  // Teleport Without Error
+	HaveSpellRES("CA#HEAL1")  // Heal
+THEN
+	RESPONSE #100
+		ForceSpellRES("CA#TWOE",TenthNearest([GOODCUTOFF]))  // Teleport Without Error
+		// RunAwayFromNoInterrupt(LastSeenBy(Myself),50)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#HEAL1",Myself)  // Heal
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	Allegiance(Myself,EVILCUTOFF)
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HPPercentLT(Myself,40)
+	Detect(TenthNearest([EVILCUTOFF]))
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	!Range(LastSeenBy(Myself),15)
+	Detect([GOODCUTOFF])
+	// HaveSpellRES("CA#TWOE")  // Teleport Without Error
+	HaveSpellRES("CA#HEAL1")  // Heal
+	
+THEN
+	RESPONSE #100
+		ForceSpellRES("CA#TWOE",TenthNearest([EVILCUTOFF]))  // Teleport Without Error
+		// RunAwayFromNoInterrupt(LastSeenBy(Myself),50)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#HEAL1",Myself)  // Heal
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_SANCTUARY)  // SPPR109.SPL (Sanctuary)
+	Detect(NearestEnemyOf(Myself))
+	CheckStat(LastSeenBy(Myself),0,SEEINVISIBLE)
+	!SpellCast(NearestEnemyOf(Myself),CLERIC_TRUE_SIGHT)  // SPPR505.SPL (True Seeing)
+	!SpellCast(NearestEnemyOf(Myself),WIZARD_TRUE_SIGHT)  // SPWI609.SPL (True Sight)
+	!SpellCast(NearestEnemyOf(Myself),INQUIS_TRUE_SIGHT)  // SPCL232.SPL (True Sight)
+	!SpellCastRES("SPCL732",NearestEnemyOf(Myself))  // SPCL732.SPL (True Sight)
+	HaveSpellRES("CA#HEAL")  // Heal
+	!CheckStatGT(Myself,0,SANCTUARY)
+	!StateCheck(Myself,STATE_INVISIBLE)
+	!StateCheck(Myself,STATE_IMPROVEDINVISIBILITY)
+	HPPercentLT(Myself,40)
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetInterrupt(FALSE)
+		// RunAwayFrom(NearestEnemyOf(Myself),30)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(Myself,CLERIC_SANCTUARY)  // SPPR109.SPL (Sanctuary)
+		SpellRES("CA#HEAL",Myself)  // Heal
+		SetInterrupt(TRUE)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HPPercentLT(Myself,40)
+	CombatCounter(0)
+	!Detect(NearestEnemyOf(Myself))
+	HaveSpellRES("CA#HEAL1")  // Heal
+THEN
+	RESPONSE #100
+		// RunAwayFromNoInterrupt(LastSeenBy(Myself),50)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#HEAL1",Myself)  // Heal
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HPPercentLT(Myself,40)
+	CombatCounter(0)
+	HaveSpellRES("CA#HEAL1")  // Heal
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#HEAL1",Myself)  // Heal
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpellRES("CA#RESTO")  // Greater Restoration
+	OR(2)
+		HPPercentLT(Myself,25)
+		CheckStatGT(Myself,0,EXTRAPROFICIENCY20)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#RESTO",Myself)  // Greater Restoration
+END
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpellRES("CA#RESTO")  // Greater Restoration
+	OR(7)
+		Detect(NearestMyGroupOfType([0.0.0.RANGER_ALL]))
+		Detect(NearestMyGroupOfType([0.0.0.PALADIN_ALL]))
+		Detect(NearestMyGroupOfType([0.0.0.BARD_ALL]))
+		Detect(NearestMyGroupOfType([0.0.0.DRUID_ALL]))
+		Detect(NearestMyGroupOfType([0.0.0.CLERIC_ALL]))
+		Detect(NearestMyGroupOfType([0.0.0.MAGE_ALL]))
+		Detect(NearestMyGroupOfType([0.0.0.SORCERER]))
+	OR(2)
+		HPPercentLT(LastSeenBy(Myself),25)
+		CheckStatGT(LastSeenBy(Myself),0,EXTRAPROFICIENCY20)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#RESTO",LastSeenBy(Myself))  // Greater Restoration
+END
+*/
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!AttackedBy([ANYONE],DEFAULT)
+	HPPercentLT(Myself,60)
+	HaveSpellRES("CA#CURSW")  // Cure Serious Wounds
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#CURSW",Myself)  // Cure Serious Wounds
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	// AttackedBy([ANYONE],DEFAULT)
+	!Detect(NearestEnemyOf(Myself))
+	HPPercentLT(Myself,50)
+	HaveSpellRES("CA#CURSW")  // Cure Serious Wounds
+THEN
+	RESPONSE #100
+		// RunAwayFromNoInterrupt(NearestEnemyOf(Myself),50)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#CURSW",Myself)  // Cure Serious Wounds
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Detect(NearestMyGroupOfType)
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	!General(LastSeenBy(Myself),UNDEAD)
+	!Race(LastSeenBy(Myself),GOLEM)
+	!Race(LastSeenBy(Myself),GENIE)
+	!Race(LastSeenBy(Myself),ELEMENTAL)
+	!Race(LastSeenBy(Myself),DEMONIC)
+	HPPercentLT(LastSeenBy(Myself),50)
+	OR(11)
+		LevelGT(LastSeenBy(Myself),0)
+		LevelGT(LastSeenBy(Myself),5)
+		LevelGT(LastSeenBy(Myself),10)
+		LevelGT(LastSeenBy(Myself),15)
+		LevelGT(LastSeenBy(Myself),20)
+		LevelGT(LastSeenBy(Myself),25)
+		LevelGT(LastSeenBy(Myself),30)
+		LevelGT(LastSeenBy(Myself),35)
+		LevelGT(LastSeenBy(Myself),40)
+		LevelGT(LastSeenBy(Myself),45)
+		LevelGT(LastSeenBy(Myself),50)
+	OR(6)
+		True()
+		Class(LastSeenBy(Myself),RANGER_ALL)
+		Class(LastSeenBy(Myself),PALADIN_ALL)
+		Class(LastSeenBy(Myself),BARD_ALL)
+		Class(LastSeenBy(Myself),DRUID_ALL)
+		Class(LastSeenBy(Myself),CLERIC_ALL)
+		Class(LastSeenBy(Myself),MAGE_ALL)
+	HaveSpellRES("CA#CURSW")  // Cure Serious Wounds
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#CURSW",LastSeenBy(Myself))  // Cure Serious Wounds
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Detect(NearestMyGroupOfType)
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	!General(LastSeenBy(Myself),UNDEAD)
+	!Race(LastSeenBy(Myself),GOLEM)
+	!Race(LastSeenBy(Myself),GENIE)
+	!Race(LastSeenBy(Myself),ELEMENTAL)
+	!Race(LastSeenBy(Myself),DEMONIC)
+	HPPercentLT(LastSeenBy(Myself),80)
+	OR(11)
+		LevelGT(LastSeenBy(Myself),0)
+		LevelGT(LastSeenBy(Myself),5)
+		LevelGT(LastSeenBy(Myself),10)
+		LevelGT(LastSeenBy(Myself),15)
+		LevelGT(LastSeenBy(Myself),20)
+		LevelGT(LastSeenBy(Myself),25)
+		LevelGT(LastSeenBy(Myself),30)
+		LevelGT(LastSeenBy(Myself),35)
+		LevelGT(LastSeenBy(Myself),40)
+		LevelGT(LastSeenBy(Myself),45)
+		LevelGT(LastSeenBy(Myself),50)
+	OR(6)
+		True()
+		Class(LastSeenBy(Myself),RANGER_ALL)
+		Class(LastSeenBy(Myself),PALADIN_ALL)
+		Class(LastSeenBy(Myself),BARD_ALL)
+		Class(LastSeenBy(Myself),DRUID_ALL)
+		Class(LastSeenBy(Myself),CLERIC_ALL)
+		Class(LastSeenBy(Myself),MAGE_ALL)
+	HaveSpellRES("CA#CULW")  // Cure Light Wounds
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#CULW",LastSeenBy(Myself))  // Cure Light Wounds
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	// !AttackedBy([ANYONE],DEFAULT)
+	!Detect(NearestEnemyOf(Myself))
+	HPPercentLT(Myself,90)
+	HaveSpellRES("CA#CULW")  // Cure Light Wounds
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#CULW",Myself)  // Cure Light Wounds
+END
+
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	// AttackedBy([ANYONE],DEFAULT)
+	!Detect(NearestEnemyOf(Myself))
+	HPPercentLT(Myself,70)
+	HaveSpellRES("CA#CULW")  // Cure Light Wounds
+THEN
+	RESPONSE #100
+		// RunAwayFromNoInterrupt(NearestEnemyOf(Myself),50)
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#CULW",Myself)  // Cure Light Wounds
+END
+*/
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	RandomNum(6,3)
+	StateCheck(Player1,STATE_DEAD)
+	!StateCheck(Player1,STATE_STONE_DEATH)
+	!StateCheck(Player1,STATE_FROZEN_DEATH)
+	!StateCheck(Player1,STATE_EXPLODING_DEATH)
+	!StateCheck(Player1,STATE_FLAME_DEATH)
+	!StateCheck(Player1,STATE_ACID_DEATH)
+	!CheckStat(Player1,255,TRANSLUCENT)
+	!Detect(NearestEnemyOf(Myself))
+	HaveSpellRES("CA#RDEAD")  // Raise Dead
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#RDEAD",Player1)  // Raise Dead
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	RandomNum(6,2)
+	StateCheck(Player2,STATE_DEAD)
+	!StateCheck(Player2,STATE_STONE_DEATH)
+	!StateCheck(Player2,STATE_FROZEN_DEATH)
+	!StateCheck(Player2,STATE_EXPLODING_DEATH)
+	!StateCheck(Player2,STATE_FLAME_DEATH)
+	!StateCheck(Player2,STATE_ACID_DEATH)
+	!Detect(NearestEnemyOf(Myself))
+	!CheckStat(Player2,255,TRANSLUCENT)
+	HaveSpellRES("CA#RDEAD")  // Raise Dead
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#RDEAD",Player2)  // Raise Dead
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	RandomNum(6,3)
+	StateCheck(Player3,STATE_DEAD)
+	!StateCheck(Player3,STATE_STONE_DEATH)
+	!StateCheck(Player3,STATE_FROZEN_DEATH)
+	!StateCheck(Player3,STATE_EXPLODING_DEATH)
+	!StateCheck(Player3,STATE_FLAME_DEATH)
+	!StateCheck(Player3,STATE_ACID_DEATH)
+	!Detect(NearestEnemyOf(Myself))
+	!CheckStat(Player3,255,TRANSLUCENT)
+	HaveSpellRES("CA#RDEAD")  // Raise Dead
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#RDEAD",Player3)  // Raise Dead
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	RandomNum(6,4)
+	StateCheck(Player4,STATE_DEAD)
+	!StateCheck(Player4,STATE_STONE_DEATH)
+	!StateCheck(Player4,STATE_FROZEN_DEATH)
+	!StateCheck(Player4,STATE_EXPLODING_DEATH)
+	!StateCheck(Player4,STATE_FLAME_DEATH)
+	!StateCheck(Player4,STATE_ACID_DEATH)
+	!Detect(NearestEnemyOf(Myself))
+	!CheckStat(Player4,255,TRANSLUCENT)
+	HaveSpellRES("CA#RDEAD")  // Raise Dead
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#RDEAD",Player4)  // Raise Dead
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	RandomNum(6,5)
+	StateCheck(Player5,STATE_DEAD)
+	!StateCheck(Player5,STATE_STONE_DEATH)
+	!StateCheck(Player5,STATE_FROZEN_DEATH)
+	!StateCheck(Player5,STATE_EXPLODING_DEATH)
+	!StateCheck(Player5,STATE_FLAME_DEATH)
+	!StateCheck(Player5,STATE_ACID_DEATH)
+	!Detect(NearestEnemyOf(Myself))
+	!CheckStat(Player5,255,TRANSLUCENT)
+	HaveSpellRES("CA#RDEAD")  // Raise Dead
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#RDEAD",Player5)  // Raise Dead
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	RandomNum(6,6)
+	StateCheck(Player6,STATE_DEAD)
+	!StateCheck(Player6,STATE_STONE_DEATH)
+	!StateCheck(Player6,STATE_FROZEN_DEATH)
+	!StateCheck(Player6,STATE_EXPLODING_DEATH)
+	!StateCheck(Player6,STATE_FLAME_DEATH)
+	!StateCheck(Player6,STATE_ACID_DEATH)
+	!Detect(NearestEnemyOf(Myself))
+	!CheckStat(Player6,255,TRANSLUCENT)
+	HaveSpellRES("CA#RDEAD")  // Raise Dead
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#RDEAD",Player6)  // Raise Dead
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	Detect([GOODCUTOFF])
+	CombatCounter(0)
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	StateCheck(LastSeenBy(Myself),STATE_POISONED)
+	HaveSpell(CLERIC_SLOW_POISON)  // SPPR212.SPL (Slow Poison)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_SLOW_POISON)  // SPPR212.SPL (Slow Poison)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	Detect([EVILCUTOFF])
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	StateCheck(LastSeenBy(Myself),STATE_POISONED)
+	HaveSpell(CLERIC_SLOW_POISON)  // SPPR212.SPL (Slow Poison)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_SLOW_POISON)  // SPPR212.SPL (Slow Poison)
+END
+
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_RIGHTEOUS_MAGIC)  // SPPR513.SPL (Righteous Magic)
+	!GlobalTimerNotExpired("Righteous_Magic","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Righteous_Magic","LOCALS",120)
+		Spell(Myself,CLERIC_RIGHTEOUS_MAGIC)  // SPPR513.SPL (Righteous Magic)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_HOLY_POWER)  // SPPR412.SPL (Holy Power)
+	CheckStatLT(Myself,19,STR)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(Myself,CLERIC_HOLY_POWER)  // SPPR412.SPL (Holy Power)
+END
+*/
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_ANIMAL_SUMMONING_1)  // SPPR402.SPL (Animal Summoning I)
+	Detect(NearestEnemyOf(Myself))
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(Myself,CLERIC_ANIMAL_SUMMONING_1)  // SPPR402.SPL (Animal Summoning I)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_ANIMATE_DEAD)  // SPPR301.SPL (Animate Dead)
+	Detect(NearestEnemyOf(Myself))
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(Myself,CLERIC_ANIMATE_DEAD)  // SPPR301.SPL (Animate Dead)
+END
+*/
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_SUNRAY)  // SPPR707.SPL (Sunray)
+	OR(7)
+		Detect(NearestEnemyOfType([0.UNDEAD]))
+		Detect(NearestEnemyOfType([0.0.VAMPYRE]))
+		Detect(NearestEnemyOfType([0.0.VAMPIRE]))
+		Detect(NearestEnemyOfType([0.UNDEAD.0.CLERIC_ALL]))
+		Detect(NearestEnemyOfType([0.UNDEAD.0.MAGE_ALL]))
+		Detect(NearestEnemyOfType([0.0.LICH]))
+		Detect(NearestEnemyOfType([0.0.DEMILICH]))
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+	HPGT(LastSeenBy(Myself),20)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_SUNRAY)  // SPPR707.SPL (Sunray)
+END
+*/
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpellRES("CA#HARM")  // (Harm)
+	Detect(NearestEnemyOf(Myself))
+	// OR(10)
+		HPGT(LastSeenBy(Myself),50)
+		// HPGT(LastSeenBy(Myself),100)
+		// HPGT(LastSeenBy(Myself),150)
+		// HPGT(LastSeenBy(Myself),200)
+		// HPGT(LastSeenBy(Myself),250)
+		// HPGT(LastSeenBy(Myself),300)
+		// HPGT(LastSeenBy(Myself),350)
+		// HPGT(LastSeenBy(Myself),400)
+		// HPGT(LastSeenBy(Myself),450)
+		// HPGT(LastSeenBy(Myself),500)
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+	!HasBounceEffects(LastSeenBy(Myself))
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#HARM",LastSeenBy(Myself))  // (Harm)
+		AttackReevaluate(LastSeenBy(Myself),25)
+END
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_BOLT_OF_GLORY)  // SPPR612.SPL (Bolt of Glory)
+	OR(6)
+		Detect(NearestEnemyOfType([0.0.ELEMENTAL]))
+		Detect(NearestEnemyOfType([0.ANIMAL]))
+		Detect(NearestEnemyOfType([0.HUMANOID]))
+		Detect(NearestEnemyOfType([0.MONSTER]))
+		Detect(NearestEnemyOfType([0.UNDEAD]))
+		Detect(NearestEnemyOfType([0.0.DEMONIC]))
+	!HasBounceEffects(LastSeenBy(Myself))
+	OR(5)
+		HPGT(LastSeenBy(Myself),20)
+		HPGT(LastSeenBy(Myself),40)
+		HPGT(LastSeenBy(Myself),60)
+		HPGT(LastSeenBy(Myself),80)
+		HPGT(LastSeenBy(Myself),100)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_BOLT_OF_GLORY)  // SPPR612.SPL (Bolt of Glory)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	RandomNum(4,3)
+	HaveSpell(CLERIC_GREATER_COMMAND)  // SPPR512.SPL (Greater Command)
+	Detect(NearestEnemyOf(Myself))
+	OR(3)
+		!StateCheck(LastSeenBy(Myself),STATE_CONFUSED)
+		!StateCheck(LastSeenBy(Myself),STATE_PANIC)
+		!StateCheck(LastSeenBy(Myself),STATE_BLIND)
+	!StateCheck(LastSeenBy(Myself),STATE_FEEBLEMINDED)
+	!StateCheck(LastSeenBy(Myself),STATE_OUT_OF_ACTION)
+	!StateCheck(LastSeenBy(Myself),STATE_HARMLESS)
+	!StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+	!StateCheck(LastSeenBy(Myself),STATE_SLEEPING)
+	!StateCheck(LastSeenBy(Myself),STATE_CHARMED)
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_GREATER_COMMAND)  // SPPR512.SPL (Greater Command)
+END
+*/
+
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	!Detect(NearestEnemyOf(Myself))
+	Detect([GOODCUTOFF])
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	CheckStatLT(LastSeenBy(Myself),100,RESISTFIRE)
+	HaveSpell(CLERIC_PROTECTION_FROM_FIRE)  // SPPR306.SPL (Protection From Fire)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_PROTECTION_FROM_FIRE)  // SPPR306.SPL (Protection From Fire)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	!Detect(NearestEnemyOf(Myself))
+	Detect([EVILCUTOFF])
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	CheckStatLT(LastSeenBy(Myself),100,RESISTFIRE)
+	HaveSpell(CLERIC_PROTECTION_FROM_FIRE)  // SPPR306.SPL (Protection From Fire)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_PROTECTION_FROM_FIRE)  // SPPR306.SPL (Protection From Fire)
+END
+*/
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	!Detect(NearestEnemyOf(Myself))
+	Detect([GOODCUTOFF])
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	CheckStatLT(LastSeenBy(Myself),50,RESISTFIRE)
+	CheckStatLT(LastSeenBy(Myself),50,RESISTCOLD)
+	HaveSpell(CLERIC_RESIST_FIRE)  // SPPR210.SPL (Resist Fire/Cold)
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_RESIST_FIRE)  // SPPR210.SPL (Resist Fire/Cold)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	!Detect(NearestEnemyOf(Myself))
+	Detect([EVILCUTOFF])
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	CheckStatLT(LastSeenBy(Myself),50,RESISTFIRE)
+	CheckStatLT(LastSeenBy(Myself),50,RESISTCOLD)
+	HaveSpell(CLERIC_RESIST_FIRE)  // SPPR210.SPL (Resist Fire/Cold)
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_RESIST_FIRE)  // SPPR210.SPL (Resist Fire/Cold)
+END
+*/
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,GOODCUTOFF)
+	Detect([GOODBUTRED.0.0.0.0.SUMMONED_DEMON])
+	Detect(Player1)
+	HaveSpellRES("CA#PEVIL")  // Protection From Evil
+	!GlobalTimerNotExpired("Protection_from_Evil_Player1","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#PEVIL",Player1)  // Protection From Evil
+		SetGlobalTimer("Protection_from_Evil_Player1","GLOBAL",120)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,GOODCUTOFF)
+	Detect([GOODBUTRED.0.0.0.0.SUMMONED_DEMON])
+	Detect(Player2)
+	HaveSpellRES("CA#PEVIL")  // Protection From Evil
+	!GlobalTimerNotExpired("Protection_from_Evil_Player2","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#PEVIL",Player2)  // Protection From Evil
+		SetGlobalTimer("Protection_from_Evil_Player2","GLOBAL",120)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,GOODCUTOFF)
+	Detect([GOODBUTRED.0.0.0.0.SUMMONED_DEMON])
+	Detect(Player3)
+	HaveSpellRES("CA#PEVIL")  // Protection From Evil
+	!GlobalTimerNotExpired("Protection_from_Evil_Player3","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#PEVIL",Player3)  // Protection From Evil
+		SetGlobalTimer("Protection_from_Evil_Player3","GLOBAL",120)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,GOODCUTOFF)
+	Detect([GOODBUTRED.0.0.0.0.SUMMONED_DEMON])
+	Detect(Player4)
+	HaveSpellRES("CA#PEVIL")  // Protection From Evil
+	!GlobalTimerNotExpired("Protection_from_Evil_Player4","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#PEVIL",Player4)  // Protection From Evil
+		SetGlobalTimer("Protection_from_Evil_Player4","GLOBAL",120)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,GOODCUTOFF)
+	Detect([GOODBUTRED.0.0.0.0.SUMMONED_DEMON])
+	Detect(Player5)
+	HaveSpellRES("CA#PEVIL")  // Protection From Evil
+	!GlobalTimerNotExpired("Protection_from_Evil_Player5","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#PEVIL",Player5)  // Protection From Evil
+		SetGlobalTimer("Protection_from_Evil_Player5","GLOBAL",120)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,GOODCUTOFF)
+	Detect([GOODBUTRED.0.0.0.0.SUMMONED_DEMON])
+	Detect(Player6)
+	HaveSpellRES("CA#PEVIL")  // Protection From Evil
+	!GlobalTimerNotExpired("Protection_from_Evil_Player6","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#PEVIL",Player6)  // Protection From Evil
+		SetGlobalTimer("Protection_from_Evil_Player6","GLOBAL",120)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	Detect([GOODCUTOFF])
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	Gender(LastAttackerOf(LastSeenBy(Myself)),SUMMONED_DEMON)
+	Allegiance(LastAttackerOf(LastSeenBy(Myself)),GOODBUTRED)
+	HaveSpellRES("CA#PEVIL")  // Protection From Evil
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#PEVIL",LastSeenBy(Myself))  // Protection From Evil
+
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	Detect([EVILCUTOFF])
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	Gender(LastAttackerOf(LastSeenBy(Myself)),SUMMONED_DEMON)
+	Allegiance(LastAttackerOf(LastSeenBy(Myself)),GOODBUTRED)
+	HaveSpellRES("CA#PEVIL")  // Protection From Evil
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#PEVIL",LastSeenBy(Myself))  // Protection From Evil
+END
+*/
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	OR(3)
+		StateCheck(Myself,STATE_BLIND)
+		StateCheck(Myself,STATE_SLOWED)
+		StateCheck(Myself,STATE_CHANTBAD)
+	HaveSpellRES("CA#DISM")  // Dispel Magic
+	!GlobalTimerNotExpired("Dispel_Magic","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Dispel_Magic","LOCALS",18)
+		SpellRES("CA#DISM",Myself)  // Dispel Magic
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	OR(3)
+		StateCheck(Myself,STATE_BLIND)
+		StateCheck(Myself,STATE_SLOWED)
+		StateCheck(Myself,STATE_CHANTBAD)
+	HaveSpellRES("CA#DISPM")  // Dispel Magic
+	!GlobalTimerNotExpired("Dispel_Magic","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Dispel_Magic","LOCALS",18)
+		SpellRES("CA#DISPM",Myself)  // Dispel Magic
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	Detect([EVILCUTOFF])
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	OR(8)
+		StateCheck(LastSeenBy(Myself),STATE_CHANTBAD)
+		StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+		StateCheck(LastSeenBy(Myself),STATE_STUNNED)
+		StateCheck(LastSeenBy(Myself),STATE_SLEEPING)
+		StateCheck(LastSeenBy(Myself),STATE_SILENCED)
+		StateCheck(LastSeenBy(Myself),STATE_SLOWED)
+		StateCheck(LastSeenBy(Myself),STATE_BLIND)
+		StateCheck(LastSeenBy(Myself),STATE_CONFUSED)
+	HaveSpellRES("CA#DISM")  // Dispel Magic
+	!GlobalTimerNotExpired("Dispel_Magic","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Dispel_Magic","LOCALS",18)
+		SpellRES("CA#DISM",LastSeenBy(Myself))  // Dispel Magic
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	OR(2)
+		Allegiance(Myself,NEUTRAL)
+		Allegiance(Myself,GOODCUTOFF)
+	OR(2)
+		Detect([NEUTRAL])
+		Detect([GOODCUTOFF])
+	OR(8)
+		StateCheck(LastSeenBy(Myself),STATE_CHANTBAD)
+		StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+		StateCheck(LastSeenBy(Myself),STATE_STUNNED)
+		StateCheck(LastSeenBy(Myself),STATE_SLEEPING)
+		StateCheck(LastSeenBy(Myself),STATE_SILENCED)
+		StateCheck(LastSeenBy(Myself),STATE_SLOWED)
+		StateCheck(LastSeenBy(Myself),STATE_BLIND)
+		StateCheck(LastSeenBy(Myself),STATE_CONFUSED)
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	HaveSpellRES("CA#DISM")  // Dispel Magic
+	!GlobalTimerNotExpired("Dispel_Magic","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Dispel_Magic","LOCALS",18)
+		SpellRES("CA#DISM",LastSeenBy(Myself))  // Dispel Magic
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Detect(NearestMyGroupOfType)
+	OR(8)
+		StateCheck(LastSeenBy(Myself),STATE_CHANTBAD)
+		StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+		StateCheck(LastSeenBy(Myself),STATE_STUNNED)
+		StateCheck(LastSeenBy(Myself),STATE_SLEEPING)
+		StateCheck(LastSeenBy(Myself),STATE_SILENCED)
+		StateCheck(LastSeenBy(Myself),STATE_SLOWED)
+		StateCheck(LastSeenBy(Myself),STATE_BLIND)
+		StateCheck(LastSeenBy(Myself),STATE_CONFUSED)
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	HaveSpellRES("CA#DISM")  // Dispel Magic
+	!GlobalTimerNotExpired("Dispel_Magic","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Dispel_Magic","LOCALS",18)
+		SpellRES("CA#DISM",LastSeenBy(Myself))  // Dispel Magic
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Detect(NearestEnemyOf(Myself))
+	OR(14)
+		StateCheck(LastSeenBy(Myself),STATE_BLESS)
+		StateCheck(LastSeenBy(Myself),STATE_HASTED)
+		StateCheck(LastSeenBy(Myself),STATE_CHANT)
+		StateCheck(LastSeenBy(Myself),STATE_DRAWUPONHOLYMIGHT)
+		StateCheck(LastSeenBy(Myself),STATE_LUCK)
+		StateCheck(LastSeenBy(Myself),STATE_AID)
+		StateCheck(LastSeenBy(Myself),STATE_BLUR)
+		StateCheck(LastSeenBy(Myself),STATE_MIRRORIMAGE)
+		StateCheck(LastSeenBy(Myself),STATE_ILLUSIONS)
+		StateCheck(LastSeenBy(Myself),STATE_NOT_TARGETABLE)
+		StateCheck(LastSeenBy(Myself),1673560080)
+		CheckStatGT(LastSeenBy(Myself),0,MINORGLOBE)
+		CheckStatGT(LastSeenBy(Myself),0,SHIELDGLOBE)
+		CheckStatGT(LastSeenBy(Myself),0,STONESKINS)
+	HaveSpellRES("CA#DISM")  // Dispel Magic
+	!GlobalTimerNotExpired("Dispel_Magic","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Dispel_Magic","LOCALS",18)
+		SpellRES("CA#DISM",LastSeenBy(Myself))  // Dispel Magic
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	OR(3)
+		StateCheck(Myself,STATE_BLIND)
+		StateCheck(Myself,STATE_SLOWED)
+		StateCheck(Myself,STATE_CHANTBAD)
+	HaveSpellRES("CA#DISPM")  // Dispel Magic
+	!GlobalTimerNotExpired("Dispel_Magic","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Dispel_Magic","LOCALS",18)
+		SpellRES("CA#DISPM",Myself)  // Dispel Magic
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	OR(3)
+		StateCheck(Myself,STATE_BLIND)
+		StateCheck(Myself,STATE_SLOWED)
+		StateCheck(Myself,STATE_CHANTBAD)
+	HaveSpellRES("CA#DISPM")  // Dispel Magic
+	!GlobalTimerNotExpired("Dispel_Magic","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Dispel_Magic","LOCALS",18)
+		SpellRES("CA#DISPM",Myself)  // Dispel Magic
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	Detect([EVILCUTOFF])
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	OR(8)
+		StateCheck(LastSeenBy(Myself),STATE_CHANTBAD)
+		StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+		StateCheck(LastSeenBy(Myself),STATE_STUNNED)
+		StateCheck(LastSeenBy(Myself),STATE_SLEEPING)
+		StateCheck(LastSeenBy(Myself),STATE_SILENCED)
+		StateCheck(LastSeenBy(Myself),STATE_SLOWED)
+		StateCheck(LastSeenBy(Myself),STATE_BLIND)
+		StateCheck(LastSeenBy(Myself),STATE_CONFUSED)
+	HaveSpellRES("CA#DISPM")  // Dispel Magic
+	!GlobalTimerNotExpired("Dispel_Magic","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Dispel_Magic","LOCALS",18)
+		SpellRES("CA#DISPM",LastSeenBy(Myself))  // Dispel Magic
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	OR(2)
+		Allegiance(Myself,NEUTRAL)
+		Allegiance(Myself,GOODCUTOFF)
+	OR(2)
+		Detect([NEUTRAL])
+		Detect([GOODCUTOFF])
+	OR(8)
+		StateCheck(LastSeenBy(Myself),STATE_CHANTBAD)
+		StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+		StateCheck(LastSeenBy(Myself),STATE_STUNNED)
+		StateCheck(LastSeenBy(Myself),STATE_SLEEPING)
+		StateCheck(LastSeenBy(Myself),STATE_SILENCED)
+		StateCheck(LastSeenBy(Myself),STATE_SLOWED)
+		StateCheck(LastSeenBy(Myself),STATE_BLIND)
+		StateCheck(LastSeenBy(Myself),STATE_CONFUSED)
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	HaveSpellRES("CA#DISPM")  // Dispel Magic
+	!GlobalTimerNotExpired("Dispel_Magic","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Dispel_Magic","LOCALS",18)
+		SpellRES("CA#DISPM",LastSeenBy(Myself))  // Dispel Magic
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Detect(NearestMyGroupOfType)
+	OR(8)
+		StateCheck(LastSeenBy(Myself),STATE_CHANTBAD)
+		StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+		StateCheck(LastSeenBy(Myself),STATE_STUNNED)
+		StateCheck(LastSeenBy(Myself),STATE_SLEEPING)
+		StateCheck(LastSeenBy(Myself),STATE_SILENCED)
+		StateCheck(LastSeenBy(Myself),STATE_SLOWED)
+		StateCheck(LastSeenBy(Myself),STATE_BLIND)
+		StateCheck(LastSeenBy(Myself),STATE_CONFUSED)
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	HaveSpellRES("CA#DISPM")  // Dispel Magic
+	!GlobalTimerNotExpired("Dispel_Magic","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Dispel_Magic","LOCALS",18)
+		SpellRES("CA#DISPM",LastSeenBy(Myself))  // Dispel Magic
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Detect(NearestEnemyOf(Myself))
+	OR(14)
+		StateCheck(LastSeenBy(Myself),STATE_BLESS)
+		StateCheck(LastSeenBy(Myself),STATE_HASTED)
+		StateCheck(LastSeenBy(Myself),STATE_CHANT)
+		StateCheck(LastSeenBy(Myself),STATE_DRAWUPONHOLYMIGHT)
+		StateCheck(LastSeenBy(Myself),STATE_LUCK)
+		StateCheck(LastSeenBy(Myself),STATE_AID)
+		StateCheck(LastSeenBy(Myself),STATE_BLUR)
+		StateCheck(LastSeenBy(Myself),STATE_MIRRORIMAGE)
+		StateCheck(LastSeenBy(Myself),STATE_ILLUSIONS)
+		StateCheck(LastSeenBy(Myself),STATE_NOT_TARGETABLE)
+		StateCheck(LastSeenBy(Myself),1673560080)
+		CheckStatGT(LastSeenBy(Myself),0,MINORGLOBE)
+		CheckStatGT(LastSeenBy(Myself),0,SHIELDGLOBE)
+		CheckStatGT(LastSeenBy(Myself),0,STONESKINS)
+	HaveSpellRES("CA#DISPM")  // Dispel Magic
+	!GlobalTimerNotExpired("Dispel_Magic","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Dispel_Magic","LOCALS",18)
+		SpellRES("CA#DISPM",LastSeenBy(Myself))  // Dispel Magic
+END
+*/
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_MAGIC_STONE)  // SPPR106.SPL (Magical Stone)
+	Detect(NearestEnemyOf(Myself))
+	OR(2)
+		True()
+		HPGT(LastSeenBy(Myself),10)
+	OR(2)
+		True()
+		General(LastSeenBy(Myself),UNDEAD)
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_MAGIC_STONE)  // SPPR106.SPL (Magical Stone)
+END
+*/
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpell(CLERIC_COMMAND)  // SPPR102.SPL (Command)
+	Detect(NearestEnemyOf(Myself))
+	OR(3)
+		!StateCheck(LastSeenBy(Myself),STATE_CONFUSED)
+		!StateCheck(LastSeenBy(Myself),STATE_PANIC)
+		!StateCheck(LastSeenBy(Myself),STATE_BLIND)
+	!StateCheck(LastSeenBy(Myself),STATE_FEEBLEMINDED)
+	!StateCheck(LastSeenBy(Myself),STATE_OUT_OF_ACTION)
+	!StateCheck(LastSeenBy(Myself),STATE_HARMLESS)
+	!StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+	!StateCheck(LastSeenBy(Myself),STATE_SLEEPING)
+	!StateCheck(LastSeenBy(Myself),STATE_CHARMED)
+	CheckStatLT(LastSeenBy(Myself),70,RESISTMAGIC)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(LastSeenBy(Myself),CLERIC_COMMAND)  // SPPR102.SPL (Command)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	RandomNum(2,1)
+	Detect(NearestEnemyOf(Myself))
+	General(LastSeenBy(Myself),UNDEAD)
+	LevelLT(LastSeenBy(Myself),8)
+	!StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+	!StateCheck(LastSeenBy(Myself),STATE_SLEEPING)
+	CheckStat(LastSeenBy(Myself),0,HELD)
+	HPGT(LastSeenBy(Myself),10)
+THEN
+	RESPONSE #100
+		Turn()
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	OR(5)
+		Detect([GOODCUTOFF])
+		Detect([PC])
+		Detect(Protagonist)
+		Detect(LastSummonerOf(Myself))
+		Detect(LastSummonerOf(LastSummonerOf(Myself)))
+	OR(6)
+		True()
+		LevelGT(LastSeenBy(Myself),5)
+		LevelGT(LastSeenBy(Myself),10)
+		LevelGT(LastSeenBy(Myself),15)
+		LevelGT(LastSeenBy(Myself),20)
+		LevelGT(LastSeenBy(Myself),25)
+	HPLT(LastSeenBy(Myself),30)
+	HPPercentLT(LastSeenBy(Myself),70)
+	Range(LastSeenBy(Myself),9)
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	!StateCheck(LastSeenBy(Myself),STATE_INVISIBLE)
+	!StateCheck(LastSeenBy(Myself),STATE_IMPROVEDINVISIBILITY)
+	!StateCheck(Myself,STATE_INVISIBLE)
+	!StateCheck(Myself,STATE_IMPROVEDINVISIBILITY)
+	HaveSpellRES("CA#INV10")  // Invisibility 10-foot radius
+	!HaveSpellRES("CA#II10")  // Invisibility 10-foot radius
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#INV10",LastSeenBy(Myself))  // Invisibility 10-foot radius
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	OR(3)
+		Detect([EVILCUTOFF])
+		Detect(LastSummonerOf(Myself))
+		Detect(LastSummonerOf(LastSummonerOf(Myself)))
+	OR(6)
+		True()
+		LevelGT(LastSeenBy(Myself),5)
+		LevelGT(LastSeenBy(Myself),10)
+		LevelGT(LastSeenBy(Myself),15)
+		LevelGT(LastSeenBy(Myself),20)
+		LevelGT(LastSeenBy(Myself),25)
+	HPLT(LastSeenBy(Myself),30)
+	HPPercentLT(LastSeenBy(Myself),70)
+	Range(LastSeenBy(Myself),9)
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	!StateCheck(LastSeenBy(Myself),STATE_INVISIBLE)
+	!StateCheck(LastSeenBy(Myself),STATE_IMPROVEDINVISIBILITY)
+	!StateCheck(Myself,STATE_INVISIBLE)
+	!StateCheck(Myself,STATE_IMPROVEDINVISIBILITY)
+	HaveSpellRES("CA#INV10")  // Invisibility 10-foot radius
+	!HaveSpellRES("CA#II10")  // Invisibility 10-foot radius
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#INV10",LastSeenBy(Myself))  // Invisibility 10-foot radius
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	OR(5)
+		Detect([GOODCUTOFF])
+		Detect([PC])
+		Detect(Protagonist)
+		Detect(LastSummonerOf(Myself))
+		Detect(LastSummonerOf(LastSummonerOf(Myself)))
+	OR(6)
+		True()
+		LevelGT(LastSeenBy(Myself),5)
+		LevelGT(LastSeenBy(Myself),10)
+		LevelGT(LastSeenBy(Myself),15)
+		LevelGT(LastSeenBy(Myself),20)
+		LevelGT(LastSeenBy(Myself),25)
+	HPLT(LastSeenBy(Myself),30)
+	HPPercentLT(LastSeenBy(Myself),70)
+	Range(LastSeenBy(Myself),9)
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	!StateCheck(LastSeenBy(Myself),STATE_INVISIBLE)
+	!StateCheck(LastSeenBy(Myself),STATE_IMPROVEDINVISIBILITY)
+	!StateCheck(Myself,STATE_INVISIBLE)
+	!StateCheck(Myself,STATE_IMPROVEDINVISIBILITY)
+	HaveSpellRES("CA#II10")  // Improved Invisibility 10' Radius
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#II10",LastSeenBy(Myself))  // Improved Invisibility 10' Radius
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	OR(3)
+		Detect([EVILCUTOFF])
+		Detect(LastSummonerOf(Myself))
+		Detect(LastSummonerOf(LastSummonerOf(Myself)))
+	OR(6)
+		True()
+		LevelGT(LastSeenBy(Myself),5)
+		LevelGT(LastSeenBy(Myself),10)
+		LevelGT(LastSeenBy(Myself),15)
+		LevelGT(LastSeenBy(Myself),20)
+		LevelGT(LastSeenBy(Myself),25)
+	HPLT(LastSeenBy(Myself),30)
+	HPPercentLT(LastSeenBy(Myself),70)
+	Range(LastSeenBy(Myself),9)
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	!StateCheck(LastSeenBy(Myself),STATE_INVISIBLE)
+	!StateCheck(LastSeenBy(Myself),STATE_IMPROVEDINVISIBILITY)
+	!StateCheck(Myself,STATE_INVISIBLE)
+	!StateCheck(Myself,STATE_IMPROVEDINVISIBILITY)
+	HaveSpellRES("CA#II10")  // Improved Invisibility 10' Radius
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#II10",LastSeenBy(Myself))  // Improved Invisibility 10' Radius
+END
+
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	HaveSpellRES("CA#POLS")  // Polymorph Self
+	!GlobalTimerNotExpired("Polymorph_Self","LOCALS")
+	False()
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SetGlobalTimer("Polymorph_Self","LOCALS",300)
+		SpellRES("CA#POLS",Myself)  // Polymorph Self
+END
+*/
+/*IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!Allegiance(Myself,EVILCUTOFF)
+	OR(5)
+		Detect([GOODCUTOFF])
+		Detect([PC])
+		Detect(Protagonist)
+		Detect(LastSummonerOf(Myself))
+		Detect(LastSummonerOf(LastSummonerOf(Myself)))
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	HPLT(LastSeenBy(Myself),50)
+	HPPercentLT(LastSeenBy(Myself),70)
+	!General(LastSeenBy(Myself),UNDEAD)
+	HaveSpellRES("CA#CURSW")  // Cure Serious Wounds
+	CombatCounter(0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#CURSW",LastSeenBy(Myself))  // Cure Serious Wounds
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	OR(3)
+		Detect([EVILCUTOFF])
+		Detect(LastSummonerOf(Myself))
+		Detect(LastSummonerOf(LastSummonerOf(Myself)))
+	!Allegiance(LastSeenBy(Myself),GOODBUTRED)
+	HPLT(LastSeenBy(Myself),50)
+	HPPercentLT(LastSeenBy(Myself),70)
+	!General(LastSeenBy(Myself),UNDEAD)
+	HaveSpellRES("CA#CURSW")  // Cure Serious Wounds
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#CURSW",LastSeenBy(Myself))  // Cure Serious Wounds
+END
+*/
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	OR(2)
+		HPPercentLT(Myself,20)
+		HPPercent(Myself,40)
+	!RandomNum(4,1)
+	Detect(NearestEnemyOf(Myself))
+	!Range(TenthNearestMyGroupOfType,10)
+THEN
+	RESPONSE #100
+		ForceSpellRES("CA#TWOE",TenthNearestMyGroupOfType)  // Teleport Without Error
+END
+/*
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	OR(2)
+		HPPercentLT(Myself,20)
+		HPPercent(Myself,20)
+	!RandomNum(4,1)
+	Detect(NearestEnemyOf(Myself))
+THEN
+	RESPONSE #100
+		RunAwayFromNoInterrupt(NearestEnemyOf(Myself),50)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	!CheckStatGT(Myself,0,SANCTUARY)
+	!StateCheck(Myself,STATE_INVISIBLE)
+	OR(2)
+		HPPercentGT(Myself,20)
+		HPPercent(Myself,20)
+	OR(9)
+		Detect(NearestEnemyOfType([0.0.0.0.0.ILLUSIONARY]))
+		Detect(NearestEnemyOfType([0.0.0.0.0.SUMMONED]))
+		Detect(NearestEnemyOf(Myself))
+		Detect(NearestEnemyOfType([0.0.0.RANGER_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.PALADIN_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.DRUID_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.CLERIC_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.MAGE_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.SORCERER]))
+	OR(10)
+		LevelLT(LastSeenBy(Myself),6)
+		LevelGT(LastSeenBy(Myself),5)
+		LevelGT(LastSeenBy(Myself),10)
+		LevelGT(LastSeenBy(Myself),15)
+		LevelGT(LastSeenBy(Myself),20)
+		LevelGT(LastSeenBy(Myself),25)
+		LevelGT(LastSeenBy(Myself),30)
+		LevelGT(LastSeenBy(Myself),35)
+		LevelGT(LastSeenBy(Myself),40)
+		LevelGT(LastSeenBy(Myself),45)
+	OR(8)
+		True()
+		!StateCheck(LastSeenBy(Myself),STATE_STUNNED)
+		!StateCheck(LastSeenBy(Myself),STATE_FEEBLEMINDED)
+		!StateCheck(LastSeenBy(Myself),STATE_SLEEPING)
+		!StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+		!StateCheck(LastSeenBy(Myself),STATE_CONFUSED)
+		!StateCheck(LastSeenBy(Myself),STATE_BLIND)
+		!StateCheck(LastSeenBy(Myself),STATE_OUT_OF_ACTION)
+	!Range(LastSeenBy(Myself),10)
+THEN
+	RESPONSE #100
+		ForceSpellRES("CA#TWOE",LastSeenBy(Myself))  // Teleport Without Error
+		Continue()
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	Detect(NearestEnemyOf(Myself))
+	CheckStatLT(LastSeenBy(Myself),5,INT)
+	Range(LastSeenBy(Myself),15)
+	!HasItemEquiped("MINDFLAY",Myself)  // Attack
+	HaveSpell(3152)  // SPIN152.SPL (Shapechange Mind Flayer)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		Spell(Myself,3152)  // SPIN152.SPL (Shapechange Mind Flayer)
+		AttackReevaluate(LastSeenBy(Myself),50)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	!Detect(NearestEnemyOfType([0.0.0.FIGHTER_ALL]))
+	OR(5)
+		Detect(NearestEnemyOfType([0.0.0.BARD_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.DRUID_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.CLERIC_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.MAGE_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.SORCERER]))
+	!AttackedBy([ANYONE],DEFAULT)
+	HPPercentLT(Myself,20)
+	CheckStatLT(Myself,90,RESISTMAGIC)
+	!HasItemEquiped("PLYJELLY",Myself)  // Attack
+	HaveSpellRES("SPWI496")  // SPWI496.SPL (Shapeshifts Mustard Jelly)
+	!HaveSpellRES("CA#HEAL1")  // Heal
+	!HaveSpellRES("CA#HEAL")  // Heal
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("SPWI496",Myself)  // SPWI496.SPL (Shapeshifts Mustard Jelly)
+		// RunAwayFromNoInterrupt(LastSeenBy(Myself),50)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	Detect(NearestEnemyOfType([0.0.0.FIGHTER_ALL]))
+	AttackedBy([ANYONE],DEFAULT)
+	HPPercentLT(Myself,20)
+	!HasItemEquiped("PLYWOLF1",Myself)  // Attack
+	HaveSpellRES("SPWI499")  // SPWI499.SPL (Shapeshifts Wolf)
+	!HaveSpellRES("CA#HEAL1")  // Heal
+	!HaveSpellRES("CA#HEAL")  // Heal
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("SPWI499",Myself)  // SPWI499.SPL (Shapeshifts Wolf)
+		// RunAwayFromNoInterrupt(LastSeenBy(Myself),50)
+END
+*/
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	!Detect(NearestEnemyOf(Myself))
+	Allegiance(Myself,EVILCUTOFF)
+	HitBy([GOODCUTOFF],CRUSHING)
+	!Race(LastHitter,PLANATAR)
+	!Race(LastHitter,DARKPLANATAR)
+	!Detect(LastHitter)
+	!Specifics(LastHitter,245)
+	!Allegiance(LastHitter,NEUTRAL)
+	!Allegiance(LastHitter,GOODBUTRED)
+THEN
+	RESPONSE #100
+		ForceSpellRES("CA#TWOE",LastHitter)  // Teleport Without Error
+		EquipMostDamagingMelee()
+		AttackReevaluate(LastHitter,15)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	!Detect(NearestEnemyOf(Myself))
+	Allegiance(Myself,GOODCUTOFF)
+	HitBy([EVILCUTOFF],CRUSHING)
+	!Race(LastHitter,PLANATAR)
+	!Race(LastHitter,DARKPLANATAR)
+	!Detect(LastHitter)
+	!Specifics(LastHitter,245)
+	!Allegiance(LastHitter,NEUTRAL)
+	!Allegiance(LastHitter,GOODBUTRED)
+THEN
+	RESPONSE #100
+		ForceSpellRES("CA#TWOE",LastHitter)  // Teleport Without Error
+		EquipMostDamagingMelee()
+		AttackReevaluate(LastHitter,15)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!CheckStatGT(Myself,0,SANCTUARY)
+	!SpellCast(Myself,CLERIC_SANCTUARY)  // SPPR109.SPL (Sanctuary)
+	OR(10)
+		Detect(NearestEnemyOfType([0.0.0.0.0.ILLUSIONARY]))
+		Detect(NearestEnemyOfType([0.0.0.0.0.SUMMONED]))
+		Detect(NearestEnemyOfType([0.0.0.0.0.SUMMONED_DEMON]))
+		Detect(NearestEnemyOf(Myself))
+		Detect(NearestEnemyOfType([0.0.0.RANGER_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.PALADIN_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.DRUID_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.CLERIC_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.MAGE_ALL]))
+		Detect(NearestEnemyOfType([0.0.0.SORCERER]))
+	OR(10)
+		LevelLT(LastSeenBy(Myself),6)
+		LevelGT(LastSeenBy(Myself),5)
+		LevelGT(LastSeenBy(Myself),10)
+		LevelGT(LastSeenBy(Myself),15)
+		LevelGT(LastSeenBy(Myself),20)
+		LevelGT(LastSeenBy(Myself),25)
+		LevelGT(LastSeenBy(Myself),30)
+		LevelGT(LastSeenBy(Myself),35)
+		LevelGT(LastSeenBy(Myself),40)
+		LevelGT(LastSeenBy(Myself),45)
+	OR(9)
+		StateCheck(LastSeenBy(Myself),STATE_NORMAL)
+		!StateCheck(LastSeenBy(Myself),STATE_NORMAL)
+		!StateCheck(LastSeenBy(Myself),STATE_STUNNED)
+		!StateCheck(LastSeenBy(Myself),STATE_FEEBLEMINDED)
+		!StateCheck(LastSeenBy(Myself),STATE_SLEEPING)
+		!StateCheck(LastSeenBy(Myself),STATE_HELPLESS)
+		!StateCheck(LastSeenBy(Myself),STATE_CONFUSED)
+		!StateCheck(LastSeenBy(Myself),STATE_BLIND)
+		!StateCheck(LastSeenBy(Myself),STATE_OUT_OF_ACTION)
+THEN
+	RESPONSE #100
+		// ReallyForceSpellRES("NOATTACK",Myself)  // No such index
+		EquipMostDamagingMelee()
+		AttackReevaluate(LastSeenBy(Myself),15)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,GOODCUTOFF)
+	Detect([GOODCUTOFF])
+	CheckStatLT(LastSeenBy(Myself),50,RESISTCOLD)
+	HaveSpellRES("CA#RCOLD")  // Resist Cold
+	!Detect(NearestEnemyOf(Myself))
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#RCOLD",LastSeenBy(Myself))  // Resist Cold
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	Detect([EVILCUTOFF])
+	CheckStatLT(LastSeenBy(Myself),50,RESISTCOLD)
+	HaveSpellRES("CA#RCOLD")  // Resist Cold
+	!Detect(NearestEnemyOf(Myself))
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#RCOLD",LastSeenBy(Myself))  // Resist Cold
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,GOODCUTOFF)
+	!Detect(NearestEnemyOf(Myself))
+	HaveSpellRES("CA#DSP")  // Detect Snares and Pits
+	!GlobalTimerNotExpired("Detect_Traps_and_Snares","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#DSP",Myself)  // Detect Snares and Pits
+		SetGlobalTimer("Detect_Traps_and_Snares","LOCALS",180)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,GOODCUTOFF)
+	!Detect(NearestEnemyOf(Myself))
+	HaveSpellRES("CA#DSNP")  // Detect Snares and Pits
+	!GlobalTimerNotExpired("Detect_Traps_and_Snares","LOCALS")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
+		SpellRES("CA#DSNP",Myself)  // Detect Snares and Pits
+		SetGlobalTimer("Detect_Traps_and_Snares","LOCALS",180)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,GOODCUTOFF)
+	!Detect([GOODCUTOFF])
+	Delay(1)
+THEN
+	RESPONSE #100
+		ForceSpellRES("CA#TWOE",Player1)  // Teleport Without Error
+		SmallWait(5)
+	RESPONSE #100
+		ForceSpellRES("CA#TWOE",Player2)  // Teleport Without Error
+		SmallWait(5)
+	RESPONSE #100
+		ForceSpellRES("CA#TWOE",Player3)  // Teleport Without Error
+		SmallWait(5)
+	RESPONSE #100
+		ForceSpellRES("CA#TWOE",Player4)  // Teleport Without Error
+		SmallWait(5)
+	RESPONSE #100
+		ForceSpellRES("CA#TWOE",Player5)  // Teleport Without Error
+		SmallWait(5)
+	RESPONSE #100
+		ForceSpellRES("CA#TWOE",Player6)  // Teleport Without Error
+		SmallWait(5)
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	!HaveSpellRES("CA#AMSC")  // Cancel Anti-Magic Shell
+	!StateCheck(Myself,STATE_SILENCED)
+	CheckStatLT(Myself,60,SPELLFAILUREPRIEST)
+	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
+	//!CheckStatGT(Myself,0,POLYMORPHED)
+	Allegiance(Myself,EVILCUTOFF)
+	!Detect([GOODCUTOFF])
+	!Detect([EVILCUTOFF])
+	Detect([NEUTRAL])
+	!Range(LastSeenBy(Myself),15)
+	Delay(1)
+THEN
+	RESPONSE #100
+		ForceSpellRES("CA#TWOE",TenthNearest([NEUTRAL]))  // Teleport Without Error
+END
+
+IF
+	ActionListEmpty()
+	OR(2)
+		!GlobalTimerNotExpired("Cast_and_Attack","LOCALS")
+		CheckStatGT(Myself,0,AURACLEANSING)
+	Allegiance(Myself,EVILCUTOFF)
+	!Detect([GOODCUTOFF])
+	!Detect([EVILCUTOFF])
+	Delay(1)
+THEN
+	RESPONSE #100
+		// ReallyForceSpellRES("NOATTACK",Myself)  // No such index
+		RandomWalk()
+END
+
