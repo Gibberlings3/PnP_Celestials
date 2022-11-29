@@ -1,15 +1,27 @@
-BACKUP ~celestials/backup~ /* location to store files for uninstall purposes */
-SUPPORT "http://gibberlings3.net/forums/index.php?showforum=28" /* display email address if install fails */
+BACKUP ~weidu_external/celestials/backup~ /* location to store files for uninstall purposes */
+SUPPORT ~https://www.gibberlings3.net/forums/forum/28-miscellaneous-released-mods/~ /* display email address if install fails */
 
 ALWAYS
 
-  ACTION_IF NOT VARIABLE_IS_SET cd_always THEN BEGIN
+  ACTION_IF NOT VARIABLE_IS_SET PnP_Celestials THEN BEGIN
 
-    OUTER_SET cd_always = 1 // just do this once per install
+    OUTER_SET PnP_Celestials = 1 // just do this once per install
+  
+    ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
+    
+      OUTER_SPRINT ~tra_location~ ~celestials/languages~ // not actually used, but set anyway
+      
+    END ELSE BEGIN  
+    
+      OUTER_SPRINT ~tra_location~ ~weidu_external/celestials/languages~ // not actually used, but set anyway
 
-    // convert strings to UTF-8 for BGEE/BG2EE
-    ACTION_DEFINE_ARRAY cdreload BEGIN setup END
-    LAF HANDLE_CHARSETS INT_VAR infer_charsets = 1 STR_VAR tra_path = ~celestials/languages~ reload_array = cdreload END
+      // convert strings from UTF-8 for originals  
+      ACTION_DEFINE_ARRAY cdnoconvert BEGIN weidu END
+      ACTION_DEFINE_ARRAY cdreload BEGIN game END
+      LAF HANDLE_CHARSETS INT_VAR from_utf8 = 1 infer_charsets = 1 
+                          STR_VAR default_language = ~english~ tra_path = ~celestials/languages~ out_path = ~weidu_external/celestials/languages~ noconvert_array = cdnoconvert reload_array = cdreload END
+                        
+    END
 
   END
 
@@ -24,32 +36,43 @@ AUTO_TRA ~celestials/languages/%s~
 LANGUAGE
   ~English~
   ~english~
-  ~celestials/languages/english/setup.tra~
+  ~celestials/languages/english/game.tra~
+  ~celestials/languages/english/weidu.tra~
 LANGUAGE
   ~Francais (Translation by Mathrim Cauthon, Isaya)~
   ~french~
-  ~celestials/languages/english/setup.tra~
-  ~celestials/languages/french/setup.tra~
+  ~celestials/languages/english/game.tra~
+  ~celestials/languages/english/weidu.tra~
+  ~celestials/languages/french/game.tra~
+  ~celestials/languages/french/weidu.tra~
 LANGUAGE
   ~Deutsch(Translation by Telperion)~
   ~german~
-  ~celestials/languages/english/setup.tra~
-  ~celestials/languages/german/setup.tra~
+  ~celestials/languages/english/game.tra~
+  ~celestials/languages/english/weidu.tra~
+  ~celestials/languages/german/game.tra~
+  ~celestials/languages/german/weidu.tra~
 LANGUAGE
   ~Polski (Translation by yarpen)~
   ~polish~
-  ~celestials/languages/english/setup.tra~
-  ~celestials/languages/polish/setup.tra~
+  ~celestials/languages/english/game.tra~
+  ~celestials/languages/english/weidu.tra~
+  ~celestials/languages/polish/game.tra~
+  ~celestials/languages/polish/weidu.tra~
 LANGUAGE
   ~Russian (Translation by Prowler, Tierno, and A.E.R.I.E. team)~
   ~russian~
-  ~celestials/languages/english/setup.tra~
-  ~celestials/languages/russian/setup.tra~
+  ~celestials/languages/english/game.tra~
+  ~celestials/languages/english/weidu.tra~
+  ~celestials/languages/russian/game.tra~
+  ~celestials/languages/russian/weidu.tra~
 LANGUAGE
   ~Italian (Translation by Aedan)~
   ~italian~
-  ~celestials/languages/english/setup.tra~
-  ~celestials/languages/russian/italian.tra~
+  ~celestials/languages/english/game.tra~
+  ~celestials/languages/english/weidu.tra~
+  ~celestials/languages/italian/game.tra~
+  ~celestials/languages/italian/weidu.tra~
 
 /////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
 /////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\

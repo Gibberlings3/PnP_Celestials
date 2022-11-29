@@ -1,0 +1,46 @@
+//Rodzaje Devy
+
+@100=~Astralny Deva~
+@101=~Œwiêty Deva~
+@102=~Deva ¿ywio³ów~
+
+//Zaklêcia Devy
+
+@200=~Wykrywanie pu³apek~
+@201=~Sfera Anty-magii~
+@202=~Rozproszenie Sfery Anty-magii~
+@203=~Sfera Anty-magii (Odrzucanie)
+Poziom: 6
+Zasiêg: 0
+Czas trwania: 1 tura/poziom
+Czas rzucania: 1
+Obszar dzia³ania: rzucaj¹cy
+Rzut obronny: brak
+
+Po rzuceniu tego zaklêcia, mag tworzy potê¿n¹, niewidzialn¹ barierê, która porusza siê wraz z nim. Obszar chroniony przez t¹ tarczê staje siê ca³kowicie odporny na dzia³anie jakiejkolwiek magii. Sfera Anty-magii zapobiega tak¿e dzia³aniu jakichkolwiek magicznych przedmiotów i artefaktów. Ponadto postaæ bêd¹ca pod jej wp³ywem, jest chroniona przed wszelkimi zioniêciami, gazami, wzrokiem, atakami opartymi na dŸwiêkach i unikalnymi atakami rozmaitych istot.
+
+Sfera Anty-magii rozprasza i niszczy wszelkie zauroczenia, przywo³ania lub przemiany. Jednak zwyczajne istoty, np. troll bez problemu mog¹ przejœæ barierê, tak samo jak zwyk³e bronie. Trzeba pamiêtaæ, ¿e musz¹ to byæ istoty pochodz¹ce z pierwszej sfery materialnej, czyli np. ¿ywio³aki, choæby nie by³y przyzwane, zostan¹ natychmiast odes³ane do swej sfery macierzystej. Wielkie artefakty, œwiête czy pó³-boskie istoty nie odczuwaj¹ ¿adnych efektów tego zaklêcia. Rozproszenie magii nie rozprasza Bariery Anty-Magi. Nale¿y zwróciæ uwagê na to, ¿e postaæ rzucaj¹ca to zaklêcie, mo¿e w ka¿dym momencie je zakoñczyæ, jednak maksymalny czas trwania Sfery wynosi 1 turê na ka¿dy poziom doœwiadczenia maga.~
+@204=~Rzucenie zaklêcia Inwokacji/Wywo³añ~
+@205=~Wezwanie Planetara~
+@206=~Przywo³anie Astralnego Devy~
+@207=~Przywo³anie Devy ¯ywio³ów~
+@208=~Bezb³êdna teleportacja~
+@209=~Przywo³anie Œwiêtego Devy~
+@210=~Zauroczenie ¿ywio³aka~
+
+//Ekwipunek
+
+@300=~Miecz Planetara~
+@301=~Wiekiera Zniszczenia +3 Astralnego Devy~
+@302=~Jêzor ognia +1 Devy ¯ywio³ów~
+@303=~Ber³o uderzenia +3 Œwiêtego Devy~
+@304=~Wiekiera Zniszczenia +3 Devy~
+
+//Zaklêcia Planetara
+
+@400=~Ulepszona niewidzialnoœæ, promieñ 3 metry~
+@401=~Polimorfia innego~
+@402=~Ochrona przez z³em, promieñ 12 metrów~
+@4021=~Ochrona przed dobrem, promieñ 12 metry~
+@403=~Odpornoœæ na ch³ód~
+@404=~Symbol~
