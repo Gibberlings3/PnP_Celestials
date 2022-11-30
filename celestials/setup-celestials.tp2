@@ -375,8 +375,7 @@ COPY_EXISTING ~ca#pev40.spl~ ~override/ca#peg40.spl~ /* Protection from Good 40 
   SAY NAME2 @4021
   SAY 0x50 @4021 // descriptions exposed on EEs
   SAY 0x54 @4021
-  SET pro_good = RESOLVE_STR_REF(@4022)
-  LPF ALTER_EFFECT INT_VAR match_opcode = 139 parameter1 = pro_good END
+  LPF ALTER_EFFECT INT_VAR match_opcode = 139 parameter1 = 14770 END
 
 COPY ~celestials/planetar/at_will_innates/ca#rcold.spl~ ~override~ /* Resist Cold */
   SAY NAME1 @403
