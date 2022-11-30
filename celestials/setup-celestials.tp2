@@ -6,21 +6,23 @@ ALWAYS
   ACTION_IF NOT VARIABLE_IS_SET PnP_Celestials THEN BEGIN
 
     OUTER_SET PnP_Celestials = 1 // just do this once per install
-  
+
     ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
-    
+
+      OUTER_SET enhanced_edition = 1
       OUTER_SPRINT ~tra_location~ ~celestials/languages~ // not actually used, but set anyway
-      
-    END ELSE BEGIN  
-    
+
+    END ELSE BEGIN
+
+      OUTER_SET enhanced_edition = 0
       OUTER_SPRINT ~tra_location~ ~weidu_external/celestials/languages~ // not actually used, but set anyway
 
-      // convert strings from UTF-8 for originals  
+      // convert strings from UTF-8 for originals
       ACTION_DEFINE_ARRAY cdnoconvert BEGIN weidu END
       ACTION_DEFINE_ARRAY cdreload BEGIN game END
-      LAF HANDLE_CHARSETS INT_VAR from_utf8 = 1 infer_charsets = 1 
+      LAF HANDLE_CHARSETS INT_VAR from_utf8 = 1 infer_charsets = 1
                           STR_VAR default_language = ~english~ tra_path = ~celestials/languages~ out_path = ~weidu_external/celestials/languages~ noconvert_array = cdnoconvert reload_array = cdreload END
-                        
+
     END
 
   END
@@ -96,53 +98,55 @@ APPEND ~state.IDS~ ~0x00400010 STATE_NOT_TARGETABLE~ UNLESS ~STATE_NOT_TARGETABL
 APPEND ~state.IDS~ ~0x00102029 STATE_HARMLESS~ UNLESS ~STATE_HARMLESS~ // Add new state entry
 APPEND ~stats.IDS~ ~118 TRUE_SIGHT~ UNLESS ~TRUE_SIGHT~ // Add new stats entry even if useless without DS and ToBex on oBG
 
-COPY ~Celestials/copy~ ~override~ // bams, vvcs, wavs, effs, etc.
+COPY ~celestials/copy~ ~override~ // bams, vvcs, wavs, effs, etc.
 
 /////////////////////////////////////////////
 //Aasimon Shared Material
 
 //At will Innates
-LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr201 destination = ~ca#aid~ END // aid
-LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr104 destination = ~ca#devil~ END // detect evil
-LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr209 destination = ~ca#knal~ END // know alignment
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr201 destination = ~ca#aid~   RET_ARRAY cd_clone_spell_array END // aid
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr104 destination = ~ca#devil~ RET_ARRAY cd_clone_spell_array END // detect evil
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr209 destination = ~ca#knal~  RET_ARRAY cd_clone_spell_array END // know alignment
 
 COPY ~celestials/shared_aasimon_spells/at_will_innates/ca#twoe.spl~ override     /* Teleport Without Error */
   SAY NAME1 @208
   SAY NAME2 @208
 
 //Limited Use per day abilities
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr401 destination = ~ca#cursw~ END // cure serious wounds
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr401 destination = ~ca#cursw~ RET_ARRAY cd_clone_spell_array END // cure serious wounds
 
 ///////////////////////////////////////////////
 //Deva & planetar Shared Material
 
 //At will innates
-//LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi111 destination = ~ca#infra~ END // infravision
-LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi307 destination = ~ca#inv10~ END // invisiblity 10 foot radius
-LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi113 destination = ~ca#pevil~ END // protection from evil
-//LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi416 destination = ~ca#pols~ END // polymorph self
-LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi410 destination = ~ca#rcur~ END // remove curse
-LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr108 destination = ~ca#rfear~ END // remove fear
+//LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi111 destination = ~ca#infra~ RET_ARRAY cd_clone_spell_array END // infravision
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi307 destination = ~ca#inv10~ RET_ARRAY cd_clone_spell_array END // invisiblity 10 foot radius
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi113 destination = ~ca#pevil~ RET_ARRAY cd_clone_spell_array END // protection from evil
+//LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi416 destination = ~ca#pols~  RET_ARRAY cd_clone_spell_array END // polymorph self
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi410 destination = ~ca#rcur~  RET_ARRAY cd_clone_spell_array END // remove curse
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr108 destination = ~ca#rfear~ RET_ARRAY cd_clone_spell_array END // remove fear
 
 //Limited Use Innates
 
+ACTION_DEFINE_ASSOCIATIVE_ARRAY cd_clone_spell_array BEGIN ~ca#dsp~ => ~sppr205~ END // routine
 COPY ~celestials/devas/shared_spells/limited_use_innates/ca#dsp.spl~     ~override/ca#dsp.spl~     /* Detect Snares and Pits */
+     ~celestials/devas/shared_spells/limited_use_innates/ca#dspd.spl~    ~override/ca#dspd.spl~    /* Detect Snares and Pits (recurring) */
   SAY NAME1 @200
   SAY NAME2 @200
 
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr317 destination = ~ca#cudis~ END // cure disease
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr103 destination = ~ca#culw~ END // cure light wounds
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr303 destination = ~ca#dism~ END // dispel magic
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr607 destination = ~ca#heal1~ END // heal
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr317 destination = ~ca#cudis~ RET_ARRAY cd_clone_spell_array END // cure disease
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr103 destination = ~ca#culw~  RET_ARRAY cd_clone_spell_array END // cure light wounds
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr303 destination = ~ca#dism~  RET_ARRAY cd_clone_spell_array END // dispel magic
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr607 destination = ~ca#heal1~ RET_ARRAY cd_clone_spell_array END // heal
 
 //////////////////////////////
 //Astral Deva
 
 //At will innates
-LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi203 destination = ~ca#dinvs~ END // detect invisibilty
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi203 destination = ~ca#dinvs~ RET_ARRAY cd_clone_spell_array END // detect invisibilty
 
 //Limited Use innates
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr603 destination = ~ca#blbar~ END // blade barrier
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr603 destination = ~ca#blbar~ RET_ARRAY cd_clone_spell_array END // blade barrier
 
 //Items
 
@@ -177,9 +181,14 @@ COPY ~celestials/devas/astral_deva/creatures/ca#dastr.cre~ ~override~ /* Astral 
 COPY ~celestials/devas/monadic_deva/at_will_innates/ca#dmch.spl~     ~override/ca#dmch.spl~     /* Charm Elemental Spell file */
   SAY NAME1 @210
   SAY NAME2 @210
-  
-LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi507 destination = ~ca#hmon~ END // Hold Monster
-LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi212 destination = ~ca#mimg~ END // Mirror Image
+  PATCH_IF enhanced_edition BEGIN // change to race filter instead of targeted EFFs
+    LPF ALTER_EFFECT INT_VAR multi_match = 1 match_opcode = 177 opcode = 318 parameter1 = 0 parameter2 = 10 resist_dispel = 0 duration = 0 savingthrow = 0 savebonus = 0 STR_VAR resource = ~ca#dmch~ END
+    LPF ALTER_EFFECT INT_VAR multi_match = 1 match_opcode = 177 opcode = 5 parameter1 = 0 parameter2 = 0 END // add charm to spell directly
+    LPF DELETE_EFFECT INT_VAR match_opcode = 177 END // delete other elemental-specific EFF
+  END
+
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi507 destination = ~ca#hmon~ RET_ARRAY cd_clone_spell_array END // Hold Monster
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi212 destination = ~ca#mimg~ RET_ARRAY cd_clone_spell_array END // Mirror Image
 
 //Items
 
@@ -194,19 +203,19 @@ COPY_EXISTING ~rods04.itm~ ~override/ca#monrd.itm~
   LPF ALTER_EFFECT INT_VAR silent = 1 match_opcode = 233 match_parameter2 = 109 parameter1 = 3 END
   LPF ALTER_ITEM_HEADER INT_VAR header_type = 1 dicenumber = 1 dicesize = 8 thac0_bonus = 3 damage_bonus = 3 identify = 0 END
   PATCH_IF MOD_IS_INSTALLED "ITEM_REV.TP2" "0" BEGIN
-	LPF CLONE_EFFECT INT_VAR match_opcode = 177 match_parameter1 = 144 parameter1 = 188 parameter2 = 5 END // Slay vs earth elemental
-	LPF CLONE_EFFECT INT_VAR match_opcode = 177 STR_VAR match_resource = "GOLEHIT3" resource = "CA#HIT3" END // +3 Hit vs earth elemental
-	LPF CLONE_EFFECT INT_VAR match_opcode = 177 STR_VAR match_resource = "GOLEDAM5" resource = "CA#DAM5" END // +5 Dmg vs earth elemental
-	INNER_ACTION BEGIN
-	  COPY_EXISTING ~GOLEHIT3.eff~ ~override\CA#HIT3.eff~ // +3 Hit vs elemental - earth
-	  WRITE_LONG 0x1C 188
-	  WRITE_LONG 0x20 5
-	  COPY_EXISTING ~GOLEDAM5.eff~ ~override\CA#DAM5.eff~ // +5 Dmg vs elemental - earth
-	  WRITE_LONG 0x1C 188
-	  WRITE_LONG 0x20 5
-	END
+    LPF CLONE_EFFECT INT_VAR match_opcode = 177 match_parameter1 = 144 parameter1 = 188 parameter2 = 5 END // Slay vs earth elemental
+    LPF CLONE_EFFECT INT_VAR match_opcode = 177 STR_VAR match_resource = "GOLEHIT3" resource = "CA#HIT3" END // +3 Hit vs earth elemental
+    LPF CLONE_EFFECT INT_VAR match_opcode = 177 STR_VAR match_resource = "GOLEDAM5" resource = "CA#DAM5" END // +5 Dmg vs earth elemental
+    INNER_ACTION BEGIN
+      COPY_EXISTING ~GOLEHIT3.eff~ ~override\CA#HIT3.eff~ // +3 Hit vs elemental - earth
+      WRITE_LONG 0x1C 188
+      WRITE_LONG 0x20 5
+      COPY_EXISTING ~GOLEDAM5.eff~ ~override\CA#DAM5.eff~ // +5 Dmg vs elemental - earth
+      WRITE_LONG 0x1C 188
+      WRITE_LONG 0x20 5
+    END
   END ELSE BEGIN
-	LPF CLONE_EFFECT INT_VAR match_opcode = 177 parameter1 = 188 parameter2 = 5 STR_VAR match_resource = smitgol1 END // vs earth elemental
+    LPF CLONE_EFFECT INT_VAR match_opcode = 177 parameter1 = 188 parameter2 = 5 STR_VAR match_resource = smitgol1 END // vs earth elemental
     LPF CLONE_EFFECT INT_VAR match_opcode = 55  parameter1 = 188 parameter2 = 5 END // vs earth elemental
   END
 //  LPF ADD_ITEM_EFFECT INT_VAR type = 1 opcode = 146 target = 1 parameter1 = 1 parameter2 = 1 timing = 1 STR_VAR resource = noattack END
@@ -235,8 +244,8 @@ COPY ~celestials/devas/movanic_deva/at_will_innates/ca#amsc.spl~ ~override~   /*
   SAY NAME1 @202
   SAY NAME2 @202
 
-LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi311 destination = ~ca#pfnm~ END // protection from normal missles
-LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi701 destination = ~ca#sturn~ END // spell turning
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi311 destination = ~ca#pfnm~  RET_ARRAY cd_clone_spell_array END // protection from normal missiles
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi701 destination = ~ca#sturn~ RET_ARRAY cd_clone_spell_array END // spell turning
 
 //Limited Use Innates
 
@@ -260,8 +269,8 @@ COPY_EXISTING ~sw1h24.itm~ ~override/ca#movsw.itm~
   WRITE_BYTE  0x31 90 // 1H prof
   LPF ALTER_EFFECT INT_VAR silent = 1 STR_VAR match_resource = rods04 resource = ~ca#monrd~ END // pick up any self-targeted 324/318s
   LPF ALTER_ITEM_HEADER INT_VAR header_type = 1 dicenumber = 1 dicesize = 10 identify = 0 END
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 98 parameter1 = 1 parameter2 = 3 timing = 2 target = 1 probability1 = 100 END 
-  LPF CLONE_EFFECT INT_VAR match_opcode = 98 opcode = 142 parameter1 = 0 parameter2 = 56 END 
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 98 parameter1 = 1 parameter2 = 3 timing = 2 target = 1 probability1 = 100 END
+  LPF CLONE_EFFECT INT_VAR match_opcode = 98 opcode = 142 parameter1 = 0 parameter2 = 56 END
 //  LPF ADD_ITEM_EFFECT INT_VAR type = 1 opcode = 146 target = 1 parameter1 = 1 parameter2 = 1 timing = 1 STR_VAR resource = noattack END
 
 //Creatures
@@ -274,53 +283,106 @@ COPY ~celestials/devas/movanic_deva/creatures/ca#dmova.cre~ ~override~ /* Movani
 //Planetar
 
 //Always active
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = spwi609 destination = ~ca#tsigh~ END // true sight
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = spwi609 destination = ~ca#tsigh~ RET_ARRAY cd_clone_spell_array END // true sight
 COPY_EXISTING ~ca#tsigh.spl~ ~override~
-  LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 1 timing = 0 duration = 60 probability1 = 100 STR_VAR insert = "last" resource = "ca#tsigh" END
+  PATCH_IF enhanced_edition BEGIN
+    LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 target = 1 timing = 0 duration =  0 probability1 = 100 insert_point =   0 STR_VAR resource = "ca#tsigh" END
+  END ELSE BEGIN
+    LPF ADD_SPELL_EFFECT INT_VAR opcode = 206 target = 1 timing = 0 duration = 60 probability1 = 100 insert_point = 999 STR_VAR resource = "ca#tsigh" END
+  END
 
 //At will innates
-COPY ~celestials/planetar/at_will_innates/ca#ii10.spl~ ~override~   /* Improved Invisibility 10 foot radius */
+ACTION_IF FILE_EXISTS_IN_GAME ~spwi405a.spl~ BEGIN // bg2fp's weird II handling needs some special treatment
+
+  ACTION_DEFINE_ASSOCIATIVE_ARRAY cd_clone_spell_array BEGIN ~ca#ii10a~ => ~spwi405a~ END // to update mutually-exclusive II spell list
+
+  COPY_EXISTING ~spwi405a.spl~ ~override/ca#ii10a.spl~ // external spell for +4 saves
+    READ_LONG  0x64 abil_off
+    READ_SHORT 0x68 abil_num
+    READ_LONG  0x6a fx_off
+    READ_SHORT (abil_off + 0x1e) fx_num
+    READ_SHORT (abil_off + 0x20) fx_idx
+    SET fx_start = fx_num + fx_idx
+    READ_SHORT (abil_off + 0x1e + ((abil_num - 1) * 0x28)) fx_num
+    READ_SHORT (abil_off + 0x20 + ((abil_num - 1) * 0x28)) fx_idx
+    SET fx_end = fx_num + fx_idx
+    DELETE_BYTES (fx_off + (0x30 * fx_start)) (0x30 * (fx_end - fx_start)) // delete all effects except global + ability 0
+    DELETE_BYTES (abil_off + 0x28) (0x28 * (abil_num - 1))                 // now delete all abilities except ability 0
+    WRITE_SHORT 0x68 1 // set num ability
+    WRITE_LONG  0x6a abil_off + 0x28
+    LPF ALTER_SPELL_EFFECT INT_VAR duration_high = 300 END
+
+END
+
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi405 destination = ~ca#ii10~ RET_ARRAY cd_clone_spell_array END // Improved Invisibility 10 foot radius
+COPY_EXISTING ~ca#ii10.spl~ ~override~ /* Improved Invisibility 10 foot radius */
   SAY NAME1 @400
   SAY NAME2 @400
+  READ_LONG  0x64 abil_off
+  READ_SHORT 0x68 abil_num
+  READ_LONG  0x6a fx_off
+  READ_SHORT (abil_off + 0x1e) fx_num
+  READ_SHORT (abil_off + 0x20) fx_idx
+  SET fx_start = fx_num + fx_idx
+  READ_SHORT (abil_off + 0x1e + ((abil_num - 1) * 0x28)) fx_num
+  READ_SHORT (abil_off + 0x20 + ((abil_num - 1) * 0x28)) fx_idx
+  SET fx_end = fx_num + fx_idx
+  DELETE_BYTES (fx_off + (0x30 * fx_start)) (0x30 * (fx_end - fx_start)) // delete all effects except global + ability 0
+  DELETE_BYTES (abil_off + 0x28) (0x28 * (abil_num - 1))                 // now delete all abilities except ability 0
+  WRITE_SHORT 0x68 1 // set num ability
+  WRITE_LONG  0x6a abil_off + 0x28
+  LPF ALTER_SPELL_HEADER INT_VAR projectile = 205 END
+  LPF ALTER_SPELL_EFFECT INT_VAR duration_high = 300 END
+  LPF ALTER_EFFECT INT_VAR silent = 1 match_opcode = 146 STR_VAR match_resource = spwi405a resource = ~ca#ii10a~ END // for obg2 + bg2fp
 
 COPY ~celestials/planetar/at_will_innates/ca#pao.spl~ ~override~     /* Polymorph any Object */
   SAY NAME1 @401
   SAY NAME2 @401
 
+ACTION_DEFINE_ASSOCIATIVE_ARRAY cd_clone_spell_array BEGIN ~ca#dsnp~ => ~sppr205~ END // routine
 COPY ~celestials/planetar/at_will_innates/ca#dsnp.spl~ ~override~   /* Detect Snares and Pits */
   SAY NAME1 @200
   SAY NAME2 @200
 
-COPY ~celestials/planetar/at_will_innates/ca#pev40.spl~ ~override~ /* Protection from Evil 40 foot radius */
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr408 destination = ~ca#pev40~ RET_ARRAY cd_clone_spell_array END /* Protection from Evil 40 foot radius */
+COPY_EXISTING ~ca#pev40.spl~ ~override~
   SAY NAME1 @402
   SAY NAME2 @402
-COPY ~celestials/planetar/at_will_innates/ca#pev40.spl~ ~override/ca#peg40.spl~ /* Protection from Good 40 foot radius */
+  LPF ALTER_SPELL_HEADER INT_VAR projectile = 158 END
+
+COPY_EXISTING ~ca#pev40.spl~ ~override/ca#peg40.spl~ /* Protection from Good 40 foot radius */
   LPF ALTER_EFFECT INT_VAR match_opcode = 219 parameter1 = 1 END
   LPF ALTER_EFFECT INT_VAR match_opcode = 100 parameter1 = 156 parameter2 = 4 END // Protect against SOLAR instead of summoned Fiends
   LPF CLONE_EFFECT INT_VAR match_opcode = 100 match_parameter1 = 156 parameter1 = 158 END // Protect against PLANETAR
-  REPLACE_TEXTUALLY ~CA#PEV40~ ~CA#PEG40~
+  LPF ALTER_EFFECT STR_VAR match_resource = EVAL ~%SOURCE_RES%~ resource = EVAL ~%DEST_RES%~  END
   SAY NAME1 @4021
   SAY NAME2 @4021
+  SET pro_good = RESOLVE_STR_REF(@4022)
+  LPF ALTER_EFFECT INT_VAR match_opcode = 139 parameter1 = pro_good END
 
 COPY ~celestials/planetar/at_will_innates/ca#rcold.spl~ ~override~ /* Resist Cold */
   SAY NAME1 @403
   SAY NAME2 @403
-  
-LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr317 destination = ~ca#cdise~ END // cure disease
-LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr303 destination = ~ca#dispm~ END // dispel magic
-LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr607 destination = ~ca#heal~ END // heal
+  PATCH_IF enhanced_edition BEGIN // for EEs, use 321 instead of 206 for spell stacking
+    LPF CLONE_EFFECT INT_VAR match_opcode = 206 opcode = 321 resist_dispel = 0 timing = 0 duration = 0 savingthrow = 0 savebonus = 0 dicenumber = 0 dicesize = 0 STR_VAR match_resource = EVAL ~%SOURCE_RES%~ insert = first END
+    LPF DELETE_EFFECT INT_VAR match_opcode = 206 STR_VAR match_resource = EVAL ~%SOURCE_RES%~ END
+  END
+
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr317 destination = ~ca#cdise~ RET_ARRAY cd_clone_spell_array END // cure disease (deva)
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr303 destination = ~ca#dispm~ RET_ARRAY cd_clone_spell_array END // dispel magic (planetar)
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr607 destination = ~ca#heal~  RET_ARRAY cd_clone_spell_array END // heal
 
 //Limited Use Innates
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr720 destination = ~ca#eq~ END // earthquake
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = spwi509 destination = ~ca#fmind~ END // feeblemind
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr705 destination = ~ca#fstom~ END // fire storm
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr503 destination = ~ca#fstri~ END // flame strike
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr710 destination = ~ca#hword~ END // holy word
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr517 destination = ~ca#iplag~ END // insect plague
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = spwi722 destination = ~ca#lwish~ END // limited wish
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr504 destination = ~ca#rdead~ END // raise dead
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr713 destination = ~ca#resto~ END // greater restoration
-//LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = spwi916 destination = ~ca#schag~ END // shapechange
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr720 destination = ~ca#eq~    RET_ARRAY cd_clone_spell_array END // earthquake
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = spwi509 destination = ~ca#fmind~ RET_ARRAY cd_clone_spell_array END // feeblemind
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr705 destination = ~ca#fstom~ RET_ARRAY cd_clone_spell_array END // fire storm
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr503 destination = ~ca#fstri~ RET_ARRAY cd_clone_spell_array END // flame strike
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr710 destination = ~ca#hword~ RET_ARRAY cd_clone_spell_array END // holy word
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr517 destination = ~ca#iplag~ RET_ARRAY cd_clone_spell_array END // insect plague
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = spwi722 destination = ~ca#lwish~ RET_ARRAY cd_clone_spell_array END // limited wish
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr504 destination = ~ca#rdead~ RET_ARRAY cd_clone_spell_array END // raise dead
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr713 destination = ~ca#resto~ RET_ARRAY cd_clone_spell_array END // greater restoration
+//LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = spwi916 destination = ~ca#schag~ RET_ARRAY cd_clone_spell_array END // shapechange
 
 COPY_EXISTING ~ca#lwish.spl~ override
   LPF ALTER_EFFECT INT_VAR match_opcode = 177 STR_VAR resource = "ca#lwish" END
@@ -328,12 +390,12 @@ COPY_EXISTING ~wish.eff~ ~override/ca#lwish.eff~
   WRITE_ASCII 0x30 "CA#lwish" (8)
 COPY_EXISTING ~wish01.cre~ ~override/ca#lwish.cre~
   WRITE_ASCII 0x2cc "CA#LWISH" (8)
-COMPILE ~celestials/dlg/ca#lwish.d~ 	                                   /* Compiles the limited wish dialog */
+COMPILE ~celestials/dlg/ca#lwish.d~                                      /* Compiles the limited wish dialog */
 
-COPY ~celestials/planetar/limited_use_innates/ca#sdeat.spl~     ~override/ca#sdeat.spl~ /* Symbol Death */
-COPY ~celestials/planetar/limited_use_innates/ca#sfear.spl~     ~override/ca#sfear.spl~ /* Symbol Fear */
-COPY ~celestials/planetar/limited_use_innates/ca#sstun.spl~     ~override/ca#sstun.spl~ /* Symbol Stun */
-COPY ~celestials/planetar/limited_use_innates/ca#symb.spl~     ~override/ca#symb.spl~   /* Symbol main spell */
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr719 destination = ~ca#sdeat~ RET_ARRAY cd_clone_spell_array END /* Symbol Death */
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr706 destination = ~ca#sfear~ RET_ARRAY cd_clone_spell_array END /* Symbol Fear */
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr718 destination = ~ca#sstun~ RET_ARRAY cd_clone_spell_array END /* Symbol Stun */
+COPY ~celestials/planetar/limited_use_innates/ca#symb.spl~      ~override/ca#symb.spl~  /* Symbol main spell */
   SAY NAME1 @404
   SAY NAME2 @404
 
@@ -342,10 +404,10 @@ COPY ~celestials/planetar/limited_use_innates/ca#symb.spl~     ~override/ca#symb
 // Planetar Boots for movement speed increase
 COPY_EXISTING ~boot01.itm~ ~override/ca#pboot.itm~
   WRITE_BYTE 0x18 (THIS BAND `BIT2) // removes droppable flag
-  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 98 parameter1 = 2 parameter2 = 3 timing = 2 target = 1 probability1 = 100 END 
-  LPF CLONE_EFFECT INT_VAR match_opcode = 98 opcode = 142 parameter1 = 0 parameter2 = 56 END 
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 98 parameter1 = 2 parameter2 = 3 timing = 2 target = 1 probability1 = 100 END
+  LPF CLONE_EFFECT INT_VAR match_opcode = 98 opcode = 142 parameter1 = 0 parameter2 = 56 END
 
-COPY ~celestials/planetar/items/ca#planw.itm~  override /* Planetar Vorpal Sword */ 
+COPY ~celestials/planetar/items/ca#planw.itm~  override /* Planetar Vorpal Sword */
   SAY NAME1 @300
   SAY NAME2 @300
   WRITE_ASCII 0x22 ~S1~ // long sword
@@ -355,26 +417,28 @@ COPY ~celestials/planetar/items/ca#vorpl.eff~ ~override~ // Vorpal Hit immunity 
 // workaround for floating planetar string
 COPY_EXISTING ~planet01.cre~ ~override~
   READ_ASCII 0x08 planetar_name (8)
+  BUT_ONLY
 COPY ~celestials/planetar/ca#plan.cre~     ~override~
   WRITE_ASCIIE 0x08 ~%planetar_name%~ #8 // using ascii for 8 bytes of non-ascii data... lazy
-  
-  
+
+
 /////////////////////////////////
 //Creating Fallen Planetar
 
 //At will innates
 
-LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr608 destination = ~ca#harm~ END // harm
+LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr608 destination = ~ca#harm~ RET_ARRAY cd_clone_spell_array END // harm
 
 //Limited Use Innates
 
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr715 destination = ~ca#uword~ END // unholy word
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr414 destination = ~ca#causw~ END // cause serious wounds
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr715 destination = ~ca#uword~ RET_ARRAY cd_clone_spell_array END // unholy word
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr414 destination = ~ca#causw~ RET_ARRAY cd_clone_spell_array END // cause serious wounds
 
 
 // workaround to create fallen planetar
 COPY_EXISTING ~planevil.cre~ ~override~
   READ_ASCII 0x08 fallen_planetar_name (8)
+  BUT_ONLY
 COPY ~celestials/planetar/ca#plan.cre~     ~override/ca#fplan.cre~
   WRITE_ASCIIE 0x08 ~%fallen_planetar_name%~ #8 // using ascii for 8 bytes of non-ascii data... lazy
   WRITE_LONG 0x28 0x7F3C // change animation for fallen Solar
@@ -397,28 +461,29 @@ COPY ~celestials/planetar/ca#plan.cre~     ~override/ca#fplan.cre~
   ADD_MEMORIZED_SPELL ~SPWI408~ #3 ~wizard~  ( 1 )                                // adds 1x Stoneskin
   ADD_MEMORIZED_SPELL ~SPWI409~ #3 ~wizard~  ( 1 )                                // adds 1x Contagion
   ADD_MEMORIZED_SPELL ~SPWI508~ #4 ~wizard~  ( 1 )                                // adds 1x Chaos
-  
+
 COPY_EXISTING ~ca#plan.eff~ ~override/ca#fplan.eff~
-	WRITE_ASCII 0x30 "CA#FPLAN" (8) // fallen planetar
-	WRITE_ASCII 0x70 "SPSPEV" (8) // summoning visual effect
+  WRITE_ASCII 0x30 "CA#FPLAN" (8) // fallen planetar
+  WRITE_ASCII 0x70 "SPSPEV" (8) // summoning visual effect
 
 
 /////////////////////////////////
 //Creating Fallen Deva
 
-// Limited Use Innates 
+// Limited Use Innates
 
-LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr608 destination = ~ca#harm1~ END // harm
+LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr608 destination = ~ca#harm1~ RET_ARRAY cd_clone_spell_array END // harm
 
 // workaround to create fallen deva -- less diversity for fallen devas but it is stronger than regular devas
 COPY_EXISTING ~devaevil.cre~ ~override~
   READ_ASCII 0x08 fallen_deva_name (8)
+  BUT_ONLY
 COPY ~celestials/devas/astral_deva/creatures/ca#dastr.cre~     ~override/ca#fdeva.cre~
   WRITE_ASCIIE 0x08 ~%fallen_deva_name%~ #8 // using ascii for 8 bytes of non-ascii data... lazy
   WRITE_BYTE 0x238 "19" // strength was 17
   WRITE_BYTE 0x23c "16" // dexterity was 19
   WRITE_BYTE 0x23d "16" // Constitution was 15 (9hp more than regular astral deva)
-  WRITE_LONG 0x28 0x7F3C // change animation for fallen Solar 
+  WRITE_LONG 0x28 0x7F3C // change animation for fallen Solar
   WRITE_BYTE 0x27b 51 // change alignement for chaotic evil
   WRITE_BYTE 0x272 "159"  // Race: DARKPLANETAR
   WRITE_ASCII 0x280 ~devaevil~ #20 // death var
@@ -428,8 +493,8 @@ COPY ~celestials/devas/astral_deva/creatures/ca#dastr.cre~     ~override/ca#fdev
 
 
 COPY_EXISTING ~ca#plan.eff~ ~override/ca#fdeva.eff~
-	WRITE_ASCII 0x30 "CA#fdeva" (8) // fallen planetar
-	WRITE_ASCII 0x70 "SPSPEV" (8) // summoning visual effect
+  WRITE_ASCII 0x30 "CA#fdeva" (8) // fallen planetar
+  WRITE_ASCII 0x70 "SPSPEV" (8) // summoning visual effect
 
 /* fallen Deva version of the Mace of Disruption plus 3 */
 COPY_EXISTING ~ca#asdm.itm~ ~override/ca#fadm.itm~
@@ -463,13 +528,13 @@ COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva t
               ~sppr726.spl~ ~override~  /* Cleric spell to summon deva through invis and invulen creature */
               ~sppr727.spl~ ~override~  /* Cleric spell to summon fallen deva */
               ~spwi923.spl~ ~override~  /* Wizard spell to summon planetar */
-              ~spwi924.spl~ ~override~  /* Wizard spell to summon fallen planetar */			  
+              ~spwi924.spl~ ~override~  /* Wizard spell to summon fallen planetar */
   PATCH_IF (~%SOURCE_RES%~ STRING_COMPARE_CASE "spwi923" = 0) BEGIN
     SPRINT res ~ca#plan~
   END ELSE PATCH_IF (~%SOURCE_RES%~ STRING_COMPARE_CASE "spwi924" = 0) BEGIN
-    SPRINT res ~ca#fplan~  
+    SPRINT res ~ca#fplan~
   END ELSE PATCH_IF (~%SOURCE_RES%~ STRING_COMPARE_CASE "sppr727" = 0) BEGIN
-    SPRINT res ~ca#fdeva~  
+    SPRINT res ~ca#fdeva~
   END ELSE BEGIN
     SPRINT res ~ca#inv1~
     PATCH_IF (~%SOURCE_RES%~ STRING_COMPARE_CASE "spcl923" = 0) BEGIN
@@ -477,6 +542,131 @@ COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva t
     END
   END
   LPF ALTER_EFFECT INT_VAR match_opcode = 177 STR_VAR resource = EVAL ~%res%~ END
+
+/////                                                  \\\\\
+///// miscellaneous compat junk                        \\\\\
+/////                                                  \\\\\
+
+// first section: basically anything that removes/blocks the original spell should also remove/block the cloned innate.
+// basically: any time cd_clone_spell was invoked, an entry was made into the array cd_clone_spell_array. Now we look for
+// any block/remove (ops 206, 207, 226, 318, 321, 324) of the original and duplicate them into the same for the cloned
+// asset. We exclude both the original and cloned spell files from this check, as they were handled directly by the macro.
+
+COPY_EXISTING_REGEXP GLOB ~^.+\.cre$~ ~override~
+                          ~^.+\.itm$~ ~override~
+                          ~^.+\.spl$~ ~override~
+  READ_ASCII 0x00 type (3)
+  SET min_size = 0
+  PATCH_IF ("%type%" STRING_COMPARE_CASE "spl" = 0) BEGIN
+    READ_LONG  0x64 abil_off ELSE 0
+    READ_SHORT 0x68 abil_num ELSE 0
+    READ_LONG  0x6a fx_off   ELSE 0
+    SET counter_offset = 0x70
+    SET abil_length    = 0x28
+    SET fx_type        = 0
+    SET min_size       = 0x72
+    READ_SHORT 0x6e abil_fx_idx ELSE 0 // index for global loop
+  END ELSE
+  PATCH_IF ("%type%" STRING_COMPARE_CASE "itm" = 0) BEGIN
+    READ_LONG  0x64 abil_off ELSE 0
+    READ_SHORT 0x68 abil_num ELSE 0
+    READ_LONG  0x6a fx_off   ELSE 0
+    SET counter_offset = 0x70
+    SET abil_length    = 0x38
+    SET fx_type        = 0
+    SET min_size       = 0x72
+    READ_SHORT 0x6e abil_fx_idx ELSE 0 // index for global loop
+  END ELSE
+  PATCH_IF ("%type%" STRING_COMPARE_CASE "cre" = 0) BEGIN
+    READ_LONG  0x2c4 fx_off ELSE 0
+    READ_BYTE 0x33 fx_type ELSE 2
+    SET abil_off       = 0
+    SET abil_num       = 0
+    SET counter_offset = 0x2c8
+    SET abil_length    = 0
+    SET min_size       = 0x2d4
+    SET abil_fx_idx    = 0 // index for global loop
+  END ELSE BEGIN
+    PATCH_PRINT ~Warning: file type not recognized (%type%) on %SOURCE_FILE% in cd_clone_spell wrapup regexp copy~
+  END
+  PATCH_IF ((SOURCE_SIZE >= min_size) AND (min_size != 0)) BEGIN // min_size must get set by file type detection
+    SET new_fx = 0
+    FOR (index = "-1" ; index < abil_num ; ++index) BEGIN
+      PATCH_IF (index >= 0) BEGIN // on global loop, idx set in file type check, otherwise adjust & read in adjusted value
+        SET counter_offset = (abil_off + 0x1e + (abil_length * index))      // point to abil_fx_num offset
+        WRITE_SHORT (abil_off + 0x20 + (abil_length * index)) THIS + new_fx // adjust for effects already added
+        READ_SHORT  (abil_off + 0x20 + (abil_length * index)) abil_fx_idx   // read in new and correct idx
+      END
+      READ_SHORT counter_offset counter // fx_num on global loop, otherwise abil_fx_num
+      FOR (index2 = 0 ; index2 < counter ; ++index2) BEGIN
+        READ_SHORT (fx_off        + (0x08 * fx_type) + ((abil_fx_idx + index2) * (0x30 + (0xd8 * fx_type)))) opcode
+        PATCH_IF ((opcode = 206) OR (opcode = 207) OR (opcode = 266) OR (opcode = 318) OR (opcode = 321) OR (opcode = 324)) BEGIN
+          READ_ASCII (fx_off + 0x14 + (0x14 * fx_type) + ((abil_fx_idx + index2) * (0x30 + (0xd8 * fx_type)))) resref
+          PATCH_PHP_EACH cd_clone_spell_array AS clone => orig BEGIN
+            PATCH_IF (("%resref%" STRING_COMPARE_CASE "%orig%" = 0) AND ("%SOURCE_RES%" STRING_COMPARE_CASE "%orig%") AND ("%SOURCE_RES%" STRING_COMPARE_CASE "%clone%")) BEGIN
+              READ_ASCII     (fx_off +                           ((abil_fx_idx + index2) * (0x30 + (0xd8 * fx_type)))) template ((0x30 + (0xd8 * fx_type))) // read whole effect into a template
+              INSERT_BYTES   (fx_off +                           ((abil_fx_idx + index2) * (0x30 + (0xd8 * fx_type)))) (0x30 + (0xd8 * fx_type))            // insert new effect
+                WRITE_ASCIIE (fx_off +                           ((abil_fx_idx + index2) * (0x30 + (0xd8 * fx_type)))) "%template%"                         // insert data from template
+                WRITE_ASCIIE (fx_off + 0x14 + (0x14 * fx_type) + ((abil_fx_idx + index2) * (0x30 + (0xd8 * fx_type)))) ~%clone%~ #8                         // but point to cloned resource instead
+              SET new_fx  += 1
+              SET counter += 1
+              SET index2  += 1
+//PATCH_PRINT ~ == cloned effect for %clone% (from %orig%) on %SOURCE_FILE% (via op %opcode%)~ // uncomment for debugging
+            END // resref = orig check
+          END // patch_php_each
+        END // end opcode check
+      END // abil_fx loop
+      WRITE_SHORT counter_offset counter
+    END // ability loop
+  END // end file size check
+  BUT_ONLY
+
+// ee fixpack immunity setup
+
+ACTION_IF enhanced_edition BEGIN
+
+  OUTER_SET charm_immunity     = IDS_OF_SYMBOL (~splstate~ ~CHARM_IMMUNITY~)
+  OUTER_SET death_immunity     = IDS_OF_SYMBOL (~splstate~ ~DEATH_IMMUNITY~)
+
+END ELSE BEGIN
+
+  OUTER_SET charm_immunity     = "-1"
+  OUTER_SET death_immunity     = "-1"
+
+END
+
+ACTION_IF (charm_immunity > 0) BEGIN
+
+  COPY_EXISTING ~ca#dmch.spl~ ~override~
+    LPF CLONE_EFFECT INT_VAR match_opcode = 5 opcode = 324 parameter1 = charm_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = above resource = EVAL ~%SOURCE_RES%~ END
+
+END
+
+ACTION_IF (death_immunity > 0) BEGIN
+
+  COPY_EXISTING ~ca#vorpl.spl~ ~override~
+    LPF CLONE_EFFECT INT_VAR match_opcode = 13 multi_match = 1 opcode = 324 parameter1 = death_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = first resource = EVAL ~%SOURCE_RES%~ END
+
+END
+
+// ee fixpack cure stuff
+
+COPY_EXISTING ~#curefer.spl~ ~override~ // cure fear
+  LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 target = 2 timing = 1 parameter2 = 2 STR_VAR resource = ~ca#sfear~ END // symbol, fear
+  BUT_ONLY IF_EXISTS
+
+COPY_EXISTING ~#curehol.spl~ ~override~ // cure hold
+  LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 target = 2 timing = 1 parameter2 = 2 STR_VAR resource = ~ca#hmon~ END // hold monster
+  BUT_ONLY IF_EXISTS
+
+COPY_EXISTING ~#cureinv.spl~ ~override~ // cure invisibility
+  LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 target = 2 timing = 1 parameter2 = 2 STR_VAR resource = ~ca#ii10~  END // imp invis 10'
+  LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 target = 2 timing = 1 parameter2 = 2 STR_VAR resource = ~ca#inv10~ END // invis 10'
+  BUT_ONLY IF_EXISTS
+
+COPY_EXISTING ~#curestn.spl~ ~override~ // cure stun
+  LPF ADD_SPELL_EFFECT INT_VAR opcode = 321 target = 2 timing = 1 parameter2 = 2 STR_VAR resource = ~ca#sstun~ END
+  BUT_ONLY IF_EXISTS
 
 /////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
 /////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
@@ -655,11 +845,11 @@ END
   COPY ~celestials\itm\dvdevaea.itm~ ~override\ca#devae.itm~ // from Spell Revision, renamed
 
   COPY_EXISTING ~dvwings.itm~ ~override~
-	WRITE_BYTE 0x1b 2 // no critical hit immunity
+    WRITE_BYTE 0x1b 2 // no critical hit immunity
   COPY_EXISTING ~dvwings.itm~ ~override/ca#pwing.itm~ // Planetars wings
-	LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 105 parameter2 = 54 timing = 2 probability1 = 100 END // White
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 105 parameter2 = 54 timing = 2 probability1 = 100 END // White
   COPY_EXISTING ~dvwings.itm~ ~override/ca#fwing.itm~ // Fallen planetars wings
-	LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 0 parameter2 = 54 timing = 2 probability1 = 100 END  // Red Tinted Black
+    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 0 parameter2 = 54 timing = 2 probability1 = 100 END  // Red Tinted Black
 
   // patch weapons to use regular animations
   COPY_EXISTING ~ca#planw.itm~ ~override~
@@ -669,7 +859,7 @@ END
     BUT_ONLY
 
   COPY_EXISTING ~ca#asdm.itm~ ~override~
-				        ~ca#fadm.itm~ ~override~
+                ~ca#fadm.itm~ ~override~
     PATCH_IF (SOURCE_SIZE > 0x71) BEGIN
       WRITE_ASCII 0x22 ~MC~ // mace
       // fix colour glow so that it looks awesomer :)
@@ -686,20 +876,20 @@ END
       END
     END
     BUT_ONLY
-  
+
   COPY_EXISTING ~ca#monrd.itm~ ~override~
     PATCH_IF (SOURCE_SIZE > 0x71) BEGIN
       WRITE_ASCII 0x22 ~QS~ // quarterstaff
     WRITE_LONG 0x18 0x6a // 2-handed
     END
     BUT_ONLY
-  
+
   COPY_EXISTING ~ca#movsw.itm~ ~override~
     PATCH_IF (SOURCE_SIZE > 0x71) BEGIN
       WRITE_ASCII 0x22 ~FS~ // flaming sword
     END
     BUT_ONLY
-  
+
   // patch creatures
   COPY_EXISTING ~ca#plan.cre~ ~override~ // Planetar
     PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
@@ -716,13 +906,13 @@ END
       REPLACE_CRE_ITEM ~ca#planw~ #0 #0 #0 ~unstealable~ ~weapon1~ EQUIP TWOHANDED
     END
     BUT_ONLY
-  
+
   COPY_EXISTING ~ca#dastr.cre~ ~override~ // Astral Deva
     PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
       LAUNCH_PATCH_MACRO ~ASTRAL_DEVA_ANIMATION~
     END
     BUT_ONLY
-  
+
   COPY_EXISTING ~ca#dmond.cre~ ~override~ // Monadic Deva
     PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
       LAUNCH_PATCH_MACRO ~MONADIC_DEVA_ANIMATION~
@@ -730,13 +920,13 @@ END
       REPLACE_CRE_ITEM ~ca#monrd~ #0 #0 #0 ~unstealable~ ~weapon1~ EQUIP TWOHANDED
     END
     BUT_ONLY
-  
+
   COPY_EXISTING ~ca#dmova.cre~ ~override~ // Movanic Deva
     PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
       LAUNCH_PATCH_MACRO ~MOVANIC_DEVA_ANIMATION~
     END
     BUT_ONLY
-  
+
   COPY_EXISTING ~ca#fdeva.cre~ ~override~ // Fallen Deva
   PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
     LAUNCH_PATCH_MACRO ~FALLEN_DEVA_ANIMATION~
