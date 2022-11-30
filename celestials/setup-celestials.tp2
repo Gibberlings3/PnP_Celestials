@@ -111,6 +111,8 @@ LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr
 COPY ~celestials/shared_aasimon_spells/at_will_innates/ca#twoe.spl~ override     /* Teleport Without Error */
   SAY NAME1 @208
   SAY NAME2 @208
+  SAY 0x50 @208 // descriptions exposed on EEs
+  SAY 0x54 @208
 
 //Limited Use per day abilities
 LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr401 destination = ~ca#cursw~ RET_ARRAY cd_clone_spell_array END // cure serious wounds
@@ -133,6 +135,8 @@ COPY ~celestials/devas/shared_spells/limited_use_innates/ca#dsp.spl~     ~overri
      ~celestials/devas/shared_spells/limited_use_innates/ca#dspd.spl~    ~override/ca#dspd.spl~    /* Detect Snares and Pits (recurring) */
   SAY NAME1 @200
   SAY NAME2 @200
+  SAY 0x50 @200 // descriptions exposed on EEs
+  SAY 0x54 @200
 
 LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr317 destination = ~ca#cudis~ RET_ARRAY cd_clone_spell_array END // cure disease
 LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr103 destination = ~ca#culw~  RET_ARRAY cd_clone_spell_array END // cure light wounds
@@ -243,6 +247,8 @@ COPY ~celestials/devas/movanic_deva/at_will_innates/ca#ams.spl~ ~override~     /
 COPY ~celestials/devas/movanic_deva/at_will_innates/ca#amsc.spl~ ~override~   /* Cancel Anti-Magic Shell */
   SAY NAME1 @202
   SAY NAME2 @202
+  SAY 0x50 @202 // descriptions exposed on EEs
+  SAY 0x54 @202
 
 LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi311 destination = ~ca#pfnm~  RET_ARRAY cd_clone_spell_array END // protection from normal missiles
 LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi701 destination = ~ca#sturn~ RET_ARRAY cd_clone_spell_array END // spell turning
@@ -252,6 +258,8 @@ LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi
 COPY ~celestials/devas/movanic_deva/limited_use_innates/ca#evoc.spl~     ~override/ca#evoc.spl~ /* Cast Invocation/Evocation Spell */
   SAY NAME1 @204
   SAY NAME2 @204
+  SAY 0x50 @204 // descriptions exposed on EEs
+  SAY 0x54 @204
 
 // COPY ~Celestials/Devas/Movanic_Deva/Limited_Use_Innates/CA#SPLAN.SPL~   ~override/CA#SPLAN.SPL~ /* Call Planetar with 30 percent chance of success */
   // SAY NAME1 @205
@@ -318,6 +326,8 @@ LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = spwi
 COPY_EXISTING ~ca#ii10.spl~ ~override~ /* Improved Invisibility 10 foot radius */
   SAY NAME1 @400
   SAY NAME2 @400
+  SAY 0x50 @400 // descriptions exposed on EEs
+  SAY 0x54 @400
   READ_LONG  0x64 abil_off
   READ_SHORT 0x68 abil_num
   READ_LONG  0x6a fx_off
@@ -338,16 +348,22 @@ COPY_EXISTING ~ca#ii10.spl~ ~override~ /* Improved Invisibility 10 foot radius *
 COPY ~celestials/planetar/at_will_innates/ca#pao.spl~ ~override~     /* Polymorph any Object */
   SAY NAME1 @401
   SAY NAME2 @401
+  SAY 0x50 @401 // descriptions exposed on EEs
+  SAY 0x54 @401
 
 ACTION_DEFINE_ASSOCIATIVE_ARRAY cd_clone_spell_array BEGIN ~ca#dsnp~ => ~sppr205~ END // routine
 COPY ~celestials/planetar/at_will_innates/ca#dsnp.spl~ ~override~   /* Detect Snares and Pits */
   SAY NAME1 @200
   SAY NAME2 @200
+  SAY 0x50 @200 // descriptions exposed on EEs
+  SAY 0x54 @200
 
 LAF cd_clone_spell INT_VAR make_innate = 1 make_atwill = 1 STR_VAR source = sppr408 destination = ~ca#pev40~ RET_ARRAY cd_clone_spell_array END /* Protection from Evil 40 foot radius */
 COPY_EXISTING ~ca#pev40.spl~ ~override~
   SAY NAME1 @402
   SAY NAME2 @402
+  SAY 0x50 @402 // descriptions exposed on EEs
+  SAY 0x54 @402
   LPF ALTER_SPELL_HEADER INT_VAR projectile = 158 END
 
 COPY_EXISTING ~ca#pev40.spl~ ~override/ca#peg40.spl~ /* Protection from Good 40 foot radius */
@@ -357,12 +373,16 @@ COPY_EXISTING ~ca#pev40.spl~ ~override/ca#peg40.spl~ /* Protection from Good 40 
   LPF ALTER_EFFECT STR_VAR match_resource = EVAL ~%SOURCE_RES%~ resource = EVAL ~%DEST_RES%~  END
   SAY NAME1 @4021
   SAY NAME2 @4021
+  SAY 0x50 @4021 // descriptions exposed on EEs
+  SAY 0x54 @4021
   SET pro_good = RESOLVE_STR_REF(@4022)
   LPF ALTER_EFFECT INT_VAR match_opcode = 139 parameter1 = pro_good END
 
 COPY ~celestials/planetar/at_will_innates/ca#rcold.spl~ ~override~ /* Resist Cold */
   SAY NAME1 @403
   SAY NAME2 @403
+  SAY 0x50 @403 // descriptions exposed on EEs
+  SAY 0x54 @403
   PATCH_IF enhanced_edition BEGIN // for EEs, use 321 instead of 206 for spell stacking
     LPF CLONE_EFFECT INT_VAR match_opcode = 206 opcode = 321 resist_dispel = 0 timing = 0 duration = 0 savingthrow = 0 savebonus = 0 dicenumber = 0 dicesize = 0 STR_VAR match_resource = EVAL ~%SOURCE_RES%~ insert = first END
     LPF DELETE_EFFECT INT_VAR match_opcode = 206 STR_VAR match_resource = EVAL ~%SOURCE_RES%~ END
@@ -398,6 +418,8 @@ LAF cd_clone_spell INT_VAR make_innate = 1 STR_VAR source = sppr718 destination 
 COPY ~celestials/planetar/limited_use_innates/ca#symb.spl~      ~override/ca#symb.spl~  /* Symbol main spell */
   SAY NAME1 @404
   SAY NAME2 @404
+  SAY 0x50 @404 // descriptions exposed on EEs
+  SAY 0x54 @404
 
 //Items
 
@@ -514,14 +536,20 @@ COMPILE ~celestials/baf/ca#dastr.baf~ EVALUATE_BUFFER                      /* Co
 COPY ~celestials/summon_spells/_spl/ca#sdast.spl~ ~override/ca#sdast.spl~ //Summon spell for astral deva cast by invis and invulnerable creature
   SAY NAME1 @206
   SAY NAME2 @206
+  SAY 0x50 @206 // descriptions exposed on EEs
+  SAY 0x54 @206
 
 COPY ~celestials/summon_spells/_spl/ca#sdmov.spl~ ~override/ca#sdmov.spl~ //Summon spell for movanic deva cast by invis and invulnerable creature
   SAY NAME1 @207
   SAY NAME2 @207
+  SAY 0x50 @207 // descriptions exposed on EEs
+  SAY 0x54 @207
 
 COPY ~celestials/summon_spells/_spl/ca#sdmon.spl~ ~override/ca#sdmon.spl~ //Summon spell for Monadic Deva cast by invis and invulnerable creature
   SAY NAME1 @209
   SAY NAME2 @209
+  SAY 0x50 @209 // descriptions exposed on EEs
+  SAY 0x54 @209
 
 
 COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva through invis and invulen creature */
