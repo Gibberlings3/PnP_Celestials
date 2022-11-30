@@ -660,19 +660,21 @@ COPY_EXISTING_REGEXP GLOB ~^.+\.cre$~ ~override~
 
 ACTION_IF enhanced_edition BEGIN
 
-  OUTER_SET charm_immunity      = IDS_OF_SYMBOL (~splstate~ ~CHARM_IMMUNITY~)
-  OUTER_SET confusion_immunity  = IDS_OF_SYMBOL (~splstate~ ~CONFUSION_IMMUNITY~)
-  OUTER_SET death_immunity      = IDS_OF_SYMBOL (~splstate~ ~DEATH_IMMUNITY~)
-  OUTER_SET feeblemind_immunity = IDS_OF_SYMBOL (~splstate~ ~FEEBLEMIND_IMMUNITY~)
-  OUTER_SET petrify_immunity    = IDS_OF_SYMBOL (~splstate~ ~PETRIFY_IMMUNITY~)
+  OUTER_SET charm_immunity        = IDS_OF_SYMBOL (~splstate~ ~CHARM_IMMUNITY~)
+  OUTER_SET confusion_immunity    = IDS_OF_SYMBOL (~splstate~ ~CONFUSION_IMMUNITY~)
+  OUTER_SET death_immunity        = IDS_OF_SYMBOL (~splstate~ ~DEATH_IMMUNITY~)
+  OUTER_SET disintegrate_immunity = IDS_OF_SYMBOL (~splstate~ ~DISINTEGRATE_IMMUNITY~)
+  OUTER_SET feeblemind_immunity   = IDS_OF_SYMBOL (~splstate~ ~FEEBLEMIND_IMMUNITY~)
+  OUTER_SET petrify_immunity      = IDS_OF_SYMBOL (~splstate~ ~PETRIFY_IMMUNITY~)
 
 END ELSE BEGIN
 
-  OUTER_SET charm_immunity      = "-1"
-  OUTER_SET confusion_immunity  = "-1"
-  OUTER_SET death_immunity      = "-1"
-  OUTER_SET feeblemind_immunity = "-1"
-  OUTER_SET petrify_immunity    = "-1"
+  OUTER_SET charm_immunity        = "-1"
+  OUTER_SET confusion_immunity    = "-1"
+  OUTER_SET death_immunity        = "-1"
+  OUTER_SET disintegrate_immunity = "-1"
+  OUTER_SET feeblemind_immunity   = "-1"
+  OUTER_SET petrify_immunity      = "-1"
 
 END
 
@@ -683,7 +685,7 @@ ACTION_IF (charm_immunity > 0) BEGIN
 
   COPY_EXISTING ~ca#fplan.cre~ ~override~ // fallen planetar
                 ~ca#plan.cre~  ~override~ // planetar
-    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 101 match_parameter2 = 5 opcode = 328 parameter2 = charm_immunity special = 1 STR_VAR insert = first END // clone immunity to charm into set spell state
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 101 match_parameter2 = 5 opcode = 328 parameter2 = charm_immunity special = 1 STR_VAR insert = first END
 
 END
 
@@ -699,6 +701,24 @@ ACTION_IF (death_immunity > 0) BEGIN
 
   COPY_EXISTING ~ca#vorpl.spl~ ~override~ // planetar vorpal weapon effect
     LPF CLONE_EFFECT INT_VAR match_opcode = 13 multi_match = 1 opcode = 324 parameter1 = death_immunity parameter2 = 110 timing = 0 duration = 0 resist_dispel = 0 savingthrow = 0 STR_VAR insert = first resource = EVAL ~%SOURCE_RES%~ END
+
+  COPY_EXISTING ~ca#dastr.cre~ ~override~ // astral deva
+                ~ca#dmond.cre~ ~override~ // monadic deva
+                ~ca#fdeva.cre~ ~override~ // fallen deva
+                ~ca#fplan.cre~ ~override~ // fallen planetar
+                ~ca#plan.cre~  ~override~ // planetar
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 101 match_parameter2 = 55 opcode = 328 parameter2 = death_immunity special = 1 STR_VAR insert = first END
+    
+END
+
+ACTION_IF (disintegrate_immunity > 0) BEGIN
+
+  COPY_EXISTING ~ca#dastr.cre~ ~override~ // astral deva
+                ~ca#dmond.cre~ ~override~ // monadic deva
+                ~ca#fdeva.cre~ ~override~ // fallen deva
+                ~ca#fplan.cre~ ~override~ // fallen planetar
+                ~ca#plan.cre~  ~override~ // planetar
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 101 match_parameter2 = 238 opcode = 328 parameter2 = disintegrate_immunity special = 1 STR_VAR insert = first END
 
 END
 
@@ -718,7 +738,7 @@ ACTION_IF (petrify_immunity > 0) BEGIN
                 ~ca#fdeva.cre~ ~override~ // fallen deva
                 ~ca#fplan.cre~ ~override~ // fallen planetar
                 ~ca#plan.cre~  ~override~ // planetar
-    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 101 match_parameter2 = 134 opcode = 328 parameter2 = petrify_immunity special = 1 STR_VAR insert = first END // clone immunity to petrification into set spell state
+    LPF CLONE_EFFECT INT_VAR multi_match = 1 match_opcode = 101 match_parameter2 = 134 opcode = 328 parameter2 = petrify_immunity special = 1 STR_VAR insert = first END
 
 
 END
