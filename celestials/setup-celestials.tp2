@@ -433,8 +433,15 @@ COPY ~celestials/planetar/items/ca#planw.itm~  override /* Planetar Vorpal Sword
   SAY NAME1 @300
   SAY NAME2 @300
   WRITE_ASCII 0x22 ~S1~ // long sword
+
 COPY ~celestials/planetar/items/ca#vorpl.spl~ ~override~ // Vorpal Hit (planetar), add a saving throw at -2 to be less overpower... and use sub-spl to create immunity
-COPY ~celestials/planetar/items/ca#vorpl.eff~ ~override~ // Vorpal Hit immunity (for slimes, constructs, incorporeal creatures...)
+  PATCH_IF enhanced_edition BEGIN
+    LPF ALTER_EFFECT INT_VAR match_opcode = 177 opcode = 318 parameter2 = 104 END // change from effs to 324s for vorpal racial immunity
+  END
+  
+ACTION_IF !enhanced_edition BEGIN
+  COPY ~celestials/planetar/items/ca#vorpl.eff~ ~override~ // Vorpal Hit immunity (for slimes, constructs, incorporeal creatures...)
+END  
 
 // workaround for floating planetar string
 COPY_EXISTING ~planet01.cre~ ~override~
