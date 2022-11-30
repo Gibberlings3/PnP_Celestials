@@ -1,3 +1,5 @@
+ACTION_CLEAR_ARRAY cd_clone_spell_array // do this once
+
 DEFINE_ACTION_FUNCTION cd_clone_spell
   INT_VAR
     make_innate = 0
@@ -5,7 +7,10 @@ DEFINE_ACTION_FUNCTION cd_clone_spell
   STR_VAR
     source = ""
     destination = ""
+  RET_ARRAY cd_clone_spell_array 
 BEGIN
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY cd_clone_spell_array BEGIN ~%destination%~ => ~%source%~ END
 
 COPY_EXISTING ~%source%.spl~ ~override/%destination%.spl~
               ~%source%.spl~ ~override/%source%.spl~
@@ -13,9 +18,25 @@ COPY_EXISTING ~%source%.spl~ ~override/%destination%.spl~
   READ_SHORT 0x68 abil_num
   READ_LONG  0x6a fx_off  
   SET delta = 0
+  PATCH_IF make_atwill AND ("%SOURCE_FILE%" STRING_COMPARE_CASE "%DEST_FILE%") BEGIN
+    INSERT_BYTES   (fx_off) 48
+      WRITE_SHORT  (fx_off + 0x00)          171 // opcode
+      WRITE_BYTE   (fx_off + 0x02)            1 // target
+      WRITE_BYTE   (fx_off + 0x0c)            9 // timing
+      WRITE_BYTE   (fx_off + 0x12)          100 // probability
+      WRITE_ASCIIE (fx_off + 0x14) ~%DEST_RES%~ // resource
+    INSERT_BYTES   (fx_off) 48
+      WRITE_SHORT  (fx_off + 0x00)          172 // opcode
+      WRITE_BYTE   (fx_off + 0x02)            1 // target
+      WRITE_BYTE   (fx_off + 0x0c)            9 // timing
+      WRITE_BYTE   (fx_off + 0x12)          100 // probability
+      WRITE_ASCIIE (fx_off + 0x14) ~%DEST_RES%~ // resource
+    SET delta += 2    
+    WRITE_SHORT 0x70 THIS + 2 // global fx count
+  END
   FOR (index = "-1" ; index < abil_num ; ++index) BEGIN
     PATCH_IF index < 0 BEGIN
-      SET offset = 0x6e
+      SET offset = 0x70
       SET abil_fx_idx = 0
     END ELSE BEGIN
       SET offset = (abil_off + 0x1e + (index * 0x28))     
@@ -25,8 +46,12 @@ COPY_EXISTING ~%source%.spl~ ~override/%destination%.spl~
     READ_SHORT  offset abil_fx_num    
     FOR (index2 = 0 ; index2 < abil_fx_num ; ++index2) BEGIN     
       READ_SHORT (fx_off +        (0x30 * (index2 + abil_fx_idx))) opcode
-      PATCH_IF ((opcode = 206) OR (opcode = 318) OR (opcode = 321) OR (opcode = 324)) BEGIN
+      PATCH_IF ((opcode = 200) OR (opcode = 201) OR (opcode = 206) OR (opcode = 223) OR (opcode = 226) OR (opcode = 227) OR (opcode = 318) OR (opcode = 321) OR (opcode = 324) OR (opcode = 333)) BEGIN
         READ_ASCII (fx_off + 0x14 + (0x30 * (index2 + abil_fx_idx))) resref
+        PATCH_IF (("%resref%" STRING_COMPARE_CASE "" = 0) AND ("%SOURCE_FILE%" STRING_COMPARE_CASE "%DEST_FILE%") AND 
+                  ((opcode = 200) OR (opcode = 201) OR (opcode = 223) OR (opcode = 226) OR (opcode = 227) OR (opcode = 333))) BEGIN // static charge exception
+          WRITE_ASCIIE (fx_off + 0x14 + (0x30 * (index2 + abil_fx_idx))) ~%SOURCE_RES%b~ #8
+        END  
         PATCH_IF ("%SOURCE_RES%" STRING_COMPARE_CASE "%resref%" = 0) BEGIN
           READ_BYTE (fx_off + 0x0c + (0x30 * (index2 + abil_fx_idx))) timing
           READ_LONG (fx_off + 0x0e + (0x30 * (index2 + abil_fx_idx))) duration
@@ -57,10 +82,6 @@ COPY_EXISTING ~%source%.spl~ ~override/%destination%.spl~
     WRITE_LONG   0x34 1                        // sets spell level to 1 to avoid scripting issues
     WRITE_ASCIIE 0x3a ~%bam%~ #8               // writes the bam filename from abilities to spell icon
   END  
-  PATCH_IF make_atwill AND ("%SOURCE_FILE%" STRING_COMPARE_CASE "%DEST_FILE%") BEGIN
-    LPF ADD_SPELL_EFFECT INT_VAR opcode = 172 target = 1 timing = 9 STR_VAR resource = EVAL ~%DEST_RES%~ END
-    LPF ADD_SPELL_EFFECT INT_VAR opcode = 171 target = 1 timing = 9 STR_VAR resource = EVAL ~%DEST_RES%~ END
-  END
   BUT_ONLY  
 
  
