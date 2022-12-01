@@ -559,6 +559,7 @@ COPY ~celestials/summon_spells/_spl/ca#sdmon.spl~ ~override/ca#sdmon.spl~ //Summ
 
 
 COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva through invis and invulen creature */
+              ~spcl935.spl~ ~override~  /* blackguard Innate spell to summon fallen deva */
               ~sppr726.spl~ ~override~  /* Cleric spell to summon deva through invis and invulen creature */
               ~sppr727.spl~ ~override~  /* Cleric spell to summon fallen deva */
               ~spwi923.spl~ ~override~  /* Wizard spell to summon planetar */
@@ -567,7 +568,8 @@ COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva t
     SPRINT res ~ca#plan~
   END ELSE PATCH_IF (~%SOURCE_RES%~ STRING_COMPARE_CASE "spwi924" = 0) BEGIN
     SPRINT res ~ca#fplan~
-  END ELSE PATCH_IF (~%SOURCE_RES%~ STRING_COMPARE_CASE "sppr727" = 0) BEGIN
+  END ELSE PATCH_IF ((~%SOURCE_RES%~ STRING_COMPARE_CASE "sppr727" = 0) OR
+                     (~%SOURCE_RES%~ STRING_COMPARE_CASE "spcl935" = 0))  BEGIN
     SPRINT res ~ca#fdeva~
   END ELSE BEGIN
     SPRINT res ~ca#inv1~
@@ -576,6 +578,7 @@ COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva t
     END
   END
   LPF ALTER_EFFECT INT_VAR match_opcode = 177 STR_VAR resource = EVAL ~%res%~ END
+  IF_EXISTS // spcl935 is EE asset
 
 /////                                                  \\\\\
 ///// miscellaneous compat junk                        \\\\\
