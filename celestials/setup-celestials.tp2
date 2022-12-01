@@ -29,7 +29,7 @@ ALWAYS
 
 END
 
-VERSION ~v8~
+VERSION ~v9~
 
 README ~celestials/readme-celestials.html~
 
@@ -783,7 +783,6 @@ COPY_EXISTING ~#curestn.spl~ ~override~ // cure stun
 
 BEGIN @2 /* Start with displaying mod component PnP Celestials */
 REQUIRE_PREDICATE GAME_IS ~tob bg2ee bgt eet~ @3 /* TOB Check prior to compiling.*/
-REQUIRE_PREDICATE FILE_EXISTS_IN_GAME ~CA#DASTR.CRE~ ~Main component is needed~
 DESIGNATED 1
 LABEL "PnP_Celestials_animations"
 
@@ -942,18 +941,74 @@ DEFINE_PATCH_MACRO ~FALLEN_DEVA_ANIMATION~ BEGIN
 END
 
 // copy over items for wings and armours
-  COPY ~celestials\wings~ ~override~
-  COPY ~celestials\itm\dvplanga.itm~ ~override\ca#plang.itm~ // from Spell Revision, renamed
-  COPY ~celestials\itm\dvplanea.itm~ ~override\ca#plane.itm~ // from Spell Revision, renamed
-  COPY ~celestials\itm\dvdevaga.itm~ ~override\ca#devag.itm~ // from Spell Revision, renamed
-  COPY ~celestials\itm\dvdevaea.itm~ ~override\ca#devae.itm~ // from Spell Revision, renamed
+COPY ~celestials\wings~ ~override~
+COPY ~celestials\itm\dvplanga.itm~ ~override\ca#plang.itm~ // from Spell Revision, renamed
+COPY ~celestials\itm\dvplanea.itm~ ~override\ca#plane.itm~ // from Spell Revision, renamed
+COPY ~celestials\itm\dvdevaga.itm~ ~override\ca#devag.itm~ // from Spell Revision, renamed
+COPY ~celestials\itm\dvdevaea.itm~ ~override\ca#devae.itm~ // from Spell Revision, renamed
 
-  COPY_EXISTING ~dvwings.itm~ ~override~
-    WRITE_BYTE 0x1b 2 // no critical hit immunity
-  COPY_EXISTING ~dvwings.itm~ ~override/ca#pwing.itm~ // Planetars wings
-    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 105 parameter2 = 54 timing = 2 probability1 = 100 END // White
-  COPY_EXISTING ~dvwings.itm~ ~override/ca#fwing.itm~ // Fallen planetars wings
-    LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 0 parameter2 = 54 timing = 2 probability1 = 100 END  // Red Tinted Black
+COPY_EXISTING ~dvwings.itm~ ~override~
+  WRITE_BYTE 0x1b 2 // no critical hit immunity
+COPY_EXISTING ~dvwings.itm~ ~override/ca#pwing.itm~ // Planetars wings
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 105 parameter2 = 54 timing = 2 probability1 = 100 END // White
+COPY_EXISTING ~dvwings.itm~ ~override/ca#fwing.itm~ // Fallen planetars wings
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 0 parameter2 = 54 timing = 2 probability1 = 100 END  // Red Tinted Black
+
+// patch creatures
+COPY_EXISTING ~ca#plan.cre~  ~override~ // Planetar
+              ~ohdplanb.cre~ ~override~ // planetar of justice
+              ~ohdplanj.cre~ ~override~ // planetar of justice
+              ~ohdplanl.cre~ ~override~ // planetar
+              ~ohdpplan.cre~ ~override~ // planetar
+              ~ohdsolar.cre~ ~override~ // planetar
+              ~ohdsplan.cre~ ~override~ // planetar
+              ~plangood.cre~ ~override~ // planetar
+  PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
+    LAUNCH_PATCH_MACRO ~PLANETAR_ANIMATION~
+  END
+  BUT_ONLY IF_EXISTS
+
+COPY_EXISTING ~ca#fplan.cre~ ~override~ // fallen Planetar
+              ~planevil.cre~ ~override~ // planetar
+              ~planwish.cre~ ~override~ // planetar
+  PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
+    LAUNCH_PATCH_MACRO ~FALLEN_PLANETAR_ANIMATION~
+  END
+  BUT_ONLY IF_EXISTS
+
+COPY_EXISTING ~ca#dastr.cre~ ~override~ // Astral Deva (mod)
+              ~devagood.cre~ ~override~ // Deva
+              ~devast01.cre~ ~override~ // astral deva
+  PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
+    LAUNCH_PATCH_MACRO ~ASTRAL_DEVA_ANIMATION~
+  END
+  BUT_ONLY IF_EXISTS
+
+COPY_EXISTING ~ca#dmond.cre~ ~override~ // Monadic Deva
+              ~devmon01.cre~ ~override~ // astral deva
+  PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
+    LAUNCH_PATCH_MACRO ~MONADIC_DEVA_ANIMATION~
+  END
+  BUT_ONLY IF_EXISTS
+
+COPY_EXISTING ~ca#dmova.cre~ ~override~ // Movanic Deva
+  PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
+    LAUNCH_PATCH_MACRO ~MOVANIC_DEVA_ANIMATION~
+  END
+  BUT_ONLY IF_EXISTS
+
+COPY_EXISTING ~ca#fdeva.cre~ ~override~ // Fallen Deva
+              ~devaevil.cre~ ~override~ // fallen deva
+              ~ohbcel01.cre~ ~override~ // ariziel
+              ~ohbcel02.cre~ ~override~ // fallen astral deva
+              ~ohbcel03.cre~ ~override~ // fallen monadic deva
+              ~ohbdva01.cre~ ~override~ // fallen deva
+  PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
+    LAUNCH_PATCH_MACRO ~FALLEN_DEVA_ANIMATION~
+  END
+  BUT_ONLY IF_EXISTS
+
+ACTION_IF MOD_IS_INSTALLED ~celestials/celstials.tp2~ ~0~ BEGIN // stuff for the first component
 
   // patch weapons to use regular animations
   COPY_EXISTING ~ca#planw.itm~ ~override~
@@ -994,45 +1049,19 @@ END
     END
     BUT_ONLY
 
-  // patch creatures
-  COPY_EXISTING ~ca#plan.cre~ ~override~ // Planetar
-    PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
-      LAUNCH_PATCH_MACRO ~PLANETAR_ANIMATION~
-      // re-equipping weapon as it's now 2-handed
-      REPLACE_CRE_ITEM ~ca#planw~ #0 #0 #0 ~unstealable~ ~weapon1~ EQUIP TWOHANDED
-    END
-    BUT_ONLY
+  // re-equipping weapon as it's now 2-handed
+  COPY_EXISTING ~ca#plan.cre~  ~override~ // Planetar
+    REPLACE_CRE_ITEM ~ca#planw~ #0 #0 #0 ~unstealable~ ~weapon1~ EQUIP TWOHANDED
+    BUT_ONLY 
 
+  // re-equipping weapon as it's now 2-handed
   COPY_EXISTING ~ca#fplan.cre~ ~override~ // fallen Planetar
-    PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
-      LAUNCH_PATCH_MACRO ~FALLEN_PLANETAR_ANIMATION~
-      // re-equipping weapon as it's now 2-handed
-      REPLACE_CRE_ITEM ~ca#planw~ #0 #0 #0 ~unstealable~ ~weapon1~ EQUIP TWOHANDED
-    END
-    BUT_ONLY
+    REPLACE_CRE_ITEM ~ca#planw~ #0 #0 #0 ~unstealable~ ~weapon1~ EQUIP TWOHANDED
+    BUT_ONLY 
 
-  COPY_EXISTING ~ca#dastr.cre~ ~override~ // Astral Deva
-    PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
-      LAUNCH_PATCH_MACRO ~ASTRAL_DEVA_ANIMATION~
-    END
-    BUT_ONLY
-
+  // re-equipping weapon as it's now 2-handed
   COPY_EXISTING ~ca#dmond.cre~ ~override~ // Monadic Deva
-    PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
-      LAUNCH_PATCH_MACRO ~MONADIC_DEVA_ANIMATION~
-      // re-equipping weapon as it's now 2-handed
-      REPLACE_CRE_ITEM ~ca#monrd~ #0 #0 #0 ~unstealable~ ~weapon1~ EQUIP TWOHANDED
-    END
-    BUT_ONLY
-
-  COPY_EXISTING ~ca#dmova.cre~ ~override~ // Movanic Deva
-    PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
-      LAUNCH_PATCH_MACRO ~MOVANIC_DEVA_ANIMATION~
-    END
-    BUT_ONLY
-
-  COPY_EXISTING ~ca#fdeva.cre~ ~override~ // Fallen Deva
-  PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
-    LAUNCH_PATCH_MACRO ~FALLEN_DEVA_ANIMATION~
-  END
-  BUT_ONLY
+    REPLACE_CRE_ITEM ~ca#monrd~ #0 #0 #0 ~unstealable~ ~weapon1~ EQUIP TWOHANDED
+    BUT_ONLY IF_EXISTS
+    
+END 
