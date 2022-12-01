@@ -655,6 +655,14 @@ COPY_EXISTING_REGEXP GLOB ~^.+\.cre$~ ~override~
       END // abil_fx loop
       WRITE_SHORT counter_offset counter
     END // ability loop
+    PATCH_IF (("%type%" STRING_COMPARE_CASE "cre" = 0) AND (new_fx > 0)) BEGIN // fix offsets for cre files if fx inserted
+      PATCH_FOR_EACH offset IN 0x2a0 0x2a8 0x2b0 0x2b8 0x2bc BEGIN
+        READ_LONG offset curr_off
+        PATCH_IF (fx_off < curr_off) BEGIN
+          WRITE_LONG offset (THIS + ((0x30 + (0xd8 * fx_type)) * new_fx))
+        END
+      END
+    END
   END // end file size check
   BUT_ONLY
 
