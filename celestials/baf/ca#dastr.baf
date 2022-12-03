@@ -182,7 +182,7 @@ IF
 THEN
 	RESPONSE #100
 		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
-		ReallyForceSpellRES("CA#STURN",Myself)  // Spell Turning
+		SpellRES("CA#STURN",Myself)  // Spell Turning
 END
 
 IF
@@ -1219,7 +1219,7 @@ THEN
 		SetInterrupt(FALSE)
 		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
 		SpellRES("CA#LWISH",Myself)  // Limited Wish
-		RunAwayFromNoInterrupt(NearestEnemyOf(Myself),50)
+		// RunAwayFromNoInterrupt(NearestEnemyOf(Myself),50)
 		SetInterrupt(TRUE)
 END
 
@@ -1750,7 +1750,7 @@ IF
 THEN
 	RESPONSE #100
 		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
-		ReallyForceSpellRES("CA#HEAL",LastSeenBy(Myself))  // Heal
+		SpellRES("CA#HEAL",LastSeenBy(Myself))  // Heal
 END
 
 IF
@@ -1776,7 +1776,7 @@ IF
 THEN
 	RESPONSE #100
 		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
-		ReallyForceSpellRES("CA#HEAL",LastSeenBy(Myself))  // Heal
+		SpellRES("CA#HEAL",LastSeenBy(Myself))  // Heal
 END
 IF
 	ActionListEmpty()

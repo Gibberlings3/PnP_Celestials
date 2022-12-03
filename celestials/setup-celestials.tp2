@@ -1008,7 +1008,7 @@ COPY_EXISTING ~ca#fdeva.cre~ ~override~ // Fallen Deva
   END
   BUT_ONLY IF_EXISTS
 
-ACTION_IF MOD_IS_INSTALLED ~celestials/celstials.tp2~ ~0~ BEGIN // stuff for the first component
+ACTION_IF MOD_IS_INSTALLED ~celestials/celestials.tp2~ ~0~ BEGIN // stuff for the first component
 
   // patch weapons to use regular animations
   COPY_EXISTING ~ca#planw.itm~ ~override~
