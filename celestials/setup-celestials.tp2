@@ -208,15 +208,27 @@ COPY_EXISTING ~rods04.itm~ ~override/ca#monrd.itm~
   LPF ALTER_ITEM_HEADER INT_VAR header_type = 1 dicenumber = 1 dicesize = 8 thac0_bonus = 3 damage_bonus = 3 identify = 0 END
   PATCH_IF MOD_IS_INSTALLED "ITEM_REV.TP2" "0" BEGIN
     LPF CLONE_EFFECT INT_VAR match_opcode = 177 match_parameter1 = 144 parameter1 = 188 parameter2 = 5 END // Slay vs earth elemental
-    LPF CLONE_EFFECT INT_VAR match_opcode = 177 STR_VAR match_resource = "GOLEHIT3" resource = "CA#HIT3" END // +3 Hit vs earth elemental
-    LPF CLONE_EFFECT INT_VAR match_opcode = 177 STR_VAR match_resource = "GOLEDAM5" resource = "CA#DAM5" END // +5 Dmg vs earth elemental
+    LPF CLONE_EFFECT INT_VAR silent = 1 match_opcode = 177 STR_VAR match_resource = "GOLEHIT3" resource = "CA#HIT3" END // +3 Hit vs earth elemental
+    LPF CLONE_EFFECT INT_VAR silent = 1 match_opcode = 177 STR_VAR match_resource = "GOLEDAM5" resource = "CA#DAM5" END // +5 Dmg vs earth elemental
+    LPF CLONE_EFFECT INT_VAR silent = 1 match_opcode = 177 STR_VAR match_resource = "GOLEHIT2" resource = "CA#HIT2" END // +2 Hit vs earth elemental
+    LPF CLONE_EFFECT INT_VAR silent = 1 match_opcode = 177 STR_VAR match_resource = "GOLEDAM6" resource = "CA#DAM6" END // +6 Dmg vs earth elemental
     INNER_ACTION BEGIN
       COPY_EXISTING ~GOLEHIT3.eff~ ~override\CA#HIT3.eff~ // +3 Hit vs elemental - earth
       WRITE_LONG 0x1C 188
       WRITE_LONG 0x20 5
+	  BUT_ONLY IF_EXISTS
       COPY_EXISTING ~GOLEDAM5.eff~ ~override\CA#DAM5.eff~ // +5 Dmg vs elemental - earth
       WRITE_LONG 0x1C 188
       WRITE_LONG 0x20 5
+	  BUT_ONLY IF_EXISTS
+      COPY_EXISTING ~GOLEHIT2.eff~ ~override\CA#HIT2.eff~ // +2 Hit vs elemental - earth
+      WRITE_LONG 0x1C 188
+      WRITE_LONG 0x20 5
+	  BUT_ONLY IF_EXISTS
+      COPY_EXISTING ~GOLEDAM6.eff~ ~override\CA#DAM6.eff~ // +6 Dmg vs elemental - earth
+      WRITE_LONG 0x1C 188
+      WRITE_LONG 0x20 5
+	  BUT_ONLY IF_EXISTS
     END
   END ELSE BEGIN
     LPF CLONE_EFFECT INT_VAR match_opcode = 177 parameter1 = 188 parameter2 = 5 STR_VAR match_resource = smitgol1 END // vs earth elemental
