@@ -207,28 +207,26 @@ COPY_EXISTING ~rods04.itm~ ~override/ca#monrd.itm~
   LPF ALTER_EFFECT INT_VAR silent = 1 match_opcode = 233 match_parameter2 = 109 parameter1 = 3 END
   LPF ALTER_ITEM_HEADER INT_VAR header_type = 1 dicenumber = 1 dicesize = 8 thac0_bonus = 3 damage_bonus = 3 identify = 0 END
   PATCH_IF MOD_IS_INSTALLED "ITEM_REV.TP2" "0" BEGIN
-    LPF CLONE_EFFECT INT_VAR match_opcode = 177 match_parameter1 = 144 parameter1 = 188 parameter2 = 5 END // Slay vs earth elemental
-    LPF CLONE_EFFECT INT_VAR silent = 1 match_opcode = 177 STR_VAR match_resource = "GOLEHIT3" resource = "CA#HIT3" END // +3 Hit vs earth elemental
-    LPF CLONE_EFFECT INT_VAR silent = 1 match_opcode = 177 STR_VAR match_resource = "GOLEDAM5" resource = "CA#DAM5" END // +5 Dmg vs earth elemental
-    LPF CLONE_EFFECT INT_VAR silent = 1 match_opcode = 177 STR_VAR match_resource = "GOLEHIT2" resource = "CA#HIT2" END // +2 Hit vs earth elemental
-    LPF CLONE_EFFECT INT_VAR silent = 1 match_opcode = 177 STR_VAR match_resource = "GOLEDAM6" resource = "CA#DAM6" END // +6 Dmg vs earth elemental
-    INNER_ACTION BEGIN
-      COPY_EXISTING ~GOLEHIT3.eff~ ~override\CA#HIT3.eff~ // +3 Hit vs elemental - earth
-      WRITE_LONG 0x1C 188
-      WRITE_LONG 0x20 5
-	  BUT_ONLY IF_EXISTS
-      COPY_EXISTING ~GOLEDAM5.eff~ ~override\CA#DAM5.eff~ // +5 Dmg vs elemental - earth
-      WRITE_LONG 0x1C 188
-      WRITE_LONG 0x20 5
-	  BUT_ONLY IF_EXISTS
-      COPY_EXISTING ~GOLEHIT2.eff~ ~override\CA#HIT2.eff~ // +2 Hit vs elemental - earth
-      WRITE_LONG 0x1C 188
-      WRITE_LONG 0x20 5
-	  BUT_ONLY IF_EXISTS
-      COPY_EXISTING ~GOLEDAM6.eff~ ~override\CA#DAM6.eff~ // +6 Dmg vs elemental - earth
-      WRITE_LONG 0x1C 188
-      WRITE_LONG 0x20 5
-	  BUT_ONLY IF_EXISTS
+    LPF CLONE_EFFECT INT_VAR silent = 1 match_opcode = 177 match_parameter1 = 144 parameter1 = 188 parameter2 = 5 END // Slay vs earth elemental
+    PATCH_FOR_EACH to_hit IN ~1~ ~2~ ~3~ ~4~ BEGIN
+      LPF CLONE_EFFECT INT_VAR silent = 1 match_opcode = 177 STR_VAR match_resource = EVAL "GOLEHIT%to_hit%" resource = EVAL "CA#HIT%to_hit%" END // to hit bonus vs earth elemental
+      INNER_ACTION BEGIN
+        ACTION_IF (FILE_EXISTS_IN_GAME ~GOLEHIT%to_hit%.eff~) BEGIN
+          COPY_EXISTING ~GOLEHIT%to_hit%.eff~ ~override\CA#HIT%to_hit%.eff~ // to hit bonus vs elemental - earth
+            WRITE_LONG 0x1C 188
+            WRITE_LONG 0x20 5
+        END
+      END
+    END
+    PATCH_FOR_EACH dam_bo IN ~3~ ~4~ ~5~ ~6~ ~7~ ~8~ BEGIN
+      LPF CLONE_EFFECT INT_VAR silent = 1 match_opcode = 177 STR_VAR match_resource = EVAL "GOLEDAM%dam_bo%" resource = EVAL "CA#DAM%dam_bo%" END // dmg bonus vs earth elemental
+      INNER_ACTION BEGIN
+        ACTION_IF (FILE_EXISTS_IN_GAME ~GOLEDAM%dam_bo%.eff~) BEGIN
+          COPY_EXISTING ~GOLEDAM%dam_bo%.eff~ ~override\CA#DAM%dam_bo%.eff~ // dmg bonus vs elemental - earth
+            WRITE_LONG 0x1C 188
+            WRITE_LONG 0x20 5
+        END
+      END
     END
   END ELSE BEGIN
     LPF CLONE_EFFECT INT_VAR match_opcode = 177 parameter1 = 188 parameter2 = 5 STR_VAR match_resource = smitgol1 END // vs earth elemental
@@ -571,7 +569,6 @@ COPY ~celestials/summon_spells/_spl/ca#sdmon.spl~ ~override/ca#sdmon.spl~ //Summ
   SAY 0x50 @209 // descriptions exposed on EEs
   SAY 0x54 @209
 
-
 COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva through invis and invulen creature */
               ~spcl935.spl~ ~override~  /* blackguard Innate spell to summon fallen deva */
               ~sppr726.spl~ ~override~  /* Cleric spell to summon deva through invis and invulen creature */
@@ -594,6 +591,27 @@ COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva t
   LPF ALTER_EFFECT INT_VAR match_opcode = 177 STR_VAR resource = EVAL ~%res%~ END
   IF_EXISTS // spcl935 is EE asset
 
+// Restore Desc. for Spell revisions users
+ACTION_IF MOD_IS_INSTALLED ~spell_rev.tp2~ ~0~ BEGIN
+  COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva through invis and invulen creature */
+    WRITE_LONG 0x50 63829
+    BUT_ONLY
+  COPY_EXISTING ~spcl935.spl~ ~override~  /* blackguard Innate spell to summon fallen deva */
+    WRITE_LONG 0x50 63831
+    IF_EXISTS BUT_ONLY
+  COPY_EXISTING ~sppr726.spl~ ~override~  /* Cleric spell to summon deva through invis and invulen creature */
+    WRITE_LONG 0x50 63829
+    BUT_ONLY
+  COPY_EXISTING ~sppr727.spl~ ~override~  /* Cleric spell to summon fallen deva */
+    WRITE_LONG 0x50 63831
+    BUT_ONLY
+  COPY_EXISTING ~spwi923.spl~ ~override~  /* Wizard spell to summon planetar */
+    WRITE_LONG 0x50 63232
+    BUT_ONLY
+  COPY_EXISTING ~spwi924.spl~ ~override~  /* Wizard spell to summon fallen planetar */
+    WRITE_LONG 0x50 63237
+    BUT_ONLY
+END
 /////                                                  \\\\\
 ///// miscellaneous compat junk                        \\\\\
 /////                                                  \\\\\
