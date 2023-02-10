@@ -380,8 +380,10 @@ COPY_EXISTING ~ca#pev40.spl~ ~override~
 
 COPY_EXISTING ~ca#pev40.spl~ ~override/ca#peg40.spl~ /* Protection from Good 40 foot radius */
   LPF ALTER_EFFECT INT_VAR match_opcode = 219 parameter1 = 1 END
-  LPF ALTER_EFFECT INT_VAR match_opcode = 100 parameter1 = 156 parameter2 = 4 END // Protect against SOLAR instead of summoned Fiends
-  LPF CLONE_EFFECT INT_VAR match_opcode = 100 match_parameter1 = 156 parameter1 = 158 END // Protect against PLANETAR
+  PATCH_IF !MOD_IS_INSTALLED ~spell_rev.tp2~ ~0~ BEGIN
+    LPF ALTER_EFFECT INT_VAR match_opcode = 100 parameter1 = 156 parameter2 = 4 END // Protect against SOLAR instead of summoned Fiends
+    LPF CLONE_EFFECT INT_VAR match_opcode = 100 match_parameter1 = 156 parameter1 = 158 END // Protect against PLANETAR
+  END
   LPF ALTER_EFFECT STR_VAR match_resource = EVAL ~%SOURCE_RES%~ resource = EVAL ~%DEST_RES%~  END
   SAY NAME1 @4021
   SAY NAME2 @4021
