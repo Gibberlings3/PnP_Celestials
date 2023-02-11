@@ -354,6 +354,7 @@ COPY_EXISTING ~ca#ii10.spl~ ~override~ /* Improved Invisibility 10 foot radius *
   LPF ALTER_SPELL_HEADER INT_VAR projectile = 205 END
   LPF ALTER_SPELL_EFFECT INT_VAR duration_high = 300 END
   LPF ALTER_EFFECT INT_VAR silent = 1 match_opcode = 146 STR_VAR match_resource = spwi405a resource = ~ca#ii10a~ END // for obg2 + bg2fp
+  REPLACE_TEXTUALLY CASE_INSENSITIVE "SPWI405B" "ca#ii10b" // new icon B
 
 COPY ~celestials/planetar/at_will_innates/ca#pao.spl~ ~override~     /* Polymorph any Object */
   SAY NAME1 @401
@@ -388,6 +389,7 @@ COPY_EXISTING ~ca#pev40.spl~ ~override/ca#peg40.spl~ /* Protection from Good 40 
   SAY 0x50 @4021 // descriptions exposed on EEs
   SAY 0x54 @4021
   LPF ALTER_EFFECT INT_VAR match_opcode = 139 parameter1 = 14770 END
+  REPLACE_TEXTUALLY CASE_INSENSITIVE "SPPR408B" "cdprgd4b" // new icon B
 
 COPY ~celestials/planetar/at_will_innates/ca#rcold.spl~ ~override~ /* Resist Cold */
   SAY NAME1 @403
