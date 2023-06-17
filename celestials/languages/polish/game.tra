@@ -1,46 +1,46 @@
 //Rodzaje Devy
 
 @100=~Astralny Deva~
-@101=~Œwiêty Deva~
-@102=~Deva ¿ywio³ów~
+@101=~Święty Deva~
+@102=~Deva żywiołów~
 
-//Zaklêcia Devy
+//Zaklęcia Devy
 
-@200=~Wykrywanie pu³apek~
+@200=~Wykrywanie pułapek~
 @201=~Sfera Anty-magii~
 @202=~Rozproszenie Sfery Anty-magii~
 @203=~Sfera Anty-magii (Odrzucanie)
 Poziom: 6
-Zasiêg: 0
+Zasięg: 0
 Czas trwania: 1 tura/poziom
 Czas rzucania: 1
-Obszar dzia³ania: rzucaj¹cy
+Obszar działania: rzucający
 Rzut obronny: brak
 
-Po rzuceniu tego zaklêcia, mag tworzy potê¿n¹, niewidzialn¹ barierê, która porusza siê wraz z nim. Obszar chroniony przez t¹ tarczê staje siê ca³kowicie odporny na dzia³anie jakiejkolwiek magii. Sfera Anty-magii zapobiega tak¿e dzia³aniu jakichkolwiek magicznych przedmiotów i artefaktów. Ponadto postaæ bêd¹ca pod jej wp³ywem, jest chroniona przed wszelkimi zioniêciami, gazami, wzrokiem, atakami opartymi na dŸwiêkach i unikalnymi atakami rozmaitych istot.
+Po rzuceniu tego zaklęcia, mag tworzy potężną, niewidzialną barierę, która porusza się wraz z nim. Obszar chroniony przez tą tarczę staje się całkowicie odporny na działanie jakiejkolwiek magii. Sfera Anty-magii zapobiega także działaniu jakichkolwiek magicznych przedmiotów i artefaktów. Ponadto postać będąca pod jej wpływem, jest chroniona przed wszelkimi zionięciami, gazami, wzrokiem, atakami opartymi na dźwiękach i unikalnymi atakami rozmaitych istot.
 
-Sfera Anty-magii rozprasza i niszczy wszelkie zauroczenia, przywo³ania lub przemiany. Jednak zwyczajne istoty, np. troll bez problemu mog¹ przejœæ barierê, tak samo jak zwyk³e bronie. Trzeba pamiêtaæ, ¿e musz¹ to byæ istoty pochodz¹ce z pierwszej sfery materialnej, czyli np. ¿ywio³aki, choæby nie by³y przyzwane, zostan¹ natychmiast odes³ane do swej sfery macierzystej. Wielkie artefakty, œwiête czy pó³-boskie istoty nie odczuwaj¹ ¿adnych efektów tego zaklêcia. Rozproszenie magii nie rozprasza Bariery Anty-Magi. Nale¿y zwróciæ uwagê na to, ¿e postaæ rzucaj¹ca to zaklêcie, mo¿e w ka¿dym momencie je zakoñczyæ, jednak maksymalny czas trwania Sfery wynosi 1 turê na ka¿dy poziom doœwiadczenia maga.~
-@204=~Rzucenie zaklêcia Inwokacji/Wywo³añ~
+Sfera Anty-magii rozprasza i niszczy wszelkie zauroczenia, przywołania lub przemiany. Jednak zwyczajne istoty, np. troll bez problemu mogą przejść barierę, tak samo jak zwykłe bronie. Trzeba pamiętać, że muszą to być istoty pochodzące z pierwszej sfery materialnej, czyli np. żywiołaki, choćby nie były przyzwane, zostaną natychmiast odesłane do swej sfery macierzystej. Wielkie artefakty, święte czy pół-boskie istoty nie odczuwają żadnych efektów tego zaklęcia. Rozproszenie magii nie rozprasza Bariery Anty-Magi. Należy zwrócić uwagę na to, że postać rzucająca to zaklęcie, może w każdym momencie je zakończyć, jednak maksymalny czas trwania Sfery wynosi 1 turę na każdy poziom doświadczenia maga.~
+@204=~Rzucenie zaklęcia Inwokacji/Wywołań~
 @205=~Wezwanie Planetara~
-@206=~Przywo³anie Astralnego Devy~
-@207=~Przywo³anie Devy ¯ywio³ów~
-@208=~Bezb³êdna teleportacja~
-@209=~Przywo³anie Œwiêtego Devy~
-@210=~Zauroczenie ¿ywio³aka~
+@206=~Przywołanie Astralnego Devy~
+@207=~Przywołanie Devy Żywiołów~
+@208=~Bezbłędna teleportacja~
+@209=~Przywołanie Świętego Devy~
+@210=~Zauroczenie żywiołaka~
 
 //Ekwipunek
 
 @300=~Miecz Planetara~
 @301=~Wiekiera Zniszczenia +3 Astralnego Devy~
-@302=~Jêzor ognia +1 Devy ¯ywio³ów~
-@303=~Ber³o uderzenia +3 Œwiêtego Devy~
+@302=~Jęzor ognia +1 Devy Żywiołów~
+@303=~Berło uderzenia +3 Świętego Devy~
 @304=~Wiekiera Zniszczenia +3 Devy~
 
-//Zaklêcia Planetara
+//Zaklęcia Planetara
 
-@400=~Ulepszona niewidzialnoœæ, promieñ 3 metry~
+@400=~Ulepszona niewidzialność, promień 3 metry~
 @401=~Polimorfia innego~
-@402=~Ochrona przez z³em, promieñ 12 metrów~
-@4021=~Ochrona przed dobrem, promieñ 12 metry~
-@403=~Odpornoœæ na ch³ód~
+@402=~Ochrona przez złem, promień 12 metrów~
+@4021=~Ochrona przed dobrem, promień 12 metry~
+@403=~Odporność na chłód~
 @404=~Symbol~
