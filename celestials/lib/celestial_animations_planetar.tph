@@ -1,0 +1,101 @@
+// changes for planetars
+DEFINE_PATCH_MACRO ~PLANETAR_ANIMATION~ BEGIN
+  LAUNCH_PATCH_FUNCTION ~CELESTIAL_ANIMATIONS~
+    INT_VAR
+      animation = 0x6201 // mage_male_elf
+      metal_colour = 105
+      minor_colour = 25
+      major_colour = 105
+      skin_colour = 15 // smooth emerald skin
+      leather_colour = 105
+      armor_colour = 105
+      hair_colour = 15 // hairless (skin color)
+      battle_cry1_strref = 61729
+      battle_cry2_strref = (0 - 1)
+      damage_strref = 61730
+      dying_strref = 61731
+      hurt_strref = 61732
+      select_common1_strref = 61724
+      select_common2_strref = 61725
+      select_common3_strref = 61726
+    STR_VAR
+      armour = ~ca#plang~
+  END
+END
+
+// changes for dark planetars
+DEFINE_PATCH_MACRO ~FALLEN_PLANETAR_ANIMATION~ BEGIN
+  LAUNCH_PATCH_FUNCTION ~CELESTIAL_ANIMATIONS~
+    INT_VAR
+      animation = 0x6211 // mage_female_elf
+      metal_colour = 28
+      minor_colour = 47
+      major_colour = 66
+      skin_colour = 35 // Dark Ghostly Pink
+      leather_colour = 66
+      armor_colour = 28
+      hair_colour = 35 // Dark Ghostly Pink
+      battle_cry1_strref = 61758
+      battle_cry2_strref = 61761
+      damage_strref = 55381
+      dying_strref = 55382
+      hurt_strref = (0 - 1)
+      select_common1_strref = 61759
+      select_common2_strref = (0 - 1)
+      select_common3_strref = (0 - 1)
+    STR_VAR
+      armour = ~ca#plane~
+  END
+END
+
+// copy over items for wings and armours
+COPY ~celestials\itm\dvplanga.itm~ ~override\ca#plang.itm~ // from Spell Revision, renamed
+COPY ~celestials\itm\dvplanea.itm~ ~override\ca#plane.itm~ // from Spell Revision, renamed
+
+COPY_EXISTING ~dvwings.itm~ ~override/ca#pwing.itm~ // Planetars wings
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 105 parameter2 = 54 timing = 2 probability1 = 100 END // White
+COPY_EXISTING ~dvwings.itm~ ~override/ca#fwing.itm~ // Fallen planetars wings
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 0 parameter2 = 54 timing = 2 probability1 = 100 END  // Red Tinted Black
+
+// patch creatures
+COPY_EXISTING ~ca#plan.cre~  ~override~ // Planetar
+              ~ohdplanb.cre~ ~override~ // planetar of justice
+              ~ohdplanj.cre~ ~override~ // planetar of justice
+              ~ohdplanl.cre~ ~override~ // planetar
+              ~ohdpplan.cre~ ~override~ // planetar
+              ~ohdsolar.cre~ ~override~ // planetar
+              ~ohdsplan.cre~ ~override~ // planetar
+              ~plangood.cre~ ~override~ // planetar
+  PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
+    LAUNCH_PATCH_MACRO ~PLANETAR_ANIMATION~
+  END
+  BUT_ONLY IF_EXISTS
+
+COPY_EXISTING ~ca#fplan.cre~ ~override~ // fallen Planetar
+              ~planevil.cre~ ~override~ // planetar
+              ~planwish.cre~ ~override~ // planetar
+  PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
+    LAUNCH_PATCH_MACRO ~FALLEN_PLANETAR_ANIMATION~
+  END
+  BUT_ONLY IF_EXISTS
+
+ACTION_IF MOD_IS_INSTALLED ~celestials/celestials.tp2~ ~0~ BEGIN // stuff for the first component
+
+  // patch weapons to use regular animations
+  COPY_EXISTING ~ca#planw.itm~ ~override~
+    PATCH_IF (SOURCE_SIZE > 0x71) BEGIN
+      WRITE_ASCII 0x22 ~S2~ // two-handed sword
+    END
+    BUT_ONLY
+
+  // re-equipping weapon as it's now 2-handed
+  COPY_EXISTING ~ca#plan.cre~  ~override~ // Planetar
+    REPLACE_CRE_ITEM ~ca#planw~ #0 #0 #0 ~unstealable~ ~weapon1~ EQUIP TWOHANDED
+    BUT_ONLY 
+
+  // re-equipping weapon as it's now 2-handed
+  COPY_EXISTING ~ca#fplan.cre~ ~override~ // fallen Planetar
+    REPLACE_CRE_ITEM ~ca#planw~ #0 #0 #0 ~unstealable~ ~weapon1~ EQUIP TWOHANDED
+    BUT_ONLY 
+    
+END 

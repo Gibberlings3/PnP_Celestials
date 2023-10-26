@@ -1,3 +1,5 @@
+COPY ~celestials\wings~ ~override~
+
 DEFINE_PATCH_FUNCTION ~CELESTIAL_ANIMATIONS~
   INT_VAR
     animation = 1072
