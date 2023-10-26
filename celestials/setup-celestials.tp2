@@ -210,29 +210,33 @@ COPY_EXISTING ~rods04.itm~ ~override/ca#monrd.itm~
     LPF CLONE_EFFECT INT_VAR silent = 1 match_opcode = 177 match_parameter1 = 144 parameter1 = 188 parameter2 = 5 END // Slay vs earth elemental
     PATCH_FOR_EACH to_hit IN ~1~ ~2~ ~3~ ~4~ BEGIN
       LPF CLONE_EFFECT INT_VAR silent = 1 match_opcode = 177 STR_VAR match_resource = EVAL "GOLEHIT%to_hit%" resource = EVAL "CA#HIT%to_hit%" END // to hit bonus vs earth elemental
-      INNER_ACTION BEGIN
-        ACTION_IF (FILE_EXISTS_IN_GAME ~GOLEHIT%to_hit%.eff~) BEGIN
-          COPY_EXISTING ~GOLEHIT%to_hit%.eff~ ~override\CA#HIT%to_hit%.eff~ // to hit bonus vs elemental - earth
-            WRITE_LONG 0x1C 188
-            WRITE_LONG 0x20 5
-        END
-      END
     END
     PATCH_FOR_EACH dam_bo IN ~3~ ~4~ ~5~ ~6~ ~7~ ~8~ BEGIN
       LPF CLONE_EFFECT INT_VAR silent = 1 match_opcode = 177 STR_VAR match_resource = EVAL "GOLEDAM%dam_bo%" resource = EVAL "CA#DAM%dam_bo%" END // dmg bonus vs earth elemental
-      INNER_ACTION BEGIN
-        ACTION_IF (FILE_EXISTS_IN_GAME ~GOLEDAM%dam_bo%.eff~) BEGIN
-          COPY_EXISTING ~GOLEDAM%dam_bo%.eff~ ~override\CA#DAM%dam_bo%.eff~ // dmg bonus vs elemental - earth
-            WRITE_LONG 0x1C 188
-            WRITE_LONG 0x20 5
-        END
-      END
     END
   END ELSE BEGIN
     LPF CLONE_EFFECT INT_VAR match_opcode = 177 parameter1 = 188 parameter2 = 5 STR_VAR match_resource = smitgol1 END // vs earth elemental
     LPF CLONE_EFFECT INT_VAR match_opcode = 55  parameter1 = 188 parameter2 = 5 END // vs earth elemental
   END
 //  LPF ADD_ITEM_EFFECT INT_VAR type = 1 opcode = 146 target = 1 parameter1 = 1 parameter2 = 1 timing = 1 STR_VAR resource = noattack END
+
+// create missing EFFs for item revisions
+ACTION_IF MOD_IS_INSTALLED "ITEM_REV.TP2" "0" BEGIN
+  ACTION_FOR_EACH to_hit IN ~1~ ~2~ ~3~ ~4~ BEGIN
+    ACTION_IF (FILE_EXISTS_IN_GAME ~GOLEHIT%to_hit%.eff~) BEGIN
+      COPY_EXISTING ~GOLEHIT%to_hit%.eff~ ~override\CA#HIT%to_hit%.eff~ // to hit bonus vs elemental - earth
+        WRITE_LONG 0x1C 188
+        WRITE_LONG 0x20 5
+    END
+  END
+  ACTION_FOR_EACH dam_bo IN ~3~ ~4~ ~5~ ~6~ ~7~ ~8~ BEGIN
+    ACTION_IF (FILE_EXISTS_IN_GAME ~GOLEDAM%dam_bo%.eff~) BEGIN
+      COPY_EXISTING ~GOLEDAM%dam_bo%.eff~ ~override\CA#DAM%dam_bo%.eff~ // dmg bonus vs elemental - earth
+        WRITE_LONG 0x1C 188
+        WRITE_LONG 0x20 5
+    END
+  END
+END  
 
 //Creatures
 
@@ -351,10 +355,9 @@ COPY_EXISTING ~ca#ii10.spl~ ~override~ /* Improved Invisibility 10 foot radius *
   DELETE_BYTES (abil_off + 0x28) (0x28 * (abil_num - 1))                 // now delete all abilities except ability 0
   WRITE_SHORT 0x68 1 // set num ability
   WRITE_LONG  0x6a abil_off + 0x28
-  LPF ALTER_SPELL_HEADER INT_VAR projectile = 205 END
+  LPF ALTER_SPELL_HEADER INT_VAR projectile = 205 STR_VAR icon = "ca#ii10b" END
   LPF ALTER_SPELL_EFFECT INT_VAR duration_high = 300 END
   LPF ALTER_EFFECT INT_VAR silent = 1 match_opcode = 146 STR_VAR match_resource = spwi405a resource = ~ca#ii10a~ END // for obg2 + bg2fp
-  REPLACE_TEXTUALLY CASE_INSENSITIVE "SPWI405B" "ca#ii10b" // new icon B
 
 COPY ~celestials/planetar/at_will_innates/ca#pao.spl~ ~override~     /* Polymorph any Object */
   SAY NAME1 @401
@@ -389,7 +392,7 @@ COPY_EXISTING ~ca#pev40.spl~ ~override/ca#peg40.spl~ /* Protection from Good 40 
   SAY 0x50 @4021 // descriptions exposed on EEs
   SAY 0x54 @4021
   LPF ALTER_EFFECT INT_VAR match_opcode = 139 parameter1 = 14770 END
-  REPLACE_TEXTUALLY CASE_INSENSITIVE "SPPR408B" "cdprgd4b" // new icon B
+  LPF ALTER_SPELL_HEADER STR_VAR icon = "cdprgd4b" END
 
 COPY ~celestials/planetar/at_will_innates/ca#rcold.spl~ ~override~ /* Resist Cold */
   SAY NAME1 @403
