@@ -1006,6 +1006,8 @@ COPY_EXISTING ~ca#plan.cre~  ~override~ // Planetar
   BUT_ONLY IF_EXISTS
 
 COPY_EXISTING ~ca#fplan.cre~ ~override~ // fallen Planetar
+              ~ohbwing.cre~  ~override~ // the winged (black pits 2)
+              ~ohbwing2.cre~ ~override~ // the winged (black pits 2)
               ~planevil.cre~ ~override~ // planetar
               ~planwish.cre~ ~override~ // planetar
   PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
