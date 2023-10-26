@@ -817,43 +817,288 @@ COPY_EXISTING ~#curestn.spl~ ~override~ // cure stun
 /////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
 /////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
 
-/////                                                  \\\\\
-///// deva and planetar animations                     \\\\\
-/////                                                  \\\\\
 
-BEGIN @4 /* Start with displaying mod component PnP Celestials */
-SUBCOMPONENT @2
+BEGIN @2 /* Start with displaying mod component PnP Celestials */
 REQUIRE_PREDICATE GAME_IS ~tob bg2ee bgt eet~ @3 /* TOB Check prior to compiling.*/
 DESIGNATED 1
 LABEL "PnP_Celestials_animations"
 
 INCLUDE ~celestials\lib\celestial_animations.tph~
-INCLUDE ~celestials\lib\celestial_animations_deva.tph~
-INCLUDE ~celestials\lib\celestial_animations_planetar.tph~
 
-/////                                                  \\\\\
-///// deva only                                        \\\\\
-/////                                                  \\\\\
+///////////////////////////////////////////////////
 
-BEGIN @5 /* Start with displaying mod component PnP Celestials */
-SUBCOMPONENT @2
-REQUIRE_PREDICATE GAME_IS ~tob bg2ee bgt eet~ @3 /* TOB Check prior to compiling.*/
-DESIGNATED 2
-LABEL "PnP_Celestials_animations_deva_only"
+// changes for planetars
+DEFINE_PATCH_MACRO ~PLANETAR_ANIMATION~ BEGIN
+  LAUNCH_PATCH_FUNCTION ~CELESTIAL_ANIMATIONS~
+    INT_VAR
+      animation = 0x6201 // mage_male_elf
+      metal_colour = 105
+      minor_colour = 25
+      major_colour = 105
+      skin_colour = 15 // smooth emerald skin
+      leather_colour = 105
+      armor_colour = 105
+      hair_colour = 15 // hairless (skin color)
+      battle_cry1_strref = 61729
+      battle_cry2_strref = (0 - 1)
+      damage_strref = 61730
+      dying_strref = 61731
+      hurt_strref = 61732
+      select_common1_strref = 61724
+      select_common2_strref = 61725
+      select_common3_strref = 61726
+    STR_VAR
+      armour = ~ca#plang~
+  END
+END
 
-INCLUDE ~celestials\lib\celestial_animations.tph~
-INCLUDE ~celestials\lib\celestial_animations_deva.tph~
+// changes for dark planetars
+DEFINE_PATCH_MACRO ~FALLEN_PLANETAR_ANIMATION~ BEGIN
+  LAUNCH_PATCH_FUNCTION ~CELESTIAL_ANIMATIONS~
+    INT_VAR
+      animation = 0x6211 // mage_female_elf
+      metal_colour = 28
+      minor_colour = 47
+      major_colour = 66
+      skin_colour = 35 // Dark Ghostly Pink
+      leather_colour = 66
+      armor_colour = 28
+      hair_colour = 35 // Dark Ghostly Pink
+      battle_cry1_strref = 61758
+      battle_cry2_strref = 61761
+      damage_strref = 55381
+      dying_strref = 55382
+      hurt_strref = (0 - 1)
+      select_common1_strref = 61759
+      select_common2_strref = (0 - 1)
+      select_common3_strref = (0 - 1)
+    STR_VAR
+      armour = ~ca#plane~
+  END
+END
 
-/////                                                  \\\\\
-///// deva only                                        \\\\\
-/////                                                  \\\\\
+// changes for astral devas
+DEFINE_PATCH_MACRO ~ASTRAL_DEVA_ANIMATION~ BEGIN
+  LAUNCH_PATCH_FUNCTION ~CELESTIAL_ANIMATIONS~
+    INT_VAR
+      animation = 0x6001 // cleric_male_elf
+      metal_colour = 105
+      minor_colour = 25
+      major_colour = 105
+      skin_colour = 67 // golden Skin
+      leather_colour = 105
+      armor_colour = 105
+      hair_colour = 115 // fair hair
+      battle_cry1_strref = 61729
+      battle_cry2_strref = (0 - 1)
+      damage_strref = 61730
+      dying_strref = 61731
+      hurt_strref = 61732
+      select_common1_strref = 61724
+      select_common2_strref = 61725
+      select_common3_strref = 61726
+    STR_VAR
+      armour = ~ca#devag~
+  END
+END
 
-BEGIN @6 /* Start with displaying mod component PnP Celestials */
-SUBCOMPONENT @2
-REQUIRE_PREDICATE GAME_IS ~tob bg2ee bgt eet~ @3 /* TOB Check prior to compiling.*/
-DESIGNATED 3
-LABEL "PnP_Celestials_animations_planetar_only"
+// changes for monadic devas
+DEFINE_PATCH_MACRO ~MONADIC_DEVA_ANIMATION~ BEGIN
+  LAUNCH_PATCH_FUNCTION ~CELESTIAL_ANIMATIONS~
+    INT_VAR
+      animation = 0x6001 // cleric_male_elf
+      metal_colour = 105
+      minor_colour = 25
+      major_colour = 105
+      skin_colour = 66 //brown skin
+      leather_colour = 105
+      armor_colour = 105
+      hair_colour = 85 // Jet Hair
+      battle_cry1_strref = 61729
+      battle_cry2_strref = (0 - 1)
+      damage_strref = 61730
+      dying_strref = 61731
+      hurt_strref = 61732
+      select_common1_strref = 61724
+      select_common2_strref = 61725
+      select_common3_strref = 61726
+    STR_VAR
+      armour = ~ca#devag~
+  END
+END
 
-INCLUDE ~celestials\lib\celestial_animations.tph~
-INCLUDE ~celestials\lib\celestial_animations_planetar.tph~
+// changes for movanic devas
+DEFINE_PATCH_MACRO ~MOVANIC_DEVA_ANIMATION~ BEGIN
+  LAUNCH_PATCH_FUNCTION ~CELESTIAL_ANIMATIONS~
+    INT_VAR
+      animation = 0x6001 // cleric_male_elf
+      metal_colour = 105
+      minor_colour = 25
+      major_colour = 105
+      skin_colour = 105 // milky white skin
+      leather_colour = 105
+      armor_colour = 105
+      hair_colour = 6 // silvery hair
+      battle_cry1_strref = 61729
+      battle_cry2_strref = (0 - 1)
+      damage_strref = 61730
+      dying_strref = 61731
+      hurt_strref = 61732
+      select_common1_strref = 61724
+      select_common2_strref = 61725
+      select_common3_strref = 61726
+    STR_VAR
+      armour = ~ca#devag~
+  END
+END
 
+// changes for fallen devas
+DEFINE_PATCH_MACRO ~FALLEN_DEVA_ANIMATION~ BEGIN
+  LAUNCH_PATCH_FUNCTION ~CELESTIAL_ANIMATIONS~
+    INT_VAR
+      animation = 0x6011 // cleric_female_elf
+      metal_colour = 27
+      minor_colour = 27
+      major_colour = 19
+      skin_colour = 18 // Dark Blue
+      leather_colour = 14
+      armor_colour = 19
+      hair_colour = 6 // Dark Silver
+      battle_cry1_strref = 61758
+      battle_cry2_strref = 61761
+      damage_strref = 55381
+      dying_strref = 55382
+      hurt_strref = (0 - 1)
+      select_common1_strref = 61759
+      select_common2_strref = (0 - 1)
+      select_common3_strref = (0 - 1)
+    STR_VAR
+      armour = ~ca#devae~
+  END
+END
+
+// copy over items for wings and armours
+COPY ~celestials\wings~ ~override~
+COPY ~celestials\itm\dvplanga.itm~ ~override\ca#plang.itm~ // from Spell Revision, renamed
+COPY ~celestials\itm\dvplanea.itm~ ~override\ca#plane.itm~ // from Spell Revision, renamed
+COPY ~celestials\itm\dvdevaga.itm~ ~override\ca#devag.itm~ // from Spell Revision, renamed
+COPY ~celestials\itm\dvdevaea.itm~ ~override\ca#devae.itm~ // from Spell Revision, renamed
+
+COPY_EXISTING ~dvwings.itm~ ~override~
+  WRITE_BYTE 0x1b 2 // no critical hit immunity
+COPY_EXISTING ~dvwings.itm~ ~override/ca#pwing.itm~ // Planetars wings
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 105 parameter2 = 54 timing = 2 probability1 = 100 END // White
+COPY_EXISTING ~dvwings.itm~ ~override/ca#fwing.itm~ // Fallen planetars wings
+  LPF ADD_ITEM_EQEFFECT INT_VAR opcode = 7 parameter1 = 0 parameter2 = 54 timing = 2 probability1 = 100 END  // Red Tinted Black
+
+// patch creatures
+COPY_EXISTING ~ca#plan.cre~  ~override~ // Planetar
+              ~ohdplanb.cre~ ~override~ // planetar of justice
+              ~ohdplanj.cre~ ~override~ // planetar of justice
+              ~ohdplanl.cre~ ~override~ // planetar
+              ~ohdpplan.cre~ ~override~ // planetar
+              ~ohdsolar.cre~ ~override~ // planetar
+              ~ohdsplan.cre~ ~override~ // planetar
+              ~plangood.cre~ ~override~ // planetar
+  PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
+    LAUNCH_PATCH_MACRO ~PLANETAR_ANIMATION~
+  END
+  BUT_ONLY IF_EXISTS
+
+COPY_EXISTING ~ca#fplan.cre~ ~override~ // fallen Planetar
+              ~planevil.cre~ ~override~ // planetar
+              ~planwish.cre~ ~override~ // planetar
+  PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
+    LAUNCH_PATCH_MACRO ~FALLEN_PLANETAR_ANIMATION~
+  END
+  BUT_ONLY IF_EXISTS
+
+COPY_EXISTING ~ca#dastr.cre~ ~override~ // Astral Deva (mod)
+              ~devagood.cre~ ~override~ // Deva
+              ~devast01.cre~ ~override~ // astral deva
+  PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
+    LAUNCH_PATCH_MACRO ~ASTRAL_DEVA_ANIMATION~
+  END
+  BUT_ONLY IF_EXISTS
+
+COPY_EXISTING ~ca#dmond.cre~ ~override~ // Monadic Deva
+              ~devmon01.cre~ ~override~ // astral deva
+  PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
+    LAUNCH_PATCH_MACRO ~MONADIC_DEVA_ANIMATION~
+  END
+  BUT_ONLY IF_EXISTS
+
+COPY_EXISTING ~ca#dmova.cre~ ~override~ // Movanic Deva
+  PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
+    LAUNCH_PATCH_MACRO ~MOVANIC_DEVA_ANIMATION~
+  END
+  BUT_ONLY IF_EXISTS
+
+COPY_EXISTING ~ca#fdeva.cre~ ~override~ // Fallen Deva
+              ~devaevil.cre~ ~override~ // fallen deva
+              ~ohbcel01.cre~ ~override~ // ariziel
+              ~ohbcel02.cre~ ~override~ // fallen astral deva
+              ~ohbcel03.cre~ ~override~ // fallen monadic deva
+              ~ohbdva01.cre~ ~override~ // fallen deva
+  PATCH_IF (SOURCE_SIZE > 0x2d3) BEGIN
+    LAUNCH_PATCH_MACRO ~FALLEN_DEVA_ANIMATION~
+  END
+  BUT_ONLY IF_EXISTS
+
+ACTION_IF MOD_IS_INSTALLED ~celestials/celestials.tp2~ ~0~ BEGIN // stuff for the first component
+
+  // patch weapons to use regular animations
+  COPY_EXISTING ~ca#planw.itm~ ~override~
+    PATCH_IF (SOURCE_SIZE > 0x71) BEGIN
+      WRITE_ASCII 0x22 ~S2~ // two-handed sword
+    END
+    BUT_ONLY
+
+  COPY_EXISTING ~ca#asdm.itm~ ~override~
+                ~ca#fadm.itm~ ~override~
+    PATCH_IF (SOURCE_SIZE > 0x71) BEGIN
+      WRITE_ASCII 0x22 ~MC~ // mace
+      // fix colour glow so that it looks awesomer :)
+      READ_LONG   0x6a effects_off
+      READ_SHORT  0x70 num_effects
+      FOR (i = 0; i < num_effects; i += 1) BEGIN
+        READ_SHORT (effects_off + 0x30*i) opcode
+        PATCH_IF (opcode == 9) BEGIN // color glow pulse
+          READ_SHORT (effects_off + 0x30*i + 0x0a) cycle_speed
+          PATCH_IF (cycle_speed == 0) BEGIN
+            WRITE_SHORT (effects_off + 0x30*i + 0x0a) 110
+          END
+        END
+      END
+    END
+    BUT_ONLY
+
+  COPY_EXISTING ~ca#monrd.itm~ ~override~
+    PATCH_IF (SOURCE_SIZE > 0x71) BEGIN
+      WRITE_ASCII 0x22 ~QS~ // quarterstaff
+    WRITE_LONG 0x18 0x6a // 2-handed
+    END
+    BUT_ONLY
+
+  COPY_EXISTING ~ca#movsw.itm~ ~override~
+    PATCH_IF (SOURCE_SIZE > 0x71) BEGIN
+      WRITE_ASCII 0x22 ~FS~ // flaming sword
+    END
+    BUT_ONLY
+
+  // re-equipping weapon as it's now 2-handed
+  COPY_EXISTING ~ca#plan.cre~  ~override~ // Planetar
+    REPLACE_CRE_ITEM ~ca#planw~ #0 #0 #0 ~unstealable~ ~weapon1~ EQUIP TWOHANDED
+    BUT_ONLY 
+
+  // re-equipping weapon as it's now 2-handed
+  COPY_EXISTING ~ca#fplan.cre~ ~override~ // fallen Planetar
+    REPLACE_CRE_ITEM ~ca#planw~ #0 #0 #0 ~unstealable~ ~weapon1~ EQUIP TWOHANDED
+    BUT_ONLY 
+
+  // re-equipping weapon as it's now 2-handed
+  COPY_EXISTING ~ca#dmond.cre~ ~override~ // Monadic Deva
+    REPLACE_CRE_ITEM ~ca#monrd~ #0 #0 #0 ~unstealable~ ~weapon1~ EQUIP TWOHANDED
+    BUT_ONLY IF_EXISTS
+    
+END 
