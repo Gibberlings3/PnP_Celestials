@@ -86,41 +86,25 @@ COPY_EXISTING ~%source%.spl~ ~override/%destination%.spl~
 
 
   ACTION_IF ((FILE_EXISTS_IN_GAME ~7eyes.2da~) AND (FILE_CONTAINS_EVALUATED (~7eyes.2da~ ~[ %TAB%]%source%[ %TAB%%LNL%%MNL%%WNL%]~))) THEN BEGIN
-
-    COPY_EXISTING ~7eyes.2da~ ~override~
-      SPRINT mind ~*~
-      SPRINT sword ~*~
-      SPRINT mage ~*~
-      SPRINT venom ~*~
-      SPRINT spirit ~*~
-      SPRINT fortitude ~*~
-      SPRINT stone ~*~
-        COUNT_2DA_COLS cols
-      SET cols = cols - 2
-      REPLACE_EVALUATE     CASE_INSENSITIVE ~\(^EYEMIND[ %TAB%].+[ %TAB%]%source%[ %TAB%%LNL%%MNL%%WNL%]\)~ BEGIN
-        SPRINT mind ~%destination%~
-      END ~\1~
-      REPLACE_EVALUATE ~\(^EYESWORD[ %TAB%].+[ %TAB%]%source%[ %TAB%%LNL%%MNL%%WNL%]\)~ BEGIN
-        SPRINT sword ~%destination%~
-      END ~\1~
-      REPLACE_EVALUATE ~\(^EYEMAGE[ %TAB%].+[ %TAB%]%source%[ %TAB%%LNL%%MNL%%WNL%]\)~ BEGIN
-        SPRINT mage ~%destination%~
-      END ~\1~
-      REPLACE_EVALUATE ~\(^EYEVENOM[ %TAB%].+[ %TAB%]%source%[ %TAB%%LNL%%MNL%%WNL%]\)~ BEGIN
-        SPRINT venom ~%destination%~
-      END ~\1~
-      REPLACE_EVALUATE ~\(^EYESPIRIT[ %TAB%].+[ %TAB%]%source%[ %TAB%%LNL%%MNL%%WNL%]\)~ BEGIN
-        SPRINT spirit ~%destination%~
-      END ~\1~
-      REPLACE_EVALUATE ~\(^EYEFORTITUDE[ %TAB%].+[ %TAB%]%source%[ %TAB%%LNL%%MNL%%WNL%]\)~ BEGIN
-        SPRINT fortitude ~%destination%~
-      END ~\1~
-      REPLACE_EVALUATE ~\(^EYESTONE[ %TAB%].+[ %TAB%]%source%[ %TAB%%LNL%%MNL%%WNL%]\)~ BEGIN
-        SPRINT stone ~%destination%~
-      END ~\1~
+  
+    COPY_EXISTING ~7eyes.2da~ ~override~      
+      COUNT_2DA_ROWS 3 rows // count number of legit rows
+      COUNT_2DA_COLS cols
+      SET header = cols - 2
+      REPLACE_TEXTUALLY ~^\([ %TAB%]*STATE[ %TAB%]+STRREF[ %TAB%]+[ %TAB%0-9]+\)~ ~\1 %header%~
+      FOR (index = 1 ;  index < rows ; ++index) BEGIN
+        READ_2DA_ENTRY index 0 3 rowname
+        PATCH_PRINT ~row name is %rowname%~
+        SET match = 0
+        REPLACE_EVALUATE CASE_INSENSITIVE ~\(^%rowname%[ %TAB%].+[ %TAB%]\)%source%\([ %TAB%%LNL%%MNL%%WNL%]\)~ BEGIN
+          SET match = 1
+        END ~%MATCH1%%source% %destination%%MATCH2%~
+        PATCH_IF !match BEGIN
+          REPLACE_TEXTUALLY CASE_INSENSITIVE ~\(^%rowname%[ %TAB%][^%LNL%%MNL%%WNL%]+\)~ ~\1 *~
+        END
+      END        
+      PRETTY_PRINT_2DA
       BUT_ONLY
-
-    APPEND_COL ~7eyes.2da~ ~$ $ %cols% %mind%    %sword% %mage% %venom% %spirit% %fortitude% %stone%~
 
   END
 
