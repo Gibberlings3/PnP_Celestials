@@ -29,11 +29,11 @@ ALWAYS
 
 END
 
-VERSION ~v9~
+VERSION ~v10~
 
 README ~celestials/readme-celestials.html~
 
-AUTO_TRA ~celestials/languages/%s~
+AUTO_TRA ~%tra_location%/%s~
 
 LANGUAGE
   ~English~
