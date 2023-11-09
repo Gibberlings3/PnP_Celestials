@@ -550,6 +550,9 @@ COPY_EXISTING ~ca#asdm.itm~ ~override/ca#fadm.itm~
 // scripts
 
 COMPILE ~celestials/summon_spells/_baf/ca#sdeva.baf~                       /* Compiles the script for the invis and invulen creature that will determine which deva to summon depending on the area */
+COMPILE ~celestials/summon_spells/_baf/ca#plan.baf~                       /* Compiles the script for the invis and invulen creature that will summon planetar */
+COMPILE ~celestials/summon_spells/_baf/ca#fplan.baf~                       /* Compiles the script for the invis and invulen creature that will summon fallen planetar */
+COMPILE ~celestials/summon_spells/_baf/ca#fdeva.baf~                       /* Compiles the script for the invis and invulen creature that will summon fallen deva */
 COMPILE ~celestials/baf/ca#dastr.baf~ EVALUATE_BUFFER                      /* Compiles the AI script for planetars and devas */
 
 
@@ -574,6 +577,12 @@ COPY ~celestials/summon_spells/_spl/ca#sdmon.spl~ ~override/ca#sdmon.spl~ //Summ
   SAY 0x50 @209 // descriptions exposed on EEs
   SAY 0x54 @209
 
+COPY ~celestials/summon_spells/_spl/ca#fdeva.spl~ ~override/ca#fdeva.spl~ //Summon spell for falen deva cast by invis and invulnerable creature
+
+COPY ~celestials/summon_spells/_spl/ca#plan.spl~ ~override/ca#plan.spl~ //Summon spell for planetar cast by invis and invulnerable creature
+
+COPY ~celestials/summon_spells/_spl/ca#fplan.spl~ ~override/ca#fplan.spl~ //Summon spell for fallen planetar cast by invis and invulnerable creature
+
 COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva through invis and invulen creature */
               ~spcl935.spl~ ~override~  /* blackguard Innate spell to summon fallen deva */
               ~sppr726.spl~ ~override~  /* Cleric spell to summon deva through invis and invulen creature */
@@ -581,18 +590,19 @@ COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva t
               ~spwi923.spl~ ~override~  /* Wizard spell to summon planetar */
               ~spwi924.spl~ ~override~  /* Wizard spell to summon fallen planetar */
   PATCH_IF (~%SOURCE_RES%~ STRING_COMPARE_CASE "spwi923" = 0) BEGIN
-    SPRINT res ~ca#plan~
+    SPRINT res ~ca#inv4~
   END ELSE PATCH_IF (~%SOURCE_RES%~ STRING_COMPARE_CASE "spwi924" = 0) BEGIN
-    SPRINT res ~ca#fplan~
+    SPRINT res ~ca#inv3~
   END ELSE PATCH_IF ((~%SOURCE_RES%~ STRING_COMPARE_CASE "sppr727" = 0) OR
                      (~%SOURCE_RES%~ STRING_COMPARE_CASE "spcl935" = 0))  BEGIN
-    SPRINT res ~ca#fdeva~
+    SPRINT res ~ca#inv2~
   END ELSE BEGIN
     SPRINT res ~ca#inv1~
     PATCH_IF (~%SOURCE_RES%~ STRING_COMPARE_CASE "spcl923" = 0) BEGIN
       WRITE_LONG 0x34 1
     END
   END
+  LPF ALTER_SPELL_HEADER INT_VAR target = 5 END
   LPF ALTER_EFFECT INT_VAR match_opcode = 177 STR_VAR resource = EVAL ~%res%~ END
   IF_EXISTS // spcl935 is EE asset
 

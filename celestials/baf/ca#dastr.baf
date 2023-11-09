@@ -4,6 +4,7 @@ IF
 THEN
 	RESPONSE #100
 		CreateVisualEffectObject("SPHOLY",Myself)
+		SetGlobalTimer("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL",0)
 		DestroySelf()
 END
 
@@ -13,6 +14,7 @@ IF
 THEN
 	RESPONSE #100
 		CreateVisualEffectObject("SPUNHOLY",Myself)
+		SetGlobalTimer("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL",0)
 		DestroySelf()
 END
 
@@ -618,8 +620,8 @@ IF
 THEN
 	RESPONSE #100
 		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
-		ApplySpellRES("LC1CLEAN",Myself)  // No such index
 		SpellRES("CA#EVOC",Myself)  // Cast Invocation/Evocation Spell
+		ApplySpellRES("LC1CLEAN",Myself)  // No such index
 		SpellNoDec(LastSeenBy(Myself),WIZARD_INCENDIARY_CLOUD)  // SPWI810.SPL (Incendiary Cloud)
 		// RunAwayFromNoInterrupt(LastSeenBy(Myself),20)
 END
@@ -635,15 +637,16 @@ IF
 	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
 	//!CheckStatGT(Myself,0,POLYMORPHED)
 	RandomNum(3,2)
-	NumCreatureLT([EVILCUTOFF],3)
+	NumCreatureGT([EVILCUTOFF],0)
+	NumCreatureGT([EVILCUTOFF],0)
 	HPPercentGT(Myself,80)
 	HaveSpellRES("CA#EVOC")  // Cast Invocation/Evocation Spell
 THEN
 	RESPONSE #100
 		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
-		ApplySpellRES("LC1CLEAN",Myself)  // No such index
 		SpellRES("CA#EVOC",Myself)  // Cast Invocation/Evocation Spell
-		SpellNoDec(FourthNearestEnemyOf(Myself),WIZARD_BIGBYS_CLENCHED_FIST)  // SPWI818.SPL (Bigby's Clenched Fist)
+		ApplySpellRES("LC1CLEAN",Myself)  // No such index
+		SpellNoDec(NearestEnemyOf(Myself),WIZARD_BIGBYS_CLENCHED_FIST)  // SPWI818.SPL (Bigby's Clenched Fist)
 END
 
 IF
@@ -657,16 +660,16 @@ IF
 	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
 	//!CheckStatGT(Myself,0,POLYMORPHED)
 	RandomNum(3,1)
-	NumCreatureGT([EVILCUTOFF],1)
+	NumCreatureGT([EVILCUTOFF],2)
 	Detect(NearestEnemyOf(Myself))
 	HPPercentGT(Myself,80)
 	HaveSpellRES("CA#EVOC")  // Cast Invocation/Evocation Spell
 THEN
 	RESPONSE #100
 		SetGlobalTimer("Cast_and_Attack","LOCALS",6)
-		ApplySpellRES("LC1CLEAN",Myself)  // No such index
 		SpellRES("CA#EVOC",Myself)  // Cast Invocation/Evocation Spell
-		SpellNoDec(Myself,WIZARD_CHAIN_LIGHTNING)  // SPWI615.SPL (Chain Lighning)
+		ApplySpellRES("LC1CLEAN",Myself)  // No such index
+		SpellNoDec(NearestEnemyOf(Myself),WIZARD_CHAIN_LIGHTNING)  // SPWI615.SPL (Chain Lighning)
 END
 
 IF
@@ -1401,7 +1404,7 @@ IF
 	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
 	//!CheckStatGT(Myself,0,POLYMORPHED)
 	HaveSpell(CLERIC_CHANT)  // SPPR203.SPL (Chant)
-	NumCreatureGT([EVILCUTOFF],2)
+	NumCreatureGT([ENEMY],2)
 	OR(2)
 		Range(NearestEnemyOf(Myself),15)
 		Range(NearestMyGroupOfType,15)
