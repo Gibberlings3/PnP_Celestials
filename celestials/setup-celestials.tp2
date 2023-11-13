@@ -583,6 +583,27 @@ COPY ~celestials/summon_spells/_spl/ca#plan.spl~ ~override/ca#plan.spl~ //Summon
 
 COPY ~celestials/summon_spells/_spl/ca#fplan.spl~ ~override/ca#fplan.spl~ //Summon spell for fallen planetar cast by invis and invulnerable creature
 
+
+// Restore Desc. for compatibility with Spell revisions users
+COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva through invis and invulen creature */
+    WRITE_LONG 0x50 ~63829~
+    BUT_ONLY
+COPY_EXISTING ~spcl935.spl~ ~override~  /* blackguard Innate spell to summon fallen deva */
+    WRITE_LONG 0x50 ~63831~
+    IF_EXISTS BUT_ONLY
+COPY_EXISTING ~sppr726.spl~ ~override~  /* Cleric spell to summon deva through invis and invulen creature */
+    WRITE_LONG 0x50 ~63829~
+    BUT_ONLY
+COPY_EXISTING ~sppr727.spl~ ~override~  /* Cleric spell to summon fallen deva */
+    WRITE_LONG 0x50 ~63831~
+    BUT_ONLY
+COPY_EXISTING ~spwi923.spl~ ~override~  /* Wizard spell to summon planetar */
+    WRITE_LONG 0x50 ~63232~
+    BUT_ONLY
+COPY_EXISTING ~spwi924.spl~ ~override~  /* Wizard spell to summon fallen planetar */
+    WRITE_LONG 0x50 ~63237~
+    BUT_ONLY
+
 COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva through invis and invulen creature */
               ~spcl935.spl~ ~override~  /* blackguard Innate spell to summon fallen deva */
               ~sppr726.spl~ ~override~  /* Cleric spell to summon deva through invis and invulen creature */
@@ -604,29 +625,13 @@ COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva t
   END
   LPF ALTER_SPELL_HEADER INT_VAR target = 5 END
   LPF ALTER_EFFECT INT_VAR match_opcode = 177 STR_VAR resource = EVAL ~%res%~ END
+  READ_STRREF 0x50 desc
+  INNER_PATCH_SAVE desc ~%desc%~ BEGIN
+    REPLACE_TEXTUALLY ~: 40.*~ ~: 0~ // change Range in description to 0
+  END
+  SAY_EVALUATED 0x50 ~%desc%~  
   IF_EXISTS // spcl935 is EE asset
 
-// Restore Desc. for Spell revisions users
-ACTION_IF MOD_IS_INSTALLED ~spell_rev.tp2~ ~0~ BEGIN
-  COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva through invis and invulen creature */
-    WRITE_LONG 0x50 63829
-    BUT_ONLY
-  COPY_EXISTING ~spcl935.spl~ ~override~  /* blackguard Innate spell to summon fallen deva */
-    WRITE_LONG 0x50 63831
-    IF_EXISTS BUT_ONLY
-  COPY_EXISTING ~sppr726.spl~ ~override~  /* Cleric spell to summon deva through invis and invulen creature */
-    WRITE_LONG 0x50 63829
-    BUT_ONLY
-  COPY_EXISTING ~sppr727.spl~ ~override~  /* Cleric spell to summon fallen deva */
-    WRITE_LONG 0x50 63831
-    BUT_ONLY
-  COPY_EXISTING ~spwi923.spl~ ~override~  /* Wizard spell to summon planetar */
-    WRITE_LONG 0x50 63232
-    BUT_ONLY
-  COPY_EXISTING ~spwi924.spl~ ~override~  /* Wizard spell to summon fallen planetar */
-    WRITE_LONG 0x50 63237
-    BUT_ONLY
-END
 /////                                                  \\\\\
 ///// miscellaneous compat junk                        \\\\\
 /////                                                  \\\\\
