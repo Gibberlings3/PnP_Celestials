@@ -1404,7 +1404,7 @@ IF
 	CheckStatLT(Myself,60,SPELLFAILUREMAGE)
 	//!CheckStatGT(Myself,0,POLYMORPHED)
 	HaveSpell(CLERIC_CHANT)  // SPPR203.SPL (Chant)
-	NumCreatureGT([ENEMY],2)
+	NumCreatureGT([EVILCUTOFF],2)
 	OR(2)
 		Range(NearestEnemyOf(Myself),15)
 		Range(NearestMyGroupOfType,15)
