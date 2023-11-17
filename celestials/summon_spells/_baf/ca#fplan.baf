@@ -1,0 +1,67 @@
+// I came, I saw, I cast, I say bye-bye.
+IF
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+	GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+THEN
+	RESPONSE #100
+		DestroySelf()
+END
+
+// I came, I saw, I have already summoned a deva or planetar, I say bye-bye.
+IF
+	GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+	Global("limit_CA_SUMMON_DEVA_PLANETAR","GLOBAL",0)
+THEN
+	RESPONSE #100
+		DisplayString(Myself,74090)
+		DestroySelf()
+END
+
+// It didn't cast before, so it will now.
+IF
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",0)
+	OR(2)
+		!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+		GlobalGT("limit_CA_SUMMON_DEVA_PLANETAR","GLOBAL",0)
+THEN
+	RESPONSE #100
+		SetGlobal("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+		ActionOverride(LastSummonerOf(Myself),ReallyForceSpellRES("CA#FPLAN",Myself))  // Summon Dark Planetar
+		Continue()
+END
+
+IF
+	LevelLT(LastSummonerOf(Myself),18)
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL",78)
+END
+
+IF
+	Level(LastSummonerOf(Myself),18)
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL",132)
+END
+
+IF
+	Level(LastSummonerOf(Myself),19)
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL",138)
+END
+
+IF
+	LevelGT(LastSummonerOf(Myself),19)
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL",144)
+END

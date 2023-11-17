@@ -1,51 +1,145 @@
-//Am I in a special area?
+// I came, I saw, I cast, I say bye-bye.
 IF
- Global("Cast_CA_SUMMON_DEVA","LOCALS",0) //So it only casts once.
- OR(13)
-      AreaCheck("AR4500") //PocketPlane
-      AreaCheck("AR2900") //Hell
-      AreaCheck("AR6200") //Throne of Bhaal
-      AreaCheck("AR0414") //Planar Sphere other plane
-      AreaCheck("AR1008") //Twisted Rune plane
-      AreaCheck("AR2208") //Drow Mercenary Pocket Plane
-      AreaCheck("AR0516") //Planar Prison Main Area
-      AreaCheck("AR0517") //Planar Prison dungeon room 1
-      AreaCheck("AR0518") //Planar Prison dungeon room 2
-      AreaCheck("AR0519") //Planar Prison dungeon room 3
-      AreaCheck("AR0520") //Planar Prison dungeon room prison captain with minotaurs
-      AreaCheck("AR0521") //Planar Prison dungeon room prison captains with stone golems
-      AreaCheck("DD8002") // Tartarus
-//Any other areas. Add to the OR() if you need more.
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+	GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
 THEN
-RESPONSE #100
-  SetGlobal("Cast_CA_SUMMON_DEVA","LOCALS",1)
-  ReallyForceSpellRes("CA#SDAST",Myself)
+	RESPONSE #100
+		DestroySelf()
 END
 
-//Check for Monadic Deva Summon
+// I came, I saw, I have already summoned a deva or planetar, I say bye-bye.
 IF
- Global("Cast_CA_SUMMON_DEVA","LOCALS",0) //So it only casts once.
- OR(1)
-      AreaCheck("LR6603") //Elysium
+	GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+	Global("limit_CA_SUMMON_DEVA_PLANETAR","GLOBAL",0)
 THEN
-RESPONSE #100
-  SetGlobal("Cast_CA_SUMMON_DEVA","LOCALS",1)
-  ReallyForceSpellRes("CA#SDMON",Myself)
+	RESPONSE #100
+		DisplayString(Myself,74090)
+		DestroySelf()
 END
 
-//It didn't cast before, so it will now.
+// Am I in a special area?
 IF
- Global("Cast_CA_SUMMON_DEVA","LOCALS",0) 
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",0) //So it only casts once.
+	OR(2)
+		!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+		GlobalGT("limit_CA_SUMMON_DEVA_PLANETAR","GLOBAL",0)
+	OR(13)
+		AreaCheck("AR4500") //PocketPlane
+		AreaCheck("AR2900") //Hell
+		AreaCheck("AR6200") //Throne of Bhaal
+		AreaCheck("AR0414") //Planar Sphere other plane
+		AreaCheck("AR1008") //Twisted Rune plane
+		AreaCheck("AR2208") //Drow Mercenary Pocket Plane
+		AreaCheck("AR0516") //Planar Prison Main Area
+		AreaCheck("AR0517") //Planar Prison dungeon room 1
+		AreaCheck("AR0518") //Planar Prison dungeon room 2
+		AreaCheck("AR0519") //Planar Prison dungeon room 3
+		AreaCheck("AR0520") //Planar Prison dungeon room prison captain with minotaurs
+		AreaCheck("AR0521") //Planar Prison dungeon room prison captains with stone golems
+		AreaCheck("DD8002") // Tartarus
+// Any other areas. Add to the OR() if you need more.
 THEN
-RESPONSE #100
- SetGlobal("Cast_CA_SUMMON_DEVA","LOCALS",1)
- ReallyForceSpellRes("CA#SDMOV",Myself)
+	RESPONSE #100
+		SetGlobal("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+		ActionOverride(LastSummonerOf(Myself),ReallyForceSpellRES("CA#SDAST",Myself))
+		Continue()
 END
 
-//I came, I saw, I cast, I go bye-bye.
+// Check for Monadic Deva Summon
 IF
- Global("Cast_CA_SUMMON_DEVA","LOCALS",1)
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",0) //So it only casts once.
+	OR(2)
+		!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+		GlobalGT("limit_CA_SUMMON_DEVA_PLANETAR","GLOBAL",0)
+	AreaCheck("LR6603") //Elysium
 THEN
-RESPONSE #100
- DestroySelf()
+	RESPONSE #100
+		SetGlobal("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+		ActionOverride(LastSummonerOf(Myself),ReallyForceSpellRES("CA#SDMON",Myself))
+		Continue()
+END
+
+// It didn't cast before, so it will now.
+IF
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",0) 
+	OR(2)
+		!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+		GlobalGT("limit_CA_SUMMON_DEVA_PLANETAR","GLOBAL",0)
+THEN
+	RESPONSE #100
+		SetGlobal("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+		ActionOverride(LastSummonerOf(Myself),ReallyForceSpellRES("CA#SDMOV",Myself))
+		Continue()
+END
+
+IF
+	LevelLT(LastSummonerOf(Myself),14)
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL",78)
+END
+
+IF
+	Level(LastSummonerOf(Myself),14)
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL",108)
+END
+
+IF
+	Level(LastSummonerOf(Myself),15)
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL",114)
+END
+
+IF
+	Level(LastSummonerOf(Myself),16)
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL",120)
+END
+
+IF
+	Level(LastSummonerOf(Myself),17)
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL",126)
+END
+
+IF
+	Level(LastSummonerOf(Myself),18)
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL",132)
+END
+
+IF
+	Level(LastSummonerOf(Myself),19)
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL",138)
+END
+
+IF
+	LevelGT(LastSummonerOf(Myself),19)
+	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
+	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
+THEN
+	RESPONSE #100
+		SetGlobalTimer("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL",144)
 END
