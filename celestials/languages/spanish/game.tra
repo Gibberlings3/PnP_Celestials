@@ -1,0 +1,46 @@
+//Deva Component
+
+@100=~Deva Astral~
+@101=~Deva Movanico~
+@102=~Deva monádico~
+
+//Deva Spells
+
+@200=~Detectar trampas y fosos~
+@201=~Escudo antimagia~
+@202=~Anular Escudo Antimagia~
+@203=~Escudo antimagia (Abjuration)
+Level: 6
+Alcance: 0
+Duración: 1 turno/nivel
+Tiempo de lanzamiento: 1
+Área de efecto: Lanzador
+Tirada de salvación: Ninguno
+
+Mediante este hechizo, el mago se rodea de una barrera invisible que se desplaza con él. El espacio dentro de esta barrera es totalmente impermeable a toda magia y efectos de hechizos mágicos, impidiendo así el paso de hechizos o sus efectos. Del mismo modo, impide el funcionamiento de cualquier objeto mágico o hechizo dentro de sus confines. La zona también es impermeable a las armas de aliento, los ataques de mirada o voz y otras formas similares de ataque especial.
+
+El caparazón antimágico también protege a las criaturas encantadas, invocadas o conjuradas. Sin embargo, no puede forzarse contra ninguna criatura a la que mantendría a raya; cualquier intento de hacerlo crea una presión perceptible contra la barrera, y la presión continuada romperá el hechizo. Las criaturas normales (un troll encontrado normalmente en lugar de uno conjurado, por ejemplo) pueden entrar en la zona, al igual que los proyectiles normales.  Tenga en cuenta que las criaturas en su plano natal son criaturas normales allí. Así, en el Plano Elemental del Fuego, un elemental de fuego encontrado al azar no puede ser mantenido a raya por este hechizo. Los artefactos, reliquias y criaturas de estatus semidiós o superior no se ven afectados por magia mortal como ésta.  Un conjuro de disipar magia no elimina el conjuro; el lanzador puede terminarlo cuando lo ordene.~
+@204=~Lanzar Hechizo de Invocación/Evocación~
+@205=~Llamar a Planetar~
+@206=~Invocar Deva Astral~
+@207=~Invoca a Movanic Deva~
+@208=~Teletransporte sin errores~
+@209=~Invocar Deva monádica~
+@210=~Amuleto Elemental~
+
+//Equipment
+
+@300=~Espada Vorpal Planetaria~
+@301=~Maza de disrupción de Deva Astral + 3~
+@302=~Lengua de Llama de Movanic Deva + 1~
+@303=~Vara de la Deva Monádica + 3~
+@304=~Maza de disrupción de Deva caída + 3~
+
+//Planetar Spells
+
+@400=~Invisibilidad mejorada 10' de radio~
+@401=~Polimorfo de cualquier objeto~
+@402=~Protección contra el mal 40' de radio~
+@4021=~Protección del Bien Radio de 40' de radio~
+@403=~Resistencia al frío~
+@404=~Símbolo~

@@ -75,6 +75,13 @@ LANGUAGE
   ~celestials/languages/english/weidu.tra~
   ~celestials/languages/italian/game.tra~
   ~celestials/languages/italian/weidu.tra~
+LANGUAGE
+  ~Spanish (Translation by IoViVo)~
+  ~spanish~
+  ~celestials/languages/english/game.tra~
+  ~celestials/languages/english/weidu.tra~
+  ~celestials/languages/spanish/game.tra~
+  ~celestials/languages/spanish/weidu.tra~
 
 /////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
 /////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
