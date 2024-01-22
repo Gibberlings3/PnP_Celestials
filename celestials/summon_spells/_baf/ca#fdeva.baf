@@ -32,6 +32,7 @@ END
 
 IF
 	LevelLT(LastSummonerOf(Myself),14)
+	Allegiance(LastSummonerOf(Myself),ALLY)
 	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
 	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
 THEN
@@ -41,6 +42,7 @@ END
 
 IF
 	Level(LastSummonerOf(Myself),14)
+	Allegiance(LastSummonerOf(Myself),ALLY)
 	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
 	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
 THEN
@@ -50,6 +52,7 @@ END
 
 IF
 	Level(LastSummonerOf(Myself),15)
+	Allegiance(LastSummonerOf(Myself),ALLY)
 	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
 	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
 THEN
@@ -59,6 +62,7 @@ END
 
 IF
 	Level(LastSummonerOf(Myself),16)
+	Allegiance(LastSummonerOf(Myself),ALLY)
 	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
 	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
 THEN
@@ -68,6 +72,7 @@ END
 
 IF
 	Level(LastSummonerOf(Myself),17)
+	Allegiance(LastSummonerOf(Myself),ALLY)
 	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
 	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
 THEN
@@ -77,6 +82,7 @@ END
 
 IF
 	Level(LastSummonerOf(Myself),18)
+	Allegiance(LastSummonerOf(Myself),ALLY)
 	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
 	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
 THEN
@@ -86,6 +92,7 @@ END
 
 IF
 	Level(LastSummonerOf(Myself),19)
+	Allegiance(LastSummonerOf(Myself),ALLY)
 	Global("Cast_CA_SUMMON_DEVA_PLANETAR","LOCALS",1)
 	!GlobalTimerNotExpired("Timer_CA_SUMMON_DEVA_PLANETAR","GLOBAL")
 THEN
