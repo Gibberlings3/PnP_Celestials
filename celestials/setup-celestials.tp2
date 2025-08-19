@@ -98,7 +98,7 @@ LABEL "PnP_Celestials"
 
 ////////////////////////////////////////////
 // lib, entries and needed files
-INCLUDE ~celestials/lib/cd_clone_spell_bulk_first.tph~
+INCLUDE ~celestials/lib/cd_clone_spell_bulk_first.tpa~
 
 APPEND ~state.IDS~ ~0x8014202D STATE_OUT_OF_ACTION~ UNLESS ~STATE_OUT_OF_ACTION~ // Add new state entry
 APPEND ~state.IDS~ ~0x00400010 STATE_NOT_TARGETABLE~ UNLESS ~STATE_NOT_TARGETABLE~ // Add new state entry
@@ -643,7 +643,7 @@ COPY_EXISTING ~spcl923.spl~ ~override~  /* Paladin Innate spell to summon deva t
 ///// miscellaneous compat junk                        \\\\\
 /////                                                  \\\\\
 
-INCLUDE ~celestials/lib/cd_clone_spell_bulk_last.tph~
+INCLUDE ~celestials/lib/cd_clone_spell_bulk_last.tpa~
 
 // ee fixpack immunity setup
 
